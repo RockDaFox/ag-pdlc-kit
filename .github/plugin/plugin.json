@@ -1,0 +1,10 @@
+{
+  "name": "croakness",
+  "version": "0.1.0",
+  "description": "Installs and maintains a four-level documentation discipline on a repository — AGENTS.md (how the repo is written), PRD.md (what the product does and why), adr/ (structural decisions, append-only), specs/ (a feature's decisions and rejected alternatives). Use when bootstrapping documentation on an existing codebase, or when building a feature whose decisions should be recorded.",
+  "author": {
+    "name": "RockDaFox"
+  },
+  "keywords": ["documentation", "specs", "adr", "prd", "agents-md"],
+  "skills": "skills/"
+}
