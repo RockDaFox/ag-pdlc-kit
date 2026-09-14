@@ -26,7 +26,7 @@ Same command on both hosts, each reading its own manifest from this
 repository:
 
 ```
-/plugin marketplace add https://github.com/<owner>/croakness
+/plugin marketplace add git@github.com:RockDaFox/croakness
 /plugin install croakness@croakness
 ```
 
