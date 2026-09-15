@@ -44,7 +44,42 @@ decision**, and it goes in `AGENTS.md` where state belongs.
    file for it.
 5. **Never overwrite.** If `AGENTS.md` or a product document already exists —
    under any name, `PRD.md` included — read it, propose a merge, and let the
-   user decide. Existing prose is evidence, not clutter.
+   user decide. Existing prose is evidence, not clutter. An `AGENTS.md`
+   written as an agent contract is a particular case, handled below.
+
+## When `AGENTS.md` already exists as an agent contract
+
+A repository may already carry an `AGENTS.md` shaped as a behavioral contract
+rather than as a guide to the codebase: sections named Mission, Scope,
+Completion, Evidence, Human gates. Recognise it by those headings, and treat
+it as **the other half of the same file, not a competing version of it**.
+
+The convention's six zones split cleanly between the two shapes. A contract
+usually holds the role statement, testing, git and boundaries; what this skill
+derives from the code holds commands, structure, style and traps. Neither is
+complete alone. So merge, into the section order of
+[`../_pdlc-shared/templates/AGENTS.md`](../_pdlc-shared/templates/AGENTS.md),
+and keep every rule the contract states — those were written to be opposable,
+which is a reason to preserve the wording rather than paraphrase it.
+
+Three things do not survive the merge unchanged, and the user arbitrates each:
+
+- **A pull-request body shape** — an Evidence section, a Completion
+  checklist. Propose moving it to a pull-request template and leaving one line
+  under Boundaries. Never silently drop it: if the user declines, it stays.
+- **Process governance** — gate staffing, metric definitions, escalation
+  routing. Propose the same move, to wherever the repository keeps process.
+- **Anything over the 150-line budget once merged.** Report the line count,
+  and propose the nested-file split — per-stack rules into an `AGENTS.md`
+  beside the code they govern — rather than cutting rules. If the user decides
+  the budget loses to keeping the contract whole, record that in the merged
+  file in one line, so the next reader knows it was decided and not forgotten.
+
+The repository may also hold path-scoped instruction files — Copilot's
+`.github/instructions/*.instructions.md` is the common case. Those are the
+same mechanism as a nested `AGENTS.md`, in one host's dialect. Leave them
+alone: they work, and converting them is a decision for their owner, not a
+side effect of running this skill. Say they were found.
 
 ## What to create
 
@@ -59,6 +94,12 @@ exhibits, and every trap the history shows someone already hit. A rule you
 cannot point at evidence for does not go in. Its Documentation section names
 `{docs_root}`, says what each level holds, and states that the decision log
 starts from the A-PDLC Kit installation.
+
+Keep to the template's section order and to the 150-line budget — both come
+from the cross-vendor convention, stated once in the discipline reference.
+Report the line count at the end. A repository with several stacks gets
+repo-wide rules at the root and per-stack rules in a nested `AGENTS.md`; do
+not let one root file carry every stack in the tree.
 
 **`{docs_root}/PRODUCT.md`** — what the product does and why, as delivered.
 Present indicative throughout. State the implementation status honestly,

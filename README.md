@@ -55,6 +55,13 @@ then records the decisions and the rejected alternatives in the same change.
 The rejected alternatives are the point: the clarification round is the last
 moment they exist.
 
+**`/pdlc-decide`** — for a decision that produces no code: a stack settled
+before anything is built, an architecture approved before the work is split, a
+boundary drawn, an earlier ADR being reversed. Those have no commit to ride
+along on, so nothing writes them down. It interviews for what was weighed —
+it never supplies the alternatives itself — and it walks the supersession of
+an existing ADR, which is two files and never an edit in place.
+
 ## Contributing
 
 Read [`AGENTS.md`](AGENTS.md). The repository follows the discipline it

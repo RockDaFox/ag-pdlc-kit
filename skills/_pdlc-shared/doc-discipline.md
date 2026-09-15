@@ -55,6 +55,41 @@ A spec that explains how to write a handler, how a component is wired, or how
 the framework behaves is in the wrong file — that belongs in `AGENTS.md`, or in
 a comment beside the code it surprises.
 
+## `AGENTS.md` follows the cross-vendor convention
+
+`AGENTS.md` is not this product's invention. It is the cross-vendor format for
+instructing coding agents: plain Markdown, no frontmatter, no required field,
+and nested files where the one nearest the edited code wins. A-PDLC Kit writes
+that file rather than one of its own, and stays inside the convention. Two
+properties of it shape every `AGENTS.md` written or merged here.
+
+**Six zones, and a role.** The content that earns its place is: commands —
+real ones, with their flags — testing, project structure, code style, git
+workflow, and boundaries, meaning what the agent must never touch. A statement
+of the agent's role, one or two lines at the top, does more for behavior than
+any other line in the file. Traps belong with boundaries: a platform behavior
+that has already cost someone an afternoon is the most valuable thing the file
+can carry, and the thing no other document will record.
+
+**A hundred and fifty lines.** Past that the important content is buried, and
+every session pays for the rest in context. An `AGENTS.md` longer than the
+repository's `README.md` is too long. The pressure valve is not a thinner
+style section — it is the nested file: repo-wide rules at the root, per-stack
+rules in an `AGENTS.md` beside the code they govern.
+
+Two kinds of content are turned away, because both are read as belonging here
+and neither does:
+
+- **The shape of a pull-request body** — an evidence report, a completion
+  checklist, a required diff summary. That is an output format, and it belongs
+  in a pull-request template, where the author is looking when they need it.
+- **Process governance** — who staffs an approval, how a metric is computed,
+  what happens when the approver is away. What belongs here is only the rule
+  the agent obeys, stated once under boundaries: it does not merge, it does
+  not deploy, it does not touch production data, it does not lift a security
+  control. The process serving that rule lives wherever the organisation keeps
+  process.
+
 ## `PRODUCT.md` is descriptive, not prescriptive
 
 It states what the product does **today**, in the present indicative, and it
@@ -166,6 +201,31 @@ the same change**. A spec that no longer matches the code is worse than no
 spec: it is read with the same trust and it is wrong. The ADR exception is not
 an exception to this rule — a superseded ADR is still accurate about the past,
 and its `Status` line says so.
+
+## Regulated data
+
+A feature that touches personal, health or payment data — or anything else
+that looks like it falls under a data-protection or financial regime — raises
+a question this discipline does not settle, and that an agent settles even
+less. The rule is procedural: the question is raised before the work is
+planned, the answer comes from the organisation's data-protection or
+compliance function, and the spec records that the exchange happened.
+
+Five fields, in the feature's spec, under a heading of their own:
+
+| Field | Holds |
+|---|---|
+| Date | When the question was raised. |
+| Trigger | What in the feature looked regulated, in one line. |
+| Consulted | The function that answered — a function, not a person's name. |
+| Decision | The answer, including any condition attached to it. |
+| Reference | Where the answer is recorded outside this repository. |
+
+The section is present or absent; it is never filled with a reading of what a
+regime requires, because that reading is legal advice and this is a
+documentation discipline. A question raised and not yet answered is recorded
+as unanswered, saying so plainly if the work proceeded anyway — that is a
+finding, and the reason the field exists at all.
 
 ## AI-assisted authoring
 

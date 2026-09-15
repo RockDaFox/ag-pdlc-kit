@@ -47,9 +47,11 @@ option won over another — is only recorded at the moment it is decided.
 A-PDLC Kit never backfills
 ([ADR-0004](adr/0004-decision-records-are-written-forward.md)).
 
-Implementation status in 0.2.0: two skills — `pdlc-init` (bootstrap) and
-`pdlc-feature` (record) — four templates, and one shared discipline reference.
-No executable code: the product is Markdown plus two JSON manifests.
+Implementation status in 0.3.0: three skills — `pdlc-init` (bootstrap),
+`pdlc-feature` (record a decision that arrives with code) and `pdlc-decide`
+(record one that does not) — four templates, and one shared discipline
+reference. No executable code: the product is Markdown plus two JSON
+manifests.
 
 ## 2. Users
 
@@ -79,7 +81,11 @@ in `AGENTS.md`.
 Three guardrails are part of the behavior, not of the implementation:
 
 - **Nothing is overwritten.** An existing `AGENTS.md` or product document —
-  under any name — is read and a merge is proposed; the user arbitrates.
+  under any name — is read and a merge is proposed; the user arbitrates. An
+  `AGENTS.md` already written as a behavioral agent contract is a recognised
+  case: the two shapes cover complementary halves of the `AGENTS.md`
+  convention's six zones, so the merge keeps both rather than choosing
+  ([ADR-0007](adr/0007-agents-md-follows-the-cross-vendor-convention.md)).
 - **No empty directories.** `adr/` and `specs/` are created by their first
   record.
 - **The unknowns are reported.** The skill ends by listing, separately, what
@@ -104,7 +110,39 @@ When a decision reaches beyond the feature, it becomes an ADR instead of a
 spec entry. The three arbitration tests — scope, reversal cost, lifetime — are
 stated once, in the discipline reference.
 
-### 3.3 Ship the skeletons
+The question round also establishes whether the feature touches personal,
+health or payment data. That is asked as a question of fact; which regime
+governs the answer is not the product's judgment to make. A yes fills the
+spec's Regulated data section with five fields — date, trigger, the function
+consulted, the answer, and where it is recorded — and an escalation still
+outstanding at the go-ahead is recorded as unanswered rather than blocking the
+work or vanishing.
+
+### 3.3 Record a decision that produces no code
+
+The `pdlc-decide` skill records a decision taken outside an implementation: a
+technical foundation chosen before anything is built, an architecture approved
+before work is split, a boundary drawn, a dependency the repository agrees to
+carry. Those have no commit to ride along on, which is why they went
+unrecorded before this skill existed.
+
+It routes the decision with the same three tests, interviews for what the
+record needs and the user has not supplied, and writes an ADR, a spec entry,
+or a line in `AGENTS.md` when the decision turns out to be state. Three
+behaviors are the point rather than the implementation:
+
+- **The alternatives come from the user.** Anything they cannot answer is
+  recorded as unanswered. A decision being reconstructed from the code is
+  declined and redirected to `AGENTS.md`, because that is the request that
+  produces a plausible invented record.
+- **It records, it does not decide.** Asked for a recommendation, it gives one
+  as analysis and writes nothing until the user has chosen.
+- **It performs supersession**, which the discipline states as a rule and
+  nothing previously carried out: the new ADR gains `Supersedes`, the old one
+  gains a `Status` line and keeps every other word. Whether the old ADR is a
+  record or still a draft is established from git, not from its date.
+
+### 3.4 Ship the skeletons
 
 Four templates (`AGENTS.md`, `PRODUCT.md`, `adr.md`, `spec.md`) bundled with
 the skills and read at runtime. They are commented skeletons, not tutorials:
@@ -115,14 +153,21 @@ descriptive: present indicative, shipped behavior, and no section titled
 "requirements" anywhere
 ([ADR-0005](adr/0005-product-document-is-descriptive.md)).
 
-### 3.4 Adapt to a repository that already uses `docs/`
+The `AGENTS.md` template carries the cross-vendor convention's six zones in
+its order — commands, testing, project structure, code style, git workflow,
+boundaries — opens with a statement of the agent's role, and targets 150 lines
+([ADR-0007](adr/0007-agents-md-follows-the-cross-vendor-convention.md)). The
+spec template carries the Regulated data section, deleted when it does not
+apply rather than left empty.
+
+### 3.5 Adapt to a repository that already uses `docs/`
 
 The documentation root defaults to `docs/`. A repository where that directory
 is taken puts A-PDLC Kit elsewhere and records it in `AGENTS.md`, in one
 line. No configuration file is created
 ([ADR-0002](adr/0002-docs-root-without-config-file.md)).
 
-### 3.5 Run on more than one host
+### 3.6 Run on more than one host
 
 The same `skills/` tree serves Claude Code and GitHub Copilot. Nothing in it
 is host-specific: bundled files are reached by paths relative to the skill's
@@ -145,12 +190,20 @@ it is generated, is the failure this rule exists to prevent.
   checkpoints the skills define.
 - **Every generated document carries the AI-assistance notice** and a reminder
   to review before sharing with a third party.
+- **The product gives no legal, financial or regulatory reading.** It
+  establishes whether a feature touches regulated data, names the function
+  that answers, and records the answer. Which regime applies, and what it
+  demands, is not something any skill here asserts.
+- **`AGENTS.md` conforms to a convention the product does not control**
+  ([ADR-0007](adr/0007-agents-md-follows-the-cross-vendor-convention.md)). If
+  the convention's zones or its length guidance move, the template and the
+  reference are wrong until someone notices; nothing watches for it.
 
 ## 5. Out of scope
 
 | Left out | Add it when |
 |---|---|
-| Backfilling decisions on an existing repository | Never, by design ([ADR-0004](adr/0004-decision-records-are-written-forward.md)). A human who remembers the alternatives may still write the record by hand |
+| Backfilling decisions on an existing repository | Never, by design ([ADR-0004](adr/0004-decision-records-are-written-forward.md)). A human who remembers the alternatives can have `pdlc-decide` interview them and write the record; what it will not do is supply the alternatives itself |
 | Doc-versus-code drift detection | The two skills have enough mileage to tell a real false positive from noise. An audit that cries wolf is ignored within a fortnight |
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |
 | A blocking pre-commit check | Never, barring an explicit request from a team that wants it |

@@ -47,6 +47,20 @@ The routing between spec and ADR is not decided here. It is stated once in
    ([ADR-0004](../adr/0004-decision-records-are-written-forward.md)); this
    skill is the main thing that fills it, so on a fresh repo it writes
    `0001`.
+8. **Regulated data is asked about in the question round, as a question of
+   fact.** Whether the feature touches personal, health or payment data is
+   knowable; which regime governs it is not this skill's to judge. A yes
+   routes the answer to the organisation's data-protection or compliance
+   function and fills the spec's Regulated data section; the five fields are
+   stated once, in the discipline reference.
+9. **An unanswered escalation does not block, and does not go unrecorded.**
+   The recap says the work is proceeding without the answer, and the spec
+   records the question as unanswered. Blocking would get the skill
+   worked around; silence would lose the only trace that the question was
+   ever raised.
+10. **A decision arriving without code leaves this skill.**
+    [`pdlc-decide`](pdlc-decide.md) holds it, and holds the supersession
+    mechanic that this skill previously only named as a rule.
 
 ## Rejected alternatives
 
@@ -64,6 +78,17 @@ The routing between spec and ADR is not decided here. It is stated once in
   the whole repository and its history, which is a different job with a
   different failure mode, and mixing them would make the common case pay for
   the rare one.
+- **Blocking the go-ahead until a regulated-data escalation comes back** —
+  rejected: the answer arrives on someone else's schedule, and a gate that
+  stalls for days is a gate people route around. Recording the gap keeps the
+  trace without creating the incentive to skip the question entirely.
+- **Having the skill assess which regime applies to the data** — rejected:
+  that is legal and regulatory advice, which this product does not give at
+  any level of confidence. The skill establishes the fact and names who
+  answers.
+- **A regulated-data section in every spec, empty when it does not apply** —
+  rejected: an empty compliance section in ninety specs trains the reader to
+  skim past the one that is filled. The section is present or absent.
 
 ## Known gaps
 
@@ -72,3 +97,5 @@ The routing between spec and ADR is not decided here. It is stated once in
 | Nothing enforces step 7 if the session ends after implementation | A real session is observed losing its decisions this way |
 | No detection that the new spec overlaps an existing one | Repositories accumulate enough specs for the overlap to be real |
 | No handling of a feature spanning several repositories | A monorepo or a split front/back project needs it |
+| Nothing verifies the regulated-data answer ever arrived, once a spec records the question as unanswered | A spec is found carrying an unanswered escalation long after the feature shipped |
+| The whole flow — question round, recap, go-ahead — runs at the same weight for a one-line change as for a new subsystem | A real session is observed paying the full ceremony on a trivial fix |

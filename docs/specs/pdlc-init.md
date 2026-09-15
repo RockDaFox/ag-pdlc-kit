@@ -44,6 +44,21 @@ It runs once per repository. Keeping the documents alive afterwards is
 8. **The empty log is stated in the report.** On a repository with years of
    history, an empty `adr/` looks like the tool failed. Saying it is by design
    costs one sentence.
+9. **`AGENTS.md` is written to the cross-vendor convention** — six zones in
+   its order, a role statement, 150 lines
+   ([ADR-0007](../adr/0007-agents-md-follows-the-cross-vendor-convention.md)).
+   The line count is reported, and a multi-stack repository gets the nested
+   split rather than one long root file.
+10. **An existing `AGENTS.md` shaped as an agent contract is merged, not
+    arbitrated against.** The two shapes cover complementary halves of the
+    convention's six zones, so the merge keeps both, in the template's order,
+    preserving the contract's wording. A pull-request body shape and process
+    governance are proposed a destination instead of being absorbed; the user
+    decides, and a declined proposal leaves the content where it was.
+11. **Path-scoped instruction files found in the repository are left alone.**
+    They are the nested-`AGENTS.md` mechanism in one host's dialect, they
+    work, and converting them belongs to their owner rather than to a
+    bootstrap run. Their presence is reported.
 
 ## Rejected alternatives
 
@@ -60,6 +75,15 @@ It runs once per repository. Keeping the documents alive afterwards is
   one question and avoids destroying prose that was someone's afternoon.
 - **A configuration file to hold the docs root** — rejected in
   [ADR-0002](../adr/0002-docs-root-without-config-file.md).
+- **Treating an existing agent contract as a competing `AGENTS.md` and asking
+  the user to pick one** — rejected in
+  [ADR-0007](../adr/0007-agents-md-follows-the-cross-vendor-convention.md):
+  whichever the user picks, the zones the other one covered are lost, and the
+  question is unanswerable as asked because both are incomplete.
+- **Converting path-scoped instruction files into nested `AGENTS.md` files
+  automatically** — rejected: it is a host migration disguised as a
+  documentation bootstrap, and it breaks the tooling that reads them without
+  anything in this skill's remit to justify it.
 
 ## Known gaps
 
@@ -69,4 +93,5 @@ It runs once per repository. Keeping the documents alive afterwards is
 | Assumes git; a repository without history yields a thinner `AGENTS.md` | A target project uses another VCS, or none |
 | No refresh mode for a repository where A-PDLC Kit already ran | The documents have drifted enough that re-deriving beats editing |
 | No migration for a repository initialised at 0.1.0, whose product document is named `PRD.md` | A repository on the old name asks for it. The skill treats the file as existing prose and proposes a merge, but never renames it |
-| No help for a team that wants to record a genuinely remembered past decision | Someone asks for it. The skill will not write it for them, but it could prompt for what was weighed |
+| No check that the merged `AGENTS.md` follows the section order it was written to, or stays inside the line budget | It would need executable code, so it would need [ADR-0003](../adr/0003-provider-neutral-skills-layout.md) revisited |
+| Contract recognition is by section heading, so a contract naming those sections differently is merged as ordinary prose | A real repository is met whose contract headings do not match |

@@ -10,6 +10,11 @@ and where the rejected alternatives exist for the last time. Nobody writes them
 down afterwards, because by then only the surviving option feels real. This
 skill builds the feature and keeps that record in the same pass.
 
+A decision that arrives without code — a stack settled before anything is
+built, an architecture approved before the work is split, an earlier ADR being
+reversed — has no implementation to ride along on. That is
+[`pdlc-decide`](../pdlc-decide/SKILL.md).
+
 Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) before
 writing any document: it defines which file a given sentence belongs in, and
 how to resolve `{docs_root}`.
@@ -72,7 +77,9 @@ when it does not exist yet:
 [`../_pdlc-shared/templates/adr.md`](../_pdlc-shared/templates/adr.md),
 numbered one above the highest existing file, starting at `0001`. Write one
 only for a decision that passes the tests; a feature usually produces none.
-Never edit an existing ADR to change its decision — supersede it.
+Never edit an existing ADR to change its decision — supersede it, and let
+[`pdlc-decide`](../pdlc-decide/SKILL.md) walk the two-file mechanic rather
+than repeating it here.
 
 **`{docs_root}/PRODUCT.md`** — only if the feature changes what the product
 does for a user, and then in the present indicative: the section describes the
@@ -90,6 +97,14 @@ attempt failed is not a rule; the rule it produced is.
 - A decision a spec or ADR would normally record, that the request does not
   settle.
 - Two or more plausible approaches with materially different tradeoffs.
+- **Whether the feature touches personal, health or payment data.** Ask it in
+  the same round as the rest, before the recap, and ask it as a question of
+  fact — not as a judgment about which regime applies, which is not this
+  skill's to make. A yes routes the answer to the organisation's
+  data-protection or compliance function and fills the spec's Regulated data
+  section; the discipline reference holds the five fields. If the answer has
+  not come back by the go-ahead, say plainly in the recap that the work is
+  proceeding without it, and record it as unanswered.
 
 ## Not worth a question
 

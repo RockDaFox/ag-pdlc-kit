@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "a-pdlc-kit",
-      "description": "Installs and maintains a four-level documentation discipline on a repository, and records a feature's decisions while they still exist",
+      "description": "Installs and maintains a four-level documentation discipline on a repository, records a feature's decisions while they still exist, and records the decisions that arrive without code",
       "source": "./",
       "category": "productivity"
     }

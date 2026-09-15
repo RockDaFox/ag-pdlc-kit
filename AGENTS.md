@@ -37,7 +37,8 @@ gets a manifest pair pointing at the same tree
 skills/
 ├── _pdlc-shared/            discipline reference + templates; not a skill
 ├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
-└── pdlc-feature/SKILL.md
+├── pdlc-feature/SKILL.md
+└── pdlc-decide/SKILL.md
 AGENTS.md, docs/             this repository's own documentation
 ```
 
@@ -47,8 +48,8 @@ out of `skills/`.
 `skills/` is the product. Everything else is packaging or documentation.
 
 `_pdlc-shared/` has no `SKILL.md`, so no host discovers it as a skill. The
-two skills reach it by relative path, which resolves the same whether the tree
-sits in a Claude Code plugin directory or under `~/.agents/skills/`.
+three skills reach it by relative path, which resolves the same whether the
+tree sits in a Claude Code plugin directory or under `~/.agents/skills/`.
 
 Because the plugin root is the repository root, `AGENTS.md` and `docs/` ship
 with the product. That is intended: an installed A-PDLC Kit carries a worked
@@ -99,6 +100,12 @@ to the discipline reference is a change to the product, and shows up in
   section title.** It describes shipped behavior in the present indicative;
   what shapes the product without being behavior is a constraint
   ([ADR-0005](docs/adr/0005-product-document-is-descriptive.md)).
+- **An `AGENTS.md` this product writes follows the cross-vendor convention**
+  — six zones in its order, a role statement, 150 lines
+  ([ADR-0007](docs/adr/0007-agents-md-follows-the-cross-vendor-convention.md)).
+  The convention is stated once in the discipline reference; the skills apply
+  it and do not restate it. Note this repository's own `AGENTS.md` does not
+  follow that order yet — reshaping it is a separate change.
 - **Templates are commented skeletons, not tutorials.** Guidance inside a
   template is an HTML comment, short, and about what goes in the section — not
   about why the discipline exists. That is stated once, in the reference.
