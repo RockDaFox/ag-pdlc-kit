@@ -1,7 +1,8 @@
 # <project>
 
 <!-- How this repo is written. Conventions and traps, not product behavior
-     and not deliberations — those live in the PRD, the ADRs and the specs. -->
+     and not deliberations — those live in PRODUCT.md, the ADRs and the
+     specs. -->
 
 ## Priority rule — sandbox failures
 
@@ -25,7 +26,8 @@ the sandbox. Instead, give the exact command to the user and let them run it.
 Four levels, each stating a thing once:
 
 - [`AGENTS.md`](AGENTS.md) — this file: how the repo is written.
-- [`docs/PRD.md`](docs/PRD.md) — what the product does and why.
+- [`docs/PRODUCT.md`](docs/PRODUCT.md) — what the product does and why, as
+  delivered. Descriptive, never a list of requirements for future work.
 - [`docs/adr/`](docs/adr/) — structural technical decisions, dated and
   append-only. An ADR is never rewritten; a later one supersedes it.
 - [`docs/specs/`](docs/specs/) — per-feature decisions, rejected alternatives
@@ -35,8 +37,9 @@ Four levels, each stating a thing once:
 
 Before implementing or modifying a feature that has a matching spec, read it
 first — it records the decisions actually made, the alternatives rejected, and
-the known gaps. A change that alters behavior a spec or the PRD describes
-updates that document **in the same change**, rather than letting it drift.
+the known gaps. A change that alters behavior a spec or `PRODUCT.md`
+describes updates that document **in the same change**, rather than letting it
+drift.
 
 ## Code style
 

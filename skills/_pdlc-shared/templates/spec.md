@@ -8,8 +8,9 @@
 ## Summary
 
 <!-- What the feature does today, in a short paragraph, present indicative.
-     What it reuses from elsewhere, named by file or symbol. Link to the PRD
-     section and to any ADR this rests on rather than restating them. -->
+     What it reuses from elsewhere, named by file or symbol. Link to the
+     `PRODUCT.md` section and to any ADR this rests on rather than restating
+     them. -->
 
 ## Decisions
 

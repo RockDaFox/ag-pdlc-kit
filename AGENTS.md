@@ -1,7 +1,7 @@
-# Croakness
+# A-PDLC Kit
 
 How this repository is written. What the product does is in
-[`docs/PRD.md`](docs/PRD.md); why it is built this way is in
+[`docs/PRODUCT.md`](docs/PRODUCT.md); why it is built this way is in
 [`docs/adr/`](docs/adr/); what each skill decides is in
 [`docs/specs/`](docs/specs/). This file repeats none of it.
 
@@ -15,7 +15,7 @@ both hosts install the same tree through their own marketplace:
 
 ```
 /plugin marketplace add <absolute path to this repository>
-/plugin install croakness@croakness
+/plugin install a-pdlc-kit@a-pdlc-kit
 ```
 
 Components are discovered at session start, so a change needs a new session,
@@ -35,9 +35,9 @@ gets a manifest pair pointing at the same tree
 ├── marketplace.json
 └── plugin.json
 skills/
-├── _croakness-shared/       discipline reference + templates; not a skill
-├── croakness-init/SKILL.md  one directory per skill, named exactly SKILL.md
-└── new-feature/SKILL.md
+├── _pdlc-shared/            discipline reference + templates; not a skill
+├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
+└── pdlc-feature/SKILL.md
 AGENTS.md, docs/             this repository's own documentation
 ```
 
@@ -46,12 +46,12 @@ out of `skills/`.
 
 `skills/` is the product. Everything else is packaging or documentation.
 
-`_croakness-shared/` has no `SKILL.md`, so no host discovers it as a skill. The
+`_pdlc-shared/` has no `SKILL.md`, so no host discovers it as a skill. The
 two skills reach it by relative path, which resolves the same whether the tree
 sits in a Claude Code plugin directory or under `~/.agents/skills/`.
 
 Because the plugin root is the repository root, `AGENTS.md` and `docs/` ship
-with the product. That is intended: an installed Croakness carries a worked
+with the product. That is intended: an installed A-PDLC Kit carries a worked
 example of the format it asks for.
 
 ## Documentation
@@ -59,22 +59,24 @@ example of the format it asks for.
 Four levels, each stating a thing once:
 
 - [`AGENTS.md`](AGENTS.md) — this file: how the repo is written.
-- [`docs/PRD.md`](docs/PRD.md) — what the product does and why.
+- [`docs/PRODUCT.md`](docs/PRODUCT.md) — what the product does and why, as
+  delivered. Descriptive, not a requirements document
+  ([ADR-0005](docs/adr/0005-product-document-is-descriptive.md)).
 - [`docs/adr/`](docs/adr/) — structural technical decisions, dated and
   append-only. An ADR is never rewritten; a later one supersedes it.
 - [`docs/specs/`](docs/specs/) — per-skill decisions, rejected alternatives
   and known gaps. Living documents, rewritten when the skill changes.
 
 The full discipline is in
-[`skills/_croakness-shared/doc-discipline.md`](skills/_croakness-shared/doc-discipline.md).
+[`skills/_pdlc-shared/doc-discipline.md`](skills/_pdlc-shared/doc-discipline.md).
 This repository follows the discipline it distributes, so that file is both
 the product and the rule this repo is held to.
 
 Documentation is written in English, including the specs and ADRs.
 
 A change to a skill's behavior updates its spec in the same change. A change
-to the discipline reference is a change to the product, and shows up in the
-PRD or an ADR.
+to the discipline reference is a change to the product, and shows up in
+`docs/PRODUCT.md` or an ADR.
 
 ## Code style
 
@@ -85,20 +87,25 @@ PRD or an ADR.
   ([ADR-0003](docs/adr/0003-provider-neutral-skills-layout.md)).
 - **Examples are invented, never borrowed.** Nothing under `skills/` may
   contain an example taken from a real project — not a domain term, not a
-  table name, not a file path. Croakness is installed on client
-  repositories; a leaked example is a confidentiality problem before it is a
-  style problem. Generic, plausible, made up.
+  table name, not a file path. The kit is internal, but it is installed on
+  repositories that carry client context; a leaked example is a
+  confidentiality problem before it is a style problem. Generic, plausible,
+  made up.
 - **`{docs_root}` is the placeholder for the documentation root** in skill
   instructions, defined once in the discipline reference
   ([ADR-0002](docs/adr/0002-docs-root-without-config-file.md)). Documents
   written into a target repository carry the resolved path.
+- **The product-level document is `PRODUCT.md`, and "requirements" is never a
+  section title.** It describes shipped behavior in the present indicative;
+  what shapes the product without being behavior is a constraint
+  ([ADR-0005](docs/adr/0005-product-document-is-descriptive.md)).
 - **Templates are commented skeletons, not tutorials.** Guidance inside a
   template is an HTML comment, short, and about what goes in the section — not
   about why the discipline exists. That is stated once, in the reference.
 - **Skills link to the reference rather than restating it.** A rule that
   appears in two skills has to move into the reference; two copies drift.
 - Prose wraps at 79 columns. Kebab-case for every directory and file name
-  except `SKILL.md`, `AGENTS.md`, `PRD.md` and the manifests.
+  except `SKILL.md`, `AGENTS.md`, `PRODUCT.md` and the manifests.
 - ADR filenames are `NNNN-kebab-title.md`, numbered one above the highest
   existing file, and the number is never reused.
 
@@ -113,7 +120,7 @@ PRD or an ADR.
   `.github/plugin/` each hold a `marketplace.json` and a `plugin.json`.
   Renaming touches all four; releasing touches both `plugin.json`. Nothing
   checks that they agree.
-- **`_croakness-shared/` is reached by relative path.** A host that loads a
+- **`_pdlc-shared/` is reached by relative path.** A host that loads a
   `SKILL.md` without its surrounding directory leaves both skills with dead
   links and no error.
 

@@ -1,13 +1,13 @@
-# Spec — new-feature
+# Spec — pdlc-feature
 
-> Living document: any change to the `new-feature` skill is reflected here in
-> the same change. Revised 2026-09-14.
+> Living document: any change to the `pdlc-feature` skill is reflected here in
+> the same change. Revised 2026-09-15.
 >
 > Drafted with an AI assistant — review before sharing outside the team.
 
 ## Summary
 
-`new-feature` turns an informal feature request into working code, and writes
+`pdlc-feature` turns an informal feature request into working code, and writes
 down what the work decided. It reads the repository, surfaces every open
 point as a question, recaps scope, waits for an explicit go-ahead, implements,
 then records the decisions in a spec — and in an ADR when they reach beyond
@@ -19,7 +19,7 @@ the clarification round is where the rejected alternatives exist for the last
 time.
 
 The routing between spec and ADR is not decided here. It is stated once in
-`skills/_croakness-shared/doc-discipline.md`, and this skill applies it.
+`skills/_pdlc-shared/doc-discipline.md`, and this skill applies it.
 
 ## Decisions
 
@@ -36,11 +36,12 @@ The routing between spec and ADR is not decided here. It is stated once in
    follow-up task. A follow-up is a task note, and task notes are the thing
    this repository exists to stop producing.
 5. **An undocumented repository is not refused.** The skill offers
-   `croakness-init` and proceeds anyway, writing the spec against the
+   `pdlc-init` and proceeds anyway, writing the spec against the
    conventions the code actually shows — a repo with no documentation is
    where the first spec is worth the most.
-6. **`AGENTS.md` is updated only for a rule that became repo-wide**, and the
-   PRD only when user-visible behavior changed. Most features touch neither.
+6. **`AGENTS.md` is updated only for a rule that became repo-wide**, and
+   `PRODUCT.md` only when user-visible behavior changed — in the present
+   indicative, describing what now ships. Most features touch neither.
 7. **An empty `adr/` is normal, not a symptom.** The log starts at
    installation and grows forward
    ([ADR-0004](../adr/0004-decision-records-are-written-forward.md)); this
@@ -51,15 +52,15 @@ The routing between spec and ADR is not decided here. It is stated once in
 
 - **A hook suggesting a spec update when a spec'd area is touched** —
   rejected: it needs hook configuration, which means something executing on
-  the user's machine, against the no-executables constraint in the PRD. It is
-  also noisy on exactly the repositories with the most specs.
-- **A blocking check before commit** — rejected: Croakness cannot tell a
+  the user's machine, against the no-executables constraint in `PRODUCT.md`.
+  It is also noisy on exactly the repositories with the most specs.
+- **A blocking check before commit** — rejected: A-PDLC Kit cannot tell a
   behavior change from a rename, so it would block on the second and be
   disabled by the end of the week.
 - **Writing the spec before implementing** — rejected: decisions still move
   during implementation, and a spec written from the plan documents the plan,
   not the system.
-- **Folding `croakness-init` into this skill** — rejected: bootstrapping reads
+- **Folding `pdlc-init` into this skill** — rejected: bootstrapping reads
   the whole repository and its history, which is a different job with a
   different failure mode, and mixing them would make the common case pay for
   the rare one.

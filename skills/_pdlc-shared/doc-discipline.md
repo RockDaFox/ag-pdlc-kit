@@ -6,7 +6,7 @@ of them belongs in exactly one, and the others link to it.
 ```
 AGENTS.md                         how the repo is written
 {docs_root}/
-├── PRD.md                        what the product does, and why
+├── PRODUCT.md                    what the product does, and why
 ├── adr/
 │   └── NNNN-<title>.md           a structural technical decision, dated, immutable
 └── specs/
@@ -38,13 +38,13 @@ target repository carries the resolved path, never the placeholder.
 | File | Answers | Lifetime |
 |---|---|---|
 | `AGENTS.md` | How this repo is written — commands, conventions, traps, and `{docs_root}` when it is not `docs/`. | Changes when a rule becomes repo-wide. |
-| `{docs_root}/PRD.md` | What the product does, and why. | Changes when behavior visible to a user changes. |
+| `{docs_root}/PRODUCT.md` | What the product does, and why, as delivered. | Changes when behavior visible to a user changes. |
 | `{docs_root}/adr/NNNN-*.md` | Why the system rests on *this* technical foundation, and what was weighed against it. | **Never rewritten.** Superseded by a later ADR. |
 | `{docs_root}/specs/<feature>.md` | What was decided for this feature, what was rejected, what is knowingly missing. | Rewritten in place when a decision changes. |
 
 The routing test, applied to any sentence you are about to write:
 
-- *"What does this app do?"* → `PRD.md`.
+- *"What does this app do?"* → `PRODUCT.md`.
 - *"Why this database / this auth / this runtime, and what else was weighed?"*
   → an ADR.
 - *"Why does this feature behave like that, and what else was considered?"* →
@@ -54,6 +54,26 @@ The routing test, applied to any sentence you are about to write:
 A spec that explains how to write a handler, how a component is wired, or how
 the framework behaves is in the wrong file — that belongs in `AGENTS.md`, or in
 a comment beside the code it surprises.
+
+## `PRODUCT.md` is descriptive, not prescriptive
+
+It states what the product does **today**, in the present indicative, and it
+is written from the code rather than from intent. It holds no requirement
+addressed to work still to come: a requirement is a demand made of a system
+that does not exist yet, and the same sentence, once shipped, is a
+description. A section written in the future or the conditional tense belongs
+in a ticket.
+
+Hence the name. `PRD.md` denotes a product *requirements* document — written
+before the build, prescriptive, an input to engineering — which is the
+opposite genre, and a name many organisations already use for exactly that.
+A repository whose product team owns real PRDs keeps them where they are;
+`PRODUCT.md` does not compete with them and does not replace them.
+
+The word "requirements" therefore does not appear as a section title. What
+shapes the product without being behavior — volume, latency, availability,
+regulatory obligations, supported environments — is a **constraint**, and says
+so.
 
 ## ADR or spec
 
@@ -86,13 +106,13 @@ to it rather than restating the reasoning.
 
 ## Records are written forward, never backwards
 
-`AGENTS.md` and the PRD describe **state**, so they can be written at any time
-from the code: what the repo contains is readable today.
+`AGENTS.md` and `PRODUCT.md` describe **state**, so they can be written at
+any time from the code: what the repo contains is readable today.
 
 ADRs and specs record **decisions** — what was weighed, what was rejected, why
 one option won — and none of that survives in a repository. The code shows the
 surviving choice and nothing else. So the decision log starts on the day
-Croakness is installed and only grows forward; nothing is backfilled.
+A-PDLC Kit is installed and only grows forward; nothing is backfilled.
 
 A structural choice already visible in the code is not a missing ADR. It is
 state, and it belongs in the Architecture or Traps section of `AGENTS.md`. It
@@ -134,9 +154,10 @@ These apply to all four levels.
 ## Language
 
 Write in the language the repository already documents in — check existing
-`README.md`, its PRD, or commit messages before choosing. If the repo has no
-prose yet, ask. Section headings follow the language of the body; the templates
-ship in English and are meant to be translated, not obeyed literally.
+`README.md`, `PRODUCT.md`, or commit messages before choosing. If the repo
+has no prose yet, ask. Section headings follow the language of the body; the
+templates ship in English and are meant to be translated, not obeyed
+literally.
 
 ## Drift
 

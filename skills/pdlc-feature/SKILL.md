@@ -1,6 +1,6 @@
 ---
-name: new-feature
-description: Build a feature from a loose request while capturing the decisions it produces. Clarifies ambiguities as questions before any code, recaps scope and waits for explicit go-ahead, implements, then records what was decided and what was rejected in a spec (and an ADR when the decision is structural). Use when the user describes a feature to build, or invokes /new-feature followed by that description.
+name: pdlc-feature
+description: Build a feature from a loose request while capturing the decisions it produces. Clarifies ambiguities as questions before any code, recaps scope and waits for explicit go-ahead, implements, then records what was decided and what was rejected in a spec (and an ADR when the decision is structural). Use when the user describes a feature to build, or invokes /pdlc-feature followed by that description.
 ---
 
 # New feature
@@ -10,7 +10,7 @@ and where the rejected alternatives exist for the last time. Nobody writes them
 down afterwards, because by then only the surviving option feels real. This
 skill builds the feature and keeps that record in the same pass.
 
-Read [`doc-discipline.md`](../_croakness-shared/doc-discipline.md) before
+Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) before
 writing any document: it defines which file a given sentence belongs in, and
 how to resolve `{docs_root}`.
 
@@ -20,12 +20,12 @@ Read the request in the full context of the repo:
 
 - `AGENTS.md` (and `CLAUDE.md`, `CONTRIBUTING.md`, `README.md`) — the
   conventions this feature must follow, and `{docs_root}` if it is named there.
-- `{docs_root}/PRD.md` — what the product already does.
+- `{docs_root}/PRODUCT.md` — what the product already does.
 - `{docs_root}/specs/` — an existing spec for this feature or an adjacent one.
 - `{docs_root}/adr/` — structural decisions that already constrain the answer.
 - The code that already does something similar.
 
-If the repo has none of these, say so and offer to run `croakness-init` first. Do
+If the repo has none of these, say so and offer to run `pdlc-init` first. Do
 not refuse to proceed — a repo without documentation is exactly where the first
 spec is worth the most; just write it against the conventions the code actually
 shows.
@@ -60,7 +60,7 @@ decision constrains code outside this feature, or undoing it would mean a
 migration, it is an ADR; otherwise it belongs in the feature's spec.
 
 **The spec** — `{docs_root}/specs/<feature>.md`, from
-[`../_croakness-shared/templates/spec.md`](../_croakness-shared/templates/spec.md)
+[`../_pdlc-shared/templates/spec.md`](../_pdlc-shared/templates/spec.md)
 when it does not exist yet:
 
 - The decisions taken, each with the reason that made it win.
@@ -69,13 +69,15 @@ when it does not exist yet:
 - Known gaps, each with the condition that should bring it back.
 
 **An ADR** — `{docs_root}/adr/NNNN-<title>.md`, from
-[`../_croakness-shared/templates/adr.md`](../_croakness-shared/templates/adr.md),
+[`../_pdlc-shared/templates/adr.md`](../_pdlc-shared/templates/adr.md),
 numbered one above the highest existing file, starting at `0001`. Write one
 only for a decision that passes the tests; a feature usually produces none.
 Never edit an existing ADR to change its decision — supersede it.
 
-**`{docs_root}/PRD.md`** — only if the feature changes what the product does
-for a user. Add or amend the relevant section; do not restate the spec.
+**`{docs_root}/PRODUCT.md`** — only if the feature changes what the product
+does for a user, and then in the present indicative: the section describes the
+behavior now shipped, not the intention behind it. Add or amend the relevant
+section; do not restate the spec.
 
 **`AGENTS.md`** — only if the work produced a rule that now applies repo-wide:
 a framework trap, a convention the next contributor must follow. That a first

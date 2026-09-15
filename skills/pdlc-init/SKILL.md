@@ -1,16 +1,16 @@
 ---
-name: croakness-init
-description: Bootstrap the Croakness documentation discipline on an existing repository — writes AGENTS.md and a PRD by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Use when a repo has no PRD, no specs and no AGENTS.md, or when the user asks to set up, install or initialise Croakness on a project.
+name: pdlc-init
+description: Bootstrap the A-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Use when a repo has no product document, no specs and no AGENTS.md, or when the user asks to set up, install or initialise A-PDLC Kit on a project.
 ---
 
-# Croakness init
+# A-PDLC Kit init
 
 Documentation written from a repo's code and history describes what was
 actually shipped. Documentation written from memory or from an old ticket
 describes what someone once intended — and quietly disagrees with the code.
 This skill only does the first.
 
-Read [`doc-discipline.md`](../_croakness-shared/doc-discipline.md) first: it
+Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) first: it
 defines the four levels, which file a given sentence belongs in, and how to
 resolve `{docs_root}`.
 
@@ -42,13 +42,13 @@ decision**, and it goes in `AGENTS.md` where state belongs.
    site, generated references. In that case propose an alternative and let the
    user pick, then record the choice in `AGENTS.md`. Do not create a config
    file for it.
-5. **Never overwrite.** If `AGENTS.md` or a PRD already exists, read it,
-   propose a merge, and let the user decide. Existing prose is evidence, not
-   clutter.
+5. **Never overwrite.** If `AGENTS.md` or a product document already exists —
+   under any name, `PRD.md` included — read it, propose a merge, and let the
+   user decide. Existing prose is evidence, not clutter.
 
 ## What to create
 
-Use the templates in [`../_croakness-shared/templates/`](../_croakness-shared/templates/),
+Use the templates in [`../_pdlc-shared/templates/`](../_pdlc-shared/templates/),
 translated into the repo's documentation language, with `{docs_root}` resolved
 to its real path.
 
@@ -58,11 +58,14 @@ guessed), the architecture in a paragraph, the code style the code actually
 exhibits, and every trap the history shows someone already hit. A rule you
 cannot point at evidence for does not go in. Its Documentation section names
 `{docs_root}`, says what each level holds, and states that the decision log
-starts from the Croakness installation.
+starts from the A-PDLC Kit installation.
 
-**`{docs_root}/PRD.md`** — what the product does and why, as delivered. State
-the implementation status honestly, including features that exist but were
-never in any plan, and the scope deliberately left out.
+**`{docs_root}/PRODUCT.md`** — what the product does and why, as delivered.
+Present indicative throughout. State the implementation status honestly,
+including features that exist but were never in any plan, and the scope
+deliberately left out. If the repository already holds product *requirements*
+under any name, they stay where they are: this document describes the system
+that exists, and does not absorb a backlog.
 
 **Nothing else.** `{docs_root}/adr/` and `{docs_root}/specs/` are not created
 empty: the first ADR and the first spec create them, on the day there is
@@ -77,7 +80,7 @@ rather than evidence. That list is the honest output of this skill, not a
 failure.
 
 Say plainly that the decision log is empty by design, and that the first ADR
-or spec arrives with the next piece of work — through `new-feature`, or by
+or spec arrives with the next piece of work — through `pdlc-feature`, or by
 hand.
 
 Remind the user that these documents were AI-drafted from the repo and need

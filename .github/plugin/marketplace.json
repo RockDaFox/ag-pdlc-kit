@@ -1,12 +1,12 @@
 {
-  "name": "croakness",
-  "description": "Croakness — a documentation harness for code repositories: a four-level discipline (AGENTS.md, PRD, ADRs, specs) and the skills that keep it alive",
+  "name": "a-pdlc-kit",
+  "description": "A-PDLC Kit — a documentation discipline for code repositories: four levels (AGENTS.md, PRODUCT.md, ADRs, specs) and the skills that keep it alive",
   "owner": {
     "name": "RockDaFox"
   },
   "plugins": [
     {
-      "name": "croakness",
+      "name": "a-pdlc-kit",
       "description": "Installs and maintains a four-level documentation discipline on a repository, and records a feature's decisions while they still exist",
       "source": "./",
       "category": "productivity",
