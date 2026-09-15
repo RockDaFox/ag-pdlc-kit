@@ -7,8 +7,21 @@ How this repository is written. What the product does is in
 
 ## Commands
 
-There are none. The repository is Markdown and two JSON manifests — no build,
-no dependencies, no tests to run.
+```
+sh scripts/check.sh
+```
+
+Run it before committing. It checks what breaks silently: a manifest
+disagreeing with its three siblings, a supersession recorded on one side only,
+a skill no host can discover, a link that stopped resolving, a heading written
+twice. It reports, never fixes, and writes nothing.
+
+Prefer it to verifying by hand — its output is two tokens, reading the files it
+reads is several thousand. It is maintainer tooling: no skill invokes it and
+none ever will
+([ADR-0008](docs/adr/0008-one-maintainer-side-check-script.md)).
+
+There is nothing else to run — no build, no dependencies, no test suite.
 
 To exercise a change, install from a local checkout and start a new session —
 both hosts install the same tree through their own marketplace:
@@ -39,6 +52,7 @@ skills/
 ├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
 ├── pdlc-feature/SKILL.md
 └── pdlc-decide/SKILL.md
+scripts/check.sh             maintainer tooling; no skill invokes it
 AGENTS.md, docs/             this repository's own documentation
 ```
 
@@ -111,8 +125,13 @@ to the discipline reference is a change to the product, and shows up in
   about why the discipline exists. That is stated once, in the reference.
 - **Skills link to the reference rather than restating it.** A rule that
   appears in two skills has to move into the reference; two copies drift.
-- Prose wraps at 79 columns. Kebab-case for every directory and file name
-  except `SKILL.md`, `AGENTS.md`, `PRODUCT.md` and the manifests.
+- **Prose is not hard-wrapped.** A paragraph is one line; the editor wraps it
+  for display ([ADR-0009](docs/adr/0009-prose-is-not-hard-wrapped.md)). Files
+  written before that decision are still wrapped at 79 columns and stay that
+  way — an edit inside one of them keeps the file's own wrapping, because a
+  file mixing both styles reads worse than either. A new file is not wrapped.
+- Kebab-case for every directory and file name except `SKILL.md`, `AGENTS.md`,
+  `PRODUCT.md` and the manifests.
 - ADR filenames are `NNNN-kebab-title.md`, numbered one above the highest
   existing file, and the number is never reused.
 

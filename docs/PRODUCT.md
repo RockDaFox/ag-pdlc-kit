@@ -47,11 +47,13 @@ option won over another — is only recorded at the moment it is decided.
 A-PDLC Kit never backfills
 ([ADR-0004](adr/0004-decision-records-are-written-forward.md)).
 
-Implementation status in 0.3.0: three skills — `pdlc-init` (bootstrap),
+Implementation status in 0.3.1: three skills — `pdlc-init` (bootstrap),
 `pdlc-feature` (record a decision that arrives with code) and `pdlc-decide`
 (record one that does not) — four templates, and one shared discipline
-reference. No executable code: the product is Markdown plus two JSON
-manifests.
+reference. The product itself is Markdown plus two JSON manifests and installs
+nothing executable; the repository carries one maintainer-side check script,
+which is not product surface and which no skill invokes
+([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
 
 ## 2. Users
 
@@ -156,7 +158,9 @@ descriptive: present indicative, shipped behavior, and no section titled
 The `AGENTS.md` template carries the cross-vendor convention's six zones in
 its order — commands, testing, project structure, code style, git workflow,
 boundaries — opens with a statement of the agent's role, and targets 150 lines
-([ADR-0007](adr/0007-agents-md-follows-the-cross-vendor-convention.md)). The
+([ADR-0007](adr/0007-agents-md-follows-the-cross-vendor-convention.md)). That
+budget is measured — `wc -l` on the file — and the count reported, never
+estimated: it is what decides whether the file splits into nested files. The
 spec template carries the Regulated data section, deleted when it does not
 apply rather than left empty.
 
@@ -181,10 +185,16 @@ it is generated, is the failure this rule exists to prevent.
 
 ## 4. Constraints
 
-- **No executables.** No build, no dependency, no runtime, no script run on
-  the user's machine. This is deliberate and keeps the kit cheap to audit
-  before it is installed on a repository someone else owns. It also rules out
-  the obvious solution to multi-provider support, which is a sync script.
+- **The product installs nothing and runs nothing.** No build, no dependency,
+  no runtime, and nothing written into a repository it documents is
+  executable. This keeps the kit cheap to audit before it is installed on a
+  repository someone else owns, and it rules out the obvious solution to
+  multi-provider support, which is a sync script. What it never forbade is an
+  agent running a command to read a repository — `pdlc-init` has always used
+  `git log`. This repository carries one maintainer-side script that checks
+  its own documents; it ships inert, no skill invokes it, and it never runs on
+  a documented repository
+  ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
 - **A-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
@@ -209,4 +219,4 @@ it is generated, is the failure this rule exists to prevent.
 | A blocking pre-commit check | Never, barring an explicit request from a team that wants it |
 | API or code-reference documentation generation | Never: that level is produced by language tooling, not by a decision discipline |
 | Hosts beyond Claude Code and Copilot | One is actually used. Others reading the same `SKILL.md` format will likely work already; none is claimed until tested |
-| A check that the four manifests agree | Releasing gets missed often enough to matter. It would need executable code, so it would need ADR-0003 revisited |
+| A consistency check running on a documented repository | Never as product surface: it would execute on a machine the product does not own. This repository checks its own documents with maintainer tooling that ships inert and that no skill invokes ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)) |

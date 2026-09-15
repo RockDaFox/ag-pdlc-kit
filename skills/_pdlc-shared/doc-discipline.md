@@ -77,6 +77,11 @@ repository's `README.md` is too long. The pressure valve is not a thinner
 style section — it is the nested file: repo-wide rules at the root, per-stack
 rules in an `AGENTS.md` beside the code they govern.
 
+That number is counted, never estimated — `wc -l` on the file — and the count
+is reported to the user. It is what decides whether the file splits, so a
+guess either forces a split nothing needed or waves through a two-hundred-line
+file while announcing a hundred and forty.
+
 Two kinds of content are turned away, because both are read as belonging here
 and neither does:
 

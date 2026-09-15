@@ -47,8 +47,9 @@ It runs once per repository. Keeping the documents alive afterwards is
 9. **`AGENTS.md` is written to the cross-vendor convention** — six zones in
    its order, a role statement, 150 lines
    ([ADR-0007](../adr/0007-agents-md-follows-the-cross-vendor-convention.md)).
-   The line count is reported, and a multi-stack repository gets the nested
-   split rather than one long root file.
+   The line count is measured with `wc -l`, never estimated, and reported; a
+   multi-stack repository gets the nested split rather than one long root
+   file.
 10. **An existing `AGENTS.md` shaped as an agent contract is merged, not
     arbitrated against.** The two shapes cover complementary halves of the
     convention's six zones, so the merge keeps both, in the template's order,
@@ -93,5 +94,5 @@ It runs once per repository. Keeping the documents alive afterwards is
 | Assumes git; a repository without history yields a thinner `AGENTS.md` | A target project uses another VCS, or none |
 | No refresh mode for a repository where A-PDLC Kit already ran | The documents have drifted enough that re-deriving beats editing |
 | No migration for a repository initialised at 0.1.0, whose product document is named `PRD.md` | A repository on the old name asks for it. The skill treats the file as existing prose and proposes a merge, but never renames it |
-| No check that the merged `AGENTS.md` follows the section order it was written to, or stays inside the line budget | It would need executable code, so it would need [ADR-0003](../adr/0003-provider-neutral-skills-layout.md) revisited |
+| No check that the merged `AGENTS.md` follows the section order it was written to | Section order is judgment, so a check would need a model reading the file, not a command. The line budget is no longer a gap: it is measured with `wc -l` ([ADR-0008](../adr/0008-one-maintainer-side-check-script.md) draws the line between a command an agent runs and a file the product ships) |
 | Contract recognition is by section heading, so a contract naming those sections differently is merged as ordinary prose | A real repository is met whose contract headings do not match |

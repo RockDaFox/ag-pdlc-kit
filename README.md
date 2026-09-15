@@ -65,4 +65,6 @@ an existing ADR, which is two files and never an edit in place.
 ## Contributing
 
 Read [`AGENTS.md`](AGENTS.md). The repository follows the discipline it
-distributes — a change to a skill updates its spec in the same change.
+distributes — a change to a skill updates its spec in the same change. Run
+`sh scripts/check.sh` before committing; it checks this repository's own
+documents and is never invoked by a skill.
