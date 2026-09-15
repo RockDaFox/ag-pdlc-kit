@@ -19,6 +19,13 @@ link, a heading written twice. It reports, never fixes, and writes nothing. No
 skill invokes it and none ever will
 ([ADR-0008](docs/adr/0008-one-maintainer-side-check-script.md)).
 
+```
+sh scripts/bump-version.sh major|minor|patch|X.Y.Z
+```
+
+Bumps `version` in both `plugin.json` manifests together, refusing to run if
+they already disagree — run `scripts/check.sh` first in that case.
+
 Nothing else to run — no build, no dependencies, no test suite.
 
 To exercise a change, install from a local checkout and start a new session —
@@ -51,6 +58,7 @@ skills/
 ├── pdlc-feature/SKILL.md
 └── pdlc-decide/SKILL.md
 scripts/check.sh             maintainer tooling; no skill invokes it
+scripts/bump-version.sh      maintainer tooling; no skill invokes it
 AGENTS.md, docs/             this repository's own documentation
 ```
 
@@ -145,6 +153,7 @@ a product change, and shows up in `docs/PRODUCT.md` or an ADR.
 ## Deployment
 
 None. Distribution is the git repository itself. Bump `version` in both
-`plugin.json` files for a release. Pushing an ADR is what makes it a record —
+`plugin.json` files for a release with `sh scripts/bump-version.sh`. Pushing
+an ADR is what makes it a record —
 before that it is a draft
 ([`decision-records.md`](skills/_pdlc-shared/decision-records.md)).
