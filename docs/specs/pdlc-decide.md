@@ -11,7 +11,7 @@
 taken: a technical foundation chosen before anything is built, an architecture
 approved before work is split, a boundary drawn, a dependency the repository
 agrees to carry. It routes the decision with the three tests from
-`skills/_pdlc-shared/doc-discipline.md`, interviews for what the record needs
+`skills/_pdlc-shared/decision-records.md`, interviews for what the record needs
 and the user has not supplied, writes an ADR or a spec entry, and reports what
 stayed unknown.
 
@@ -46,10 +46,11 @@ implementation, and [`pdlc-init`](pdlc-init.md), which writes none by design.
    `Supersedes`, the old one gains `Status: Superseded by` and keeps every
    other word. Half of this leaves the log asserting two contradictory things
    with equal confidence, which is worse than either alone.
-6. **Draft status is established from git, not from the date.** Append-only
-   starts at the commit. The skill runs `git log` on the ADR before
-   superseding it, and edits it in place if it was never committed — saying
-   that is what it did.
+6. **Draft status is established from git, not from the date.** Immutability
+   starts at the commit, not at the push
+   ([ADR-0011](../adr/0011-append-only-binds-the-decision.md)). The skill runs
+   `git log` on the ADR before superseding it, and edits it in place if it was
+   never committed — saying that is what it did.
 7. **A scoped exception is not a supersession.** One service departing from an
    ADR is a spec entry linking to the ADR and saying why the exception holds.
    The ADR is not touched: it still describes what the rest of the repository
@@ -57,6 +58,16 @@ implementation, and [`pdlc-init`](pdlc-init.md), which writes none by design.
 8. **"There is no decision here" is a valid outcome.** A preference with no
    alternative, or a failed attempt with nothing settled, ends the skill
    without writing. An empty log is cheaper than a log with filler in it.
+9. **It loads two reference files, not the whole discipline.**
+   `doc-discipline.md` and
+   [`decision-records.md`](../../skills/_pdlc-shared/decision-records.md),
+   which is where immutability and the supersession mechanic it performs are
+   stated ([ADR-0010](../adr/0010-shared-reference-split-by-need.md)).
+10. **A supersession is triggered by a reversal and by nothing else.** A
+    consequence the old record predicted that has since resolved is not a
+    reversal: the skill routes that finding to state and writes no ADR, so the
+    log does not grow a record that decides nothing
+    ([ADR-0011](../adr/0011-append-only-binds-the-decision.md)).
 
 ## Rejected alternatives
 

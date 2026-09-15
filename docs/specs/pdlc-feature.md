@@ -19,7 +19,7 @@ the clarification round is where the rejected alternatives exist for the last
 time.
 
 The routing between spec and ADR is not decided here. It is stated once in
-`skills/_pdlc-shared/doc-discipline.md`, and this skill applies it.
+`skills/_pdlc-shared/decision-records.md`, and this skill applies it.
 
 ## Decisions
 
@@ -61,6 +61,13 @@ The routing between spec and ADR is not decided here. It is stated once in
 10. **A decision arriving without code leaves this skill.**
     [`pdlc-decide`](pdlc-decide.md) holds it, and holds the supersession
     mechanic that this skill previously only named as a rule.
+11. **It loads two reference files, not the whole discipline.**
+    `doc-discipline.md` for the routing of a sentence and the writing rules,
+    [`decision-records.md`](../../skills/_pdlc-shared/decision-records.md) for
+    the ADR-or-spec tests, append-only and the regulated-data record. The
+    convention `AGENTS.md` follows is not loaded: this skill appends a
+    repo-wide trap to that file, it does not restructure it
+    ([ADR-0010](../adr/0010-shared-reference-split-by-need.md)).
 
 ## Rejected alternatives
 

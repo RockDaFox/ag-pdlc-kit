@@ -24,7 +24,7 @@
 <!-- Delete this section if the feature touches no personal, health or
      payment data. If it does, the five fields are mandatory and none is
      filled with a reading of what the regime requires — see
-     doc-discipline.md. A question raised and not answered is recorded as
+     decision-records.md. A question raised and not answered is recorded as
      unanswered. -->
 
 | | |

@@ -55,94 +55,18 @@ A spec that explains how to write a handler, how a component is wired, or how
 the framework behaves is in the wrong file — that belongs in `AGENTS.md`, or in
 a comment beside the code it surprises.
 
-## `AGENTS.md` follows the cross-vendor convention
+## Two companion files, read when they are needed
 
-`AGENTS.md` is not this product's invention. It is the cross-vendor format for
-instructing coding agents: plain Markdown, no frontmatter, no required field,
-and nested files where the one nearest the edited code wins. A-PDLC Kit writes
-that file rather than one of its own, and stays inside the convention. Two
-properties of it shape every `AGENTS.md` written or merged here.
+This file holds what every skill needs. What only some need sits beside it, so
+that no session pays for instructions it will not use:
 
-**Six zones, and a role.** The content that earns its place is: commands —
-real ones, with their flags — testing, project structure, code style, git
-workflow, and boundaries, meaning what the agent must never touch. A statement
-of the agent's role, one or two lines at the top, does more for behavior than
-any other line in the file. Traps belong with boundaries: a platform behavior
-that has already cost someone an afternoon is the most valuable thing the file
-can carry, and the thing no other document will record.
-
-**A hundred and fifty lines.** Past that the important content is buried, and
-every session pays for the rest in context. An `AGENTS.md` longer than the
-repository's `README.md` is too long. The pressure valve is not a thinner
-style section — it is the nested file: repo-wide rules at the root, per-stack
-rules in an `AGENTS.md` beside the code they govern.
-
-That number is counted, never estimated — `wc -l` on the file — and the count
-is reported to the user. It is what decides whether the file splits, so a
-guess either forces a split nothing needed or waves through a two-hundred-line
-file while announcing a hundred and forty.
-
-Two kinds of content are turned away, because both are read as belonging here
-and neither does:
-
-- **The shape of a pull-request body** — an evidence report, a completion
-  checklist, a required diff summary. That is an output format, and it belongs
-  in a pull-request template, where the author is looking when they need it.
-- **Process governance** — who staffs an approval, how a metric is computed,
-  what happens when the approver is away. What belongs here is only the rule
-  the agent obeys, stated once under boundaries: it does not merge, it does
-  not deploy, it does not touch production data, it does not lift a security
-  control. The process serving that rule lives wherever the organisation keeps
-  process.
-
-## `PRODUCT.md` is descriptive, not prescriptive
-
-It states what the product does **today**, in the present indicative, and it
-is written from the code rather than from intent. It holds no requirement
-addressed to work still to come: a requirement is a demand made of a system
-that does not exist yet, and the same sentence, once shipped, is a
-description. A section written in the future or the conditional tense belongs
-in a ticket.
-
-Hence the name. `PRD.md` denotes a product *requirements* document — written
-before the build, prescriptive, an input to engineering — which is the
-opposite genre, and a name many organisations already use for exactly that.
-A repository whose product team owns real PRDs keeps them where they are;
-`PRODUCT.md` does not compete with them and does not replace them.
-
-The word "requirements" therefore does not appear as a section title. What
-shapes the product without being behavior — volume, latency, availability,
-regulatory obligations, supported environments — is a **constraint**, and says
-so.
-
-## ADR or spec
-
-The two record decisions, so the boundary has to be explicit. Three tests, in
-order — the first that answers, decides:
-
-1. **Scope.** Does the decision constrain code outside this feature? A
-   database, a runtime, an auth mechanism, a deployment target, a directory
-   layout, a dependency the whole repo now carries → ADR. Behavior a user can
-   observe in one feature → spec.
-2. **Reversal cost.** Would undoing it mean a migration, a rewrite, or a
-   coordinated release? → ADR. Would it mean editing a handful of files? →
-   spec.
-3. **Lifetime.** Does it stay true once the feature is deleted? → ADR.
-
-An ADR is **append-only**. When a structural decision is reversed, the old ADR
-keeps its text and gains `Status: Superseded by ADR-0012`; the new one carries
-`Supersedes ADR-0004` and says what changed and why. Rewriting an ADR in place
-destroys the only record of why the previous choice looked right at the time —
-which is the entire point of keeping them.
-
-Append-only starts at the commit. An ADR still in the working tree is a draft
-and may be corrected freely; once it is pushed, someone may have read it and
-it is a record. Superseding a draft written an hour ago documents nothing but
-the writing of it.
-
-A spec has no such constraint: it describes the feature as it stands today, and
-it is rewritten whenever the feature changes. A spec that rests on an ADR links
-to it rather than restating the reasoning.
+- [`state-documents.md`](state-documents.md) — the cross-vendor convention
+  `AGENTS.md` follows, its 150-line budget, and why `PRODUCT.md` is
+  descriptive rather than prescriptive. Read it before writing or
+  restructuring either file.
+- [`decision-records.md`](decision-records.md) — the ADR-or-spec routing
+  tests, append-only and supersession, and the regulated-data record. Read it
+  before writing either kind of record.
 
 ## Records are written forward, never backwards
 
@@ -206,31 +130,6 @@ the same change**. A spec that no longer matches the code is worse than no
 spec: it is read with the same trust and it is wrong. The ADR exception is not
 an exception to this rule — a superseded ADR is still accurate about the past,
 and its `Status` line says so.
-
-## Regulated data
-
-A feature that touches personal, health or payment data — or anything else
-that looks like it falls under a data-protection or financial regime — raises
-a question this discipline does not settle, and that an agent settles even
-less. The rule is procedural: the question is raised before the work is
-planned, the answer comes from the organisation's data-protection or
-compliance function, and the spec records that the exchange happened.
-
-Five fields, in the feature's spec, under a heading of their own:
-
-| Field | Holds |
-|---|---|
-| Date | When the question was raised. |
-| Trigger | What in the feature looked regulated, in one line. |
-| Consulted | The function that answered — a function, not a person's name. |
-| Decision | The answer, including any condition attached to it. |
-| Reference | Where the answer is recorded outside this repository. |
-
-The section is present or absent; it is never filled with a reading of what a
-regime requires, because that reading is legal advice and this is a
-documentation discipline. A question raised and not yet answered is recorded
-as unanswered, saying so plainly if the work proceeded anyway — that is a
-finding, and the reason the field exists at all.
 
 ## AI-assisted authoring
 

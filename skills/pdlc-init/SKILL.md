@@ -12,7 +12,11 @@ This skill only does the first.
 
 Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) first: it
 defines the four levels, which file a given sentence belongs in, and how to
-resolve `{docs_root}`.
+resolve `{docs_root}`. Then
+[`state-documents.md`](../_pdlc-shared/state-documents.md), which holds the
+convention `AGENTS.md` follows, its 150-line budget, and why `PRODUCT.md` is
+descriptive. This skill writes no ADR and no spec, so it needs neither the
+routing tests nor the regulated-data record.
 
 ## What this skill does not do
 
@@ -96,7 +100,7 @@ cannot point at evidence for does not go in. Its Documentation section names
 starts from the A-PDLC Kit installation.
 
 Keep to the template's section order and to the 150-line budget — both come
-from the cross-vendor convention, stated once in the discipline reference.
+from the cross-vendor convention, stated once in `state-documents.md`.
 Report the line count at the end. A repository with several stacks gets
 repo-wide rules at the root and per-stack rules in a nested `AGENTS.md`; do
 not let one root file carry every stack in the tree.

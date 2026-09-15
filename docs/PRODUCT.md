@@ -49,8 +49,10 @@ A-PDLC Kit never backfills
 
 Implementation status in 0.3.1: three skills — `pdlc-init` (bootstrap),
 `pdlc-feature` (record a decision that arrives with code) and `pdlc-decide`
-(record one that does not) — four templates, and one shared discipline
-reference. The product itself is Markdown plus two JSON manifests and installs
+(record one that does not) — four templates, and a shared reference in three
+files, each skill loading only the ones it uses
+([ADR-0010](adr/0010-shared-reference-split-by-need.md)). The product itself
+is Markdown plus two JSON manifests and installs
 nothing executable; the repository carries one maintainer-side check script,
 which is not product surface and which no skill invokes
 ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
@@ -182,6 +184,14 @@ manifest pair differs
 
 There is exactly one copy of every instruction. A per-provider copy, however
 it is generated, is the failure this rule exists to prevent.
+
+The same reasoning governs how much of the shared reference a skill loads. It
+is three files — what every skill needs, what a skill writing `AGENTS.md` or
+`PRODUCT.md` needs, what a skill writing a decision record needs — and a
+skill names the ones it uses
+([ADR-0010](adr/0010-shared-reference-split-by-need.md)). An agent's context
+is the scarce resource: instructions loaded and never applied are paid for on
+every invocation, and they displace the repository being documented.
 
 ## 4. Constraints
 

@@ -7,7 +7,7 @@
      Section order below follows the cross-vendor AGENTS.md convention —
      commands early, boundaries explicit. Keep the whole file under 150
      lines; per-stack rules go in a nested AGENTS.md beside the code they
-     govern, not here. See doc-discipline.md.
+     govern, not here. See state-documents.md.
 
      How the repo is written. Not product behavior and not deliberations —
      those live in PRODUCT.md, the ADRs and the specs. -->

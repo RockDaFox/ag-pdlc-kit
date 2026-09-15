@@ -15,9 +15,12 @@ built, an architecture approved before the work is split, an earlier ADR being
 reversed — has no implementation to ride along on. That is
 [`pdlc-decide`](../pdlc-decide/SKILL.md).
 
-Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) before
-writing any document: it defines which file a given sentence belongs in, and
-how to resolve `{docs_root}`.
+Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) before writing
+any document: it defines which file a given sentence belongs in, and how to
+resolve `{docs_root}`. Read
+[`decision-records.md`](../_pdlc-shared/decision-records.md) before writing
+the spec or an ADR — it holds the routing tests, append-only, and the
+regulated-data record.
 
 ## Before forming an opinion
 

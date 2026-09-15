@@ -32,7 +32,9 @@
 ## Consequences
 
 <!-- What this costs and what it forecloses, including the unpleasant parts.
-     An ADR listing only benefits was written to justify, not to record. -->
+     An ADR listing only benefits was written to justify, not to record.
+     Nothing unverified goes here: settle the question first, or state it as
+     a gap with the condition that would settle it. -->
 
 ---
 

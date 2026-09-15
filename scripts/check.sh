@@ -133,10 +133,14 @@ check_manifests() {
 		echo "the two marketplace plugin entries describe the plugin differently"
 	fi
 
-	# A key in one marketplace plugin entry and not the other is a note: the
-	# hosts read different schemas, so the asymmetry may be deliberate. It is
-	# printed so that it stays visible instead of being forgotten.
-	for k in skills source category; do
+	# A key in one marketplace plugin entry and not the other is a note, not a
+	# finding: the hosts read different schemas, so an asymmetry may be
+	# deliberate. "skills" is not compared, and that is measured rather than
+	# assumed — in Anthropic's official marketplace, 3 of 292 plugin entries
+	# carry it and all three use it to select subdirectories of a repository
+	# that is not itself a plugin. Claude Code discovers components from the
+	# plugin root; Copilot declares them in the marketplace entry.
+	for k in source category; do
 		grep -q "\"$k\"" "$_cc_m" && _a=present || _a=absent
 		grep -q "\"$k\"" "$_gh_m" && _b=present || _b=absent
 		[ "$_a" = "$_b" ] ||

@@ -15,8 +15,10 @@ by the following week.
 
 This skill is that commit.
 
-Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) first: it holds
-the ADR-or-spec tests, the append-only rule, and how to resolve `{docs_root}`.
+Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) first — the four
+levels, which file a sentence belongs in, `{docs_root}` — then
+[`decision-records.md`](../_pdlc-shared/decision-records.md), which holds the
+ADR-or-spec tests, the append-only rule and the supersession mechanic.
 
 ## What this skill will not do
 
@@ -94,6 +96,11 @@ Append-only starts at the commit: an ADR still in the working tree may be
 corrected freely, and superseding something written an hour ago documents
 nothing but the writing of it. Run `git log` on the file — if it has never
 been committed, edit it instead and say that is what you did.
+
+A record is superseded when its decision is reversed, and for nothing else.
+A consequence it predicted that has since resolved is not a reversal: that
+finding is state, it goes to `AGENTS.md`, `PRODUCT.md` or the spec, and no ADR
+is written. The record itself keeps every word, Consequences included.
 
 A decision that contradicts an ADR without reversing it — a scoped exception,
 one service that does it differently — is not a supersession. It is an

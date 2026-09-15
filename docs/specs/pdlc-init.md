@@ -60,6 +60,13 @@ It runs once per repository. Keeping the documents alive afterwards is
     They are the nested-`AGENTS.md` mechanism in one host's dialect, they
     work, and converting them belongs to their owner rather than to a
     bootstrap run. Their presence is reported.
+12. **It loads two reference files, not the whole discipline.**
+    `doc-discipline.md` and
+    [`state-documents.md`](../../skills/_pdlc-shared/state-documents.md). It
+    writes no ADR and no spec, so it needs neither the routing tests nor the
+    regulated-data record, and the skill says so rather than leaving the
+    omission to be read as an oversight
+    ([ADR-0010](../adr/0010-shared-reference-split-by-need.md)).
 
 ## Rejected alternatives
 
