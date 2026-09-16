@@ -1,6 +1,6 @@
 {
   "name": "a-pdlc-kit",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Installs and maintains a four-level documentation discipline on a repository — AGENTS.md (how the repo is written, to the cross-vendor convention), PRODUCT.md (what the product does and why, as delivered), adr/ (structural decisions, append-only), specs/ (a feature's decisions and rejected alternatives). Use when bootstrapping documentation on an existing codebase, when building a feature whose decisions should be recorded, or when recording a decision that produces no code.",
   "author": {
     "name": "RockDaFox"
