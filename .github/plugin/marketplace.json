@@ -1,13 +1,13 @@
 {
   "name": "a-pdlc-kit",
-  "description": "A-PDLC Kit — a documentation discipline for code repositories: four levels (AGENTS.md, PRODUCT.md, ADRs, specs) and the skills that keep it alive",
+  "description": "A-PDLC Kit — a documentation discipline for code repositories: four levels (AGENTS.md, PRODUCT.md, ADRs, specs), the skills that keep it alive, and the skill that builds against them test-first",
   "owner": {
     "name": "RockDaFox"
   },
   "plugins": [
     {
       "name": "a-pdlc-kit",
-      "description": "Installs and maintains a four-level documentation discipline on a repository, records a feature's decisions while they still exist, and records the decisions that arrive without code",
+      "description": "Installs and maintains a four-level documentation discipline on a repository, records a feature's decisions while they still exist, records the decisions that arrive without code, and builds a spec into code and tests once it has a go-ahead",
       "source": "./",
       "category": "productivity",
       "skills": "skills/"

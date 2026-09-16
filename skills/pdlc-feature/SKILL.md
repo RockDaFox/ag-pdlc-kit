@@ -61,12 +61,16 @@ forward.
    line whether an ADR looks warranted, and do not write it yet.
 5. **Wait for an explicit go-ahead on the spec.** What is being approved is the
    spec, not a summary of it. No code before the answer.
-6. **Implement against the spec**, deriving the work and its tests from the
-   behavior it states and stopping at its non-goals, without re-opening
-   anything it settles. If the repository contradicts it — a pattern absent
-   where the spec assumed one, an assumption a test disproves — stop, report
-   the discrepancy, and return to step 3 for a new go-ahead. Never reconcile it
-   silently: that is a scope decision taken without a record.
+6. **Implement against the spec, running the loop
+   [`build-loop.md`](../_pdlc-shared/build-loop.md) states** — read it now, not
+   before: the clarification round has no use for build instructions, and a
+   session that stops at the go-ahead would have paid for them for nothing.
+   The loop derives the work and its tests from the spec's behavior, stops at
+   its non-goals, and if the repository contradicts it — a pattern absent
+   where the spec assumed one, an assumption a test disproves — stops the
+   build, reports the discrepancy, and returns to step 3 for a new go-ahead.
+   Never reconcile a contradiction silently: that is a scope decision taken
+   without a record.
 7. **Reconcile the spec with what shipped**, in the same change as the code,
    and set `Status: Shipped`. Record each divergence between the draft and the
    implementation, with what the implementation showed. Then, and only then,

@@ -79,6 +79,12 @@ The routing between spec and ADR is not decided here. It is stated once in
     convention `AGENTS.md` follows is not loaded: this skill appends a
     repo-wide trap to that file, it does not restructure it
     ([ADR-0010](../adr/0010-shared-reference-split-by-need.md)).
+14. **Step 6 runs the build loop stated in `build-loop.md`, loaded there and
+    not at the start.** The loop is identical whether reached from here or
+    standalone from [`pdlc-build`](pdlc-build.md), so it is stated once, in
+    the shared reference, rather than kept as this skill's own implicit
+    version of it. A session that stops at the go-ahead never pays for build
+    instructions it will not use.
 
 ## Rejected alternatives
 

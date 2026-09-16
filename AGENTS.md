@@ -54,10 +54,11 @@ gets a manifest pair pointing at the same tree
 ├── marketplace.json
 └── plugin.json
 skills/
-├── _pdlc-shared/            three reference files + templates; not a skill
+├── _pdlc-shared/            four reference files + templates; not a skill
 ├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
 ├── pdlc-feature/SKILL.md
-└── pdlc-decide/SKILL.md
+├── pdlc-decide/SKILL.md
+└── pdlc-build/SKILL.md
 scripts/check.sh             maintainer tooling; no skill invokes it
 scripts/bump-version.sh      maintainer tooling; no skill invokes it
 AGENTS.md, docs/             this repository's own documentation
@@ -88,9 +89,11 @@ The discipline itself is in
 [`skills/_pdlc-shared/`](skills/_pdlc-shared/): `doc-discipline.md` holds what
 every skill needs, `state-documents.md` and `decision-records.md` hold what
 only some do, so no session loads instructions it will not use
-([ADR-0010](docs/adr/0010-shared-reference-split-by-need.md)). This repository
-follows the discipline it distributes, so those files are both the product and
-the rule this repo is held to.
+([ADR-0010](docs/adr/0010-shared-reference-split-by-need.md)). `build-loop.md`
+holds the test-first loop, read by `pdlc-build` and by `pdlc-feature` at its
+own step 6 only, never at the start. This repository follows the discipline it
+distributes, so those files are both the product and the rule this repo is
+held to.
 
 Documentation is in English, specs and ADRs included. A change to a skill's
 behavior updates its spec in the same change; a change to a reference file is

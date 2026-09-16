@@ -50,12 +50,14 @@ the kit is for is wider than what it currently ships. What ships is below and
 in section 3; what is deliberately absent, with the condition that would bring
 it in, is in section 5.
 
-Implementation status: three skills — `pdlc-init` (bootstrap),
-`pdlc-feature` (record a decision that arrives with code) and `pdlc-decide`
-(record one that does not) — four templates, and a shared reference in three
-files, each skill loading only the ones it uses
-([ADR-0010](adr/0010-shared-reference-split-by-need.md)). The product itself
-is Markdown plus two JSON manifests and installs
+Implementation status: four skills — `pdlc-init` (bootstrap),
+`pdlc-feature` (record a decision that arrives with code), `pdlc-decide`
+(record one that does not) and `pdlc-build` (carry out the work a spec
+authorises, test-first) — four templates, and a shared reference of four
+files: three for the documentation discipline, each skill loading only the
+ones it uses ([ADR-0010](adr/0010-shared-reference-split-by-need.md)), and one
+for the build loop, read by `pdlc-build` and by `pdlc-feature` at its own step
+6. The product itself is Markdown plus two JSON manifests and installs
 nothing executable; the repository carries one maintainer-side check script,
 which is not product surface and which no skill invokes
 ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
@@ -161,7 +163,31 @@ behaviors are the point rather than the implementation:
   gains a `Status` line and keeps every other word. Whether the old ADR is a
   record or still a draft is established from git, not from its date.
 
-### 3.4 Ship the skeletons
+### 3.4 Build a spec, test-first
+
+The `pdlc-build` skill turns a spec into code, tests and an evidence block.
+It derives one test per behavior the spec states, writes it, runs it,
+confirms it fails for the reason stated, implements against that failure,
+returns to green, then runs the repository's lint, typecheck and build
+commands and reports what ran, what it covered and what it left.
+
+Two entry points reach the same loop, stated once in
+`skills/_pdlc-shared/build-loop.md`: inside `pdlc-feature`, at its own step 6,
+on the spec the go-ahead was just given on; and standalone, on a scope settled
+elsewhere — a `Draft` spec committed earlier, a ticket, a bug with a known
+cause. Standalone, the skill also routes what the build decided through the
+scope, reversal-cost and lifetime tests and writes the spec entry or the ADR
+they select; inside `pdlc-feature`, that reconciliation stays with that
+skill's own step 7.
+
+Test, lint, typecheck and build commands are discovered from the repository —
+`AGENTS.md` or the task runner's manifest — never invented, which is the one
+point where this skill's execution surface is wider than every other skill's
+([ADR-0014](adr/0014-a-skill-may-run-discovered-repository-commands.md)). A
+repository with no test suite gets a stated, executed verification instead of
+an invented one.
+
+### 3.5 Ship the skeletons
 
 Four templates (`AGENTS.md`, `PRODUCT.md`, `adr.md`, `spec.md`) bundled with
 the skills and read at runtime. They are commented skeletons, not tutorials:
@@ -181,14 +207,14 @@ estimated: it is what decides whether the file splits into nested files. The
 spec template carries the Regulated data section, deleted when it does not
 apply rather than left empty.
 
-### 3.5 Adapt to a repository that already uses `docs/`
+### 3.6 Adapt to a repository that already uses `docs/`
 
 The documentation root defaults to `docs/`. A repository where that directory
 is taken puts A-PDLC Kit elsewhere and records it in `AGENTS.md`, in one
 line. No configuration file is created
 ([ADR-0002](adr/0002-docs-root-without-config-file.md)).
 
-### 3.6 Run on more than one host
+### 3.7 Run on more than one host
 
 The same `skills/` tree serves Claude Code and GitHub Copilot. Nothing in it
 is host-specific: bundled files are reached by paths relative to the skill's
@@ -200,13 +226,15 @@ manifest pair differs
 There is exactly one copy of every instruction. A per-provider copy, however
 it is generated, is the failure this rule exists to prevent.
 
-The same reasoning governs how much of the shared reference a skill loads. It
-is three files — what every skill needs, what a skill writing `AGENTS.md` or
-`PRODUCT.md` needs, what a skill writing a decision record needs — and a
-skill names the ones it uses
-([ADR-0010](adr/0010-shared-reference-split-by-need.md)). An agent's context
-is the scarce resource: instructions loaded and never applied are paid for on
-every invocation, and they displace the repository being documented.
+The same reasoning governs how much of the shared reference a skill loads. The
+documentation discipline is three files — what every skill needs, what a
+skill writing `AGENTS.md` or `PRODUCT.md` needs, what a skill writing a
+decision record needs — and a skill names the ones it uses
+([ADR-0010](adr/0010-shared-reference-split-by-need.md)). The build loop is a
+fourth, separate file for a separate concern, read only by `pdlc-build` and by
+`pdlc-feature` at its own step 6. An agent's context is the scarce resource:
+instructions loaded and never applied are paid for on every invocation, and
+they displace the repository being documented.
 
 ## 4. Constraints
 
@@ -218,13 +246,18 @@ every invocation, and they displace the repository being documented.
   script that checks its own documents; it ships inert, no skill invokes it,
   and it never runs on a documented repository
   ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
-- **The commands a skill has an agent run are git's, and they are named.**
-  Reading a repository was never in question — `pdlc-init` has always used
-  `git log`. Since [ADR-0012](adr/0012-a-spec-precedes-the-implementation-it-governs.md)
-  a skill also has the agent commit: `pdlc-feature` commits the draft spec the
-  go-ahead is given on, and commits the reconciled spec with the code. Nothing
-  else is executed, and nothing is executed without the user having approved
-  what it does.
+- **The commands a skill has an agent run are git's, and — inside the build
+  loop only — a repository's own.** Reading a repository was never in
+  question — `pdlc-init` has always used `git log`. Since
+  [ADR-0012](adr/0012-a-spec-precedes-the-implementation-it-governs.md) a
+  skill also has the agent commit: `pdlc-feature` commits the draft spec the
+  go-ahead is given on, and commits the reconciled spec with the code.
+  [ADR-0014](adr/0014-a-skill-may-run-discovered-repository-commands.md)
+  widens this for `pdlc-build`, and for `pdlc-feature` at its own step 6
+  alone: their test, lint, typecheck and build commands come from `AGENTS.md`
+  or the task runner's manifest, discovered and never invented. Nothing else
+  is executed, and nothing is executed without the user having approved what
+  it does.
 - **A-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
@@ -249,7 +282,6 @@ every invocation, and they displace the repository being documented.
 |---|---|
 | Backfilling decisions on an existing repository | Never, by design ([ADR-0004](adr/0004-decision-records-are-written-forward.md)). A human who remembers the alternatives can have `pdlc-decide` interview them and write the record; what it will not do is supply the alternatives itself |
 | Doc-versus-code drift detection | The skills have enough mileage to tell a real false positive from noise. An audit that cries wolf is ignored within a fortnight |
-| A build skill carrying the test-first loop | Its spec is written and `Draft` ([`specs/pdlc-build.md`](specs/pdlc-build.md)). It waits on one decision: running a repository's own test, lint and build commands is a wider execution surface than the named git commands above, and nothing has decided that yet |
 | Isolation for several agent tasks at once — a worktree per task | Agent sessions are actually run in parallel on one clone often enough to collide. The rule such a skill would carry is which seam the tasks are split along, not the git commands, which the hosts already run |
 | Bounded-context scope fences and a per-context glossary | A repository the kit is installed on is genuinely structured in contexts, and an agent is caught inventing domain vocabulary a glossary would have refused |
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |

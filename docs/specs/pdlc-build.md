@@ -1,6 +1,6 @@
 # Spec — pdlc-build
 
-> **Status: Draft** — the work is authorised and not yet shipped. This document becomes `Shipped` when it is reconciled with the skill, in the same change as it.
+> **Status: Shipped**
 >
 > Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-09-16.
 
@@ -8,7 +8,7 @@
 
 `pdlc-build` turns a spec into code, tests and an evidence block, test-first. It derives the test list from the behavior the spec states, writes each test, runs it, confirms it fails for the reason stated, implements against that failure, returns to green, then reports what it ran, what it covered and what it left.
 
-It is the first skill of the kit's second family: the other three record what is decided, this one carries out the work a record authorises. Like them it is instruction to the model and ships nothing executable, with one difference that matters — the commands it has the agent run are the repository's own test, lint and build commands, not git's. `docs/PRODUCT.md` §4 names the commands a skill runs and they are all git's; widening that to whatever a repository's manifest happens to contain is a different question, and nothing has decided it. **This skill is not shippable until that decision is recorded.**
+It is the first skill of the kit's second family: the other three record what is decided, this one carries out the work a record authorises. Like them it is instruction to the model and ships nothing executable, with one difference that matters — the commands it has the agent run are the repository's own test, lint and build commands, not only git's. `docs/PRODUCT.md` §4 named the commands a skill runs and they were all git's; [ADR-0014](../adr/0014-a-skill-may-run-discovered-repository-commands.md) widens that to the repository's own test, lint, typecheck and build commands, discovered and never invented, scoped to this skill and to `pdlc-feature`'s own step 6.
 
 Its input is a spec, never a paraphrase of one: `{docs_root}/specs/<feature>.md` carrying `Status: Draft`, which is what [ADR-0012](../adr/0012-a-spec-precedes-the-implementation-it-governs.md) made available. Two entry points reach the same loop:
 
@@ -29,7 +29,7 @@ The loop itself lives in `skills/_pdlc-shared/build-loop.md` so that both entry 
 8. **Standalone with a `Draft` spec on disk, that spec is the input and the skill reconciles it.** This is the resumed-work case and the handoff case, and it is the reason the draft is committed at all. A `Shipped` spec for the same feature is a different situation: the work is a change to shipped behavior, so the spec is rewritten in place, not drafted again.
 9. **Standalone with no spec at all, the scope is restated and confirmed, not re-derived.** The skill states in a few lines what it understands the work to be and waits. It does not open a clarification round: two skills that both interrogate would leave the kit with a weaker `pdlc-feature` that wins by being nearer to hand.
 10. **The evidence block is session and pull-request output, never a spec section.** Commands run, their output, which acceptance criterion each test covers, what was left. That is perishable state — a passing count is true for one commit — and the spec records decisions.
-11. **It runs the repository's own commands, discovered, never invented.** Test, lint and typecheck commands come from `AGENTS.md` or from the task runner's manifest, with their real flags, which is the rule `pdlc-init` already follows when it writes them down. The skill ships no per-stack command table: it would be an invented example that rots, and this is the one skill where a guessed command does something rather than merely reading wrong.
+11. **It runs the repository's own commands, discovered, never invented.** Test, lint and typecheck commands come from `AGENTS.md` or from the task runner's manifest, with their real flags, which is the rule `pdlc-init` already follows when it writes them down. The skill ships no per-stack command table: it would be an invented example that rots, and this is the one skill where a guessed command does something rather than merely reading wrong. [ADR-0014](../adr/0014-a-skill-may-run-discovered-repository-commands.md) records the widening this decision needed against `docs/PRODUCT.md` §4's git-only constraint.
 12. **`pdlc-feature` loads `build-loop.md` at step 6, not at the start.** The clarification round has no use for build instructions, and a session that stops at the go-ahead would have paid for them anyway — ADR-0010's reasoning applied inside a single invocation rather than across skills.
 
 ## Behavior
@@ -59,8 +59,6 @@ Done is not reportable while any of these is missing: each test confirmed red be
 
 | Left out | Add it when |
 |---|---|
-| No route for a repository with no test suite at all — the loop has no red available | Someone runs it on one. The likely answer is to say so and fall back to a stated, executed verification, not to invent a suite |
-| No route for a change no test can prove — documentation, a template, this repository itself | The kit gains a skill that edits its own Markdown and finds the loop has nothing to grip |
 | Nothing verifies the test was really written and red first; the evidence block is the agent's own account | The evidence block is caught overstating itself, and a check on a repository the product owns becomes acceptable |
 | No rule for a suite too slow to sit inside the loop | A repository is worked on where the targeted run takes minutes rather than seconds |
 | No handling of a flaky test, which produces a red that means nothing | A build stops on one and the loop draws the wrong conclusion |

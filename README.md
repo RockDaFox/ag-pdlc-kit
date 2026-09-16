@@ -66,6 +66,15 @@ along on, so nothing writes them down. It interviews for what was weighed —
 it never supplies the alternatives itself — and it walks the supersession of
 an existing ADR, which is two files and never an edit in place.
 
+**`/pdlc-build`** — on a spec ready to build against: inside `/pdlc-feature`,
+automatically, at its own step 6; or standalone, on a `Draft` spec already
+committed, a ticket, or a bug with a known cause. It derives one test per
+behavior the spec states, confirms each is red for the stated reason before
+writing the implementation, returns to green, then reports the evidence — the
+commands run, their output, what was covered, what was left. Its test, lint
+and build commands come from the repository itself, discovered rather than
+guessed.
+
 ## Contributing
 
 Read [`AGENTS.md`](AGENTS.md). The repository follows the discipline it
