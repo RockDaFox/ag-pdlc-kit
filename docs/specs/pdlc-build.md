@@ -8,7 +8,7 @@
 
 `pdlc-build` turns a spec into code, tests and an evidence block, test-first. It derives the test list from the behavior the spec states, writes each test, runs it, confirms it fails for the reason stated, implements against that failure, returns to green, then reports what it ran, what it covered and what it left.
 
-It is the first skill of the kit's second family: the other three record what is decided, this one carries out the work a record authorises. Like them it is instruction to the model and ships nothing executable, with one difference that matters — it is the first whose loop expects commands to be run on the repository it is invoked in. `docs/PRODUCT.md` §4 still states that the product runs nothing, carving out only the reading of a repository. That constraint is narrower than the kit's vocation and is being re-decided; **this skill is not shippable until that ADR exists**.
+It is the first skill of the kit's second family: the other three record what is decided, this one carries out the work a record authorises. Like them it is instruction to the model and ships nothing executable, with one difference that matters — the commands it has the agent run are the repository's own test, lint and build commands, not git's. `docs/PRODUCT.md` §4 names the commands a skill runs and they are all git's; widening that to whatever a repository's manifest happens to contain is a different question, and nothing has decided it. **This skill is not shippable until that decision is recorded.**
 
 Its input is a spec, never a paraphrase of one: `{docs_root}/specs/<feature>.md` carrying `Status: Draft`, which is what [ADR-0012](../adr/0012-a-spec-precedes-the-implementation-it-governs.md) made available. Two entry points reach the same loop:
 

@@ -117,7 +117,7 @@ Five fields, in the feature's spec, under a heading of their own:
 | Reference | Where the answer is recorded outside this repository. |
 
 The section is present or absent; it is never filled with a reading of what a
-regime requires, because that reading is legal advice and this is a
-documentation discipline. A question raised and not yet answered is recorded
+regime requires, because that reading is legal advice and nothing here gives
+it. A question raised and not yet answered is recorded
 as unanswered, saying so plainly if the work proceeded anyway — that is a
 finding, and the reason the field exists at all.

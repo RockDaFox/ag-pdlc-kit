@@ -117,5 +117,5 @@ from this skill. An unanswered question is recorded as unanswered.
 ## Finishing
 
 Remind the user the record was AI-drafted and needs review before it is
-treated as authoritative — and, for an ADR, that it becomes append-only the
-moment it is pushed.
+treated as authoritative — and, for an ADR, that the commit is what makes it
+immutable, so the review and the removal of that notice both come first.

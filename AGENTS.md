@@ -154,7 +154,8 @@ a product change, and shows up in `docs/PRODUCT.md` or an ADR.
 ## Deployment
 
 None. Distribution is the git repository itself. Bump `version` in both
-`plugin.json` files for a release with `sh scripts/bump-version.sh`. Pushing
-an ADR is what makes it a record —
-before that it is a draft
+`plugin.json` files for a release with `sh scripts/bump-version.sh`. The
+manifests are where the version lives and the only place it appears: no
+document restates it, because a number written twice is a number that drifts.
+Committing an ADR is what makes it a record — before that it is a draft
 ([`decision-records.md`](skills/_pdlc-shared/decision-records.md)).

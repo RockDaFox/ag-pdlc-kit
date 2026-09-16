@@ -1,23 +1,21 @@
 # Product — A-PDLC Kit
 
 > Product document: what A-PDLC Kit does and why, as delivered. **Written
-> 2026-09-14 alongside the first version of the plugin, revised 2026-09-15** —
+> 2026-09-14 alongside the first version of the plugin, revised 2026-09-16** —
 > not by reading the code and history, which did not exist yet. The sections
 > describe what ships; the gap between intent and delivered is for a later
 > revision to close. Nothing here is a requirement addressed to work still to
 > come.
 >
-> Design decisions for the two skills live in the specs:
-> [`specs/pdlc-feature.md`](specs/pdlc-feature.md) and
-> [`specs/pdlc-init.md`](specs/pdlc-init.md). Structural decisions live
-> in [`adr/`](adr/). Repository conventions are in [`AGENTS.md`](../AGENTS.md).
-> This document repeats none of them.
+> Design decisions for a skill live in its spec, under [`specs/`](specs/).
+> Structural decisions live in [`adr/`](adr/). Repository conventions are in
+> [`AGENTS.md`](../AGENTS.md). This document repeats none of them.
 
 ## 1. Executive summary
 
-A-PDLC Kit installs a documentation discipline on a code repository, and ships
-the skills that keep it alive. It runs on Claude Code and on GitHub Copilot,
-from a single set of files.
+A-PDLC Kit is the toolbox of the agentic developer: the skills a team invokes
+to work with a coding agent on a real repository, from one set of files that
+runs on both Claude Code and GitHub Copilot.
 
 It is internal tooling, not a deliverable: it is not sold, licensed or handed
 to anyone outside the organisation. The repositories it documents are another
@@ -25,15 +23,17 @@ matter — engagement repositories are in scope — which is why nothing it ship
 carries an example borrowed from a real project, and why every document it
 generates says it was AI-drafted.
 
-The problem it addresses: a coding agent has the code, never the reasons. Git
-history records what changed, not what was decided nor what was rejected;
-comments rot; the deliberation behind a feature dies in the conversation where
-it happened. The observable consequence on any repository of moderate age is
-that settled questions get re-opened, options rejected for good reasons get
-retried, and a bug that was deliberately fixed comes back.
+The first family of tools in it installs a documentation discipline and keeps
+it alive, because that is the gap that bites first: a coding agent has the
+code, never the reasons. Git history records what changed, not what was decided
+nor what was rejected; comments rot; the deliberation behind a feature dies in
+the conversation where it happened. The observable consequence on any
+repository of moderate age is that settled questions get re-opened, options
+rejected for good reasons get retried, and a bug that was deliberately fixed
+comes back.
 
-The answer is four documents, each stating a thing **once**: `AGENTS.md` (how
-the repo is written), `PRODUCT.md` (what the product does and why), `adr/`
+That discipline is four documents, each stating a thing **once**:
+`AGENTS.md` (how the repo is written), `PRODUCT.md` (what it does and why), `adr/`
 (structural technical decisions, dated and never rewritten), `specs/` (a
 feature's decisions, its rejected alternatives, its known gaps). The
 stated-once rule is the central invariant: a sentence that could sit in two
@@ -45,7 +45,12 @@ option won over another — is only recorded at the moment it is decided.
 A-PDLC Kit never backfills
 ([ADR-0004](adr/0004-decision-records-are-written-forward.md)).
 
-Implementation status in 0.3.1: three skills — `pdlc-init` (bootstrap),
+The discipline is the first family in the toolbox and not the whole of it: what
+the kit is for is wider than what it currently ships. What ships is below and
+in section 3; what is deliberately absent, with the condition that would bring
+it in, is in section 5.
+
+Implementation status: three skills — `pdlc-init` (bootstrap),
 `pdlc-feature` (record a decision that arrives with code) and `pdlc-decide`
 (record one that does not) — four templates, and a shared reference in three
 files, each skill loading only the ones it uses
@@ -59,9 +64,10 @@ which is not product surface and which no skill invokes
 
 - **The developer installing A-PDLC Kit** on an existing repository. They run
   `pdlc-init` once, read what came out, correct it, commit it.
-- **The coding agent** that works on the repository afterwards. It is the
-  first reader of the four documents, and the reason they are structured
-  rather than narrative.
+- **The coding agent** that works on the repository afterwards. It is both the
+  first reader of the four documents — the reason they are structured rather
+  than narrative — and what executes the skills: every tool in the kit is
+  instruction addressed to it, not a program run beside it.
 - **The human newcomer**, reading the same files for the same reasons.
 
 No roles, no accounts, no notion of a team in the product: A-PDLC Kit is a
@@ -204,16 +210,21 @@ every invocation, and they displace the repository being documented.
 
 ## 4. Constraints
 
-- **The product installs nothing and runs nothing.** No build, no dependency,
-  no runtime, and nothing written into a repository it documents is
-  executable. This keeps the kit cheap to audit before it is installed on a
-  repository someone else owns, and it rules out the obvious solution to
-  multi-provider support, which is a sync script. What it never forbade is an
-  agent running a command to read a repository — `pdlc-init` has always used
-  `git log`. This repository carries one maintainer-side script that checks
-  its own documents; it ships inert, no skill invokes it, and it never runs on
-  a documented repository
+- **The product installs nothing executable.** No build, no dependency, no
+  runtime, and nothing it writes into a repository it documents can be run.
+  This keeps the kit cheap to audit before it is installed on a repository
+  someone else owns, and it rules out the obvious solution to multi-provider
+  support, which is a sync script. This repository carries one maintainer-side
+  script that checks its own documents; it ships inert, no skill invokes it,
+  and it never runs on a documented repository
   ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
+- **The commands a skill has an agent run are git's, and they are named.**
+  Reading a repository was never in question — `pdlc-init` has always used
+  `git log`. Since [ADR-0012](adr/0012-a-spec-precedes-the-implementation-it-governs.md)
+  a skill also has the agent commit: `pdlc-feature` commits the draft spec the
+  go-ahead is given on, and commits the reconciled spec with the code. Nothing
+  else is executed, and nothing is executed without the user having approved
+  what it does.
 - **A-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
@@ -237,7 +248,10 @@ every invocation, and they displace the repository being documented.
 | Left out | Add it when |
 |---|---|
 | Backfilling decisions on an existing repository | Never, by design ([ADR-0004](adr/0004-decision-records-are-written-forward.md)). A human who remembers the alternatives can have `pdlc-decide` interview them and write the record; what it will not do is supply the alternatives itself |
-| Doc-versus-code drift detection | The two skills have enough mileage to tell a real false positive from noise. An audit that cries wolf is ignored within a fortnight |
+| Doc-versus-code drift detection | The skills have enough mileage to tell a real false positive from noise. An audit that cries wolf is ignored within a fortnight |
+| A build skill carrying the test-first loop | Its spec is written and `Draft` ([`specs/pdlc-build.md`](specs/pdlc-build.md)). It waits on one decision: running a repository's own test, lint and build commands is a wider execution surface than the named git commands above, and nothing has decided that yet |
+| Isolation for several agent tasks at once — a worktree per task | Agent sessions are actually run in parallel on one clone often enough to collide. The rule such a skill would carry is which seam the tasks are split along, not the git commands, which the hosts already run |
+| Bounded-context scope fences and a per-context glossary | A repository the kit is installed on is genuinely structured in contexts, and an agent is caught inventing domain vocabulary a glossary would have refused |
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |
 | A blocking pre-commit check | Never, barring an explicit request from a team that wants it |
 | API or code-reference documentation generation | Never: that level is produced by language tooling, not by a decision discipline |

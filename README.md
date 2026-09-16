@@ -1,12 +1,15 @@
 # A-PDLC Kit
 
-A documentation discipline for code repositories, plus the skills that keep it
-alive. Runs on Claude Code and GitHub Copilot from one set of files.
+The toolbox of the agentic developer: the skills you invoke to work with a
+coding agent on a real repository. Runs on Claude Code and GitHub Copilot from
+one set of files.
 
-A coding agent has the code, never the reasons. Git history records what
-changed, not what was decided nor what was rejected. So settled questions get
-re-opened, rejected options get retried, and deliberately fixed bugs come
-back. A-PDLC Kit writes the reasons down, at the moment they exist.
+The first family of tools in it writes down the reasons, because that is the
+gap that bites first. A coding agent has the code, never the reasons. Git
+history records what changed, not what was decided nor what was rejected. So
+settled questions get re-opened, rejected options get retried, and deliberately
+fixed bugs come back. A-PDLC Kit writes the reasons down at the moment they
+exist, and hands them back to the next piece of work as its context.
 
 ## Four levels, each stating a thing once
 
