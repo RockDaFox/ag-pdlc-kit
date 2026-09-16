@@ -1,5 +1,7 @@
 # Spec — pdlc-init
 
+> **Status: Shipped**
+>
 > Living document: any change to the `pdlc-init` skill is reflected here in
 > the same change. Revised 2026-09-15.
 >

@@ -101,14 +101,25 @@ Three guardrails are part of the behavior, not of the implementation:
 
 The `pdlc-feature` skill takes an informal request and builds it, keeping the
 record of what it decides. The sequence: read the repo, list the open points,
-ask in as few rounds as possible, recap scope and non-goals, **wait for an
-explicit go-ahead**, implement, then write the spec — decisions taken,
-alternatives rejected with their reason, known gaps — in the same change as
-the code.
+ask in as few rounds as possible, write the spec — decisions taken,
+alternatives rejected with their reason, expected behavior, non-goals, known
+gaps — and commit it as a draft, **wait for an explicit go-ahead on that
+spec**, implement against it, then reconcile it with what shipped, in the same
+change as the code.
 
-The value is in the timing: the clarification round is the only moment at
-which the rejected alternatives still exist. Once the feature ships, only the
-surviving option feels real, and any later reconstruction is fiction.
+The value is in the timing, twice over. The clarification round is the only
+moment at which the rejected alternatives still exist: once the feature ships,
+only the surviving option feels real, and any later reconstruction is fiction.
+And a spec written before the work is the context the implementation and its
+tests are written from, rather than an epilogue nobody reads
+([ADR-0012](adr/0012-a-spec-precedes-the-implementation-it-governs.md)). The
+spec is the artefact the go-ahead is given on; the divergences between it and
+what actually shipped are recorded at the end, because a rejected alternative
+carrying evidence outranks one rejected in discussion.
+
+An ADR is not written early. A committed record is immutable
+([ADR-0011](adr/0011-append-only-binds-the-decision.md)), so a decision that
+can still move is not engraved before the work confirms it.
 
 When a decision reaches beyond the feature, it becomes an ADR instead of a
 spec entry. The three arbitration tests — scope, reversal cost, lifetime — are

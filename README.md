@@ -50,10 +50,11 @@ derived from it would be invention wearing the same clothes as the real thing.
 The decision log starts empty and grows forward.
 
 **`/pdlc-feature <description>`** — for the work afterwards. Surfaces the open
-questions before any code, recaps scope, waits for a go-ahead, implements,
-then records the decisions and the rejected alternatives in the same change.
-The rejected alternatives are the point: the clarification round is the last
-moment they exist.
+questions before any code, writes the spec and waits for a go-ahead on it,
+implements against it, then reconciles it with what shipped, in the same
+change as the code. The rejected alternatives are the point: the clarification
+round is the last moment they exist. And the spec written before the work is
+what the implementation and its tests are built from, rather than an epilogue.
 
 **`/pdlc-decide`** — for a decision that produces no code: a stack settled
 before anything is built, an architecture approved before the work is split, a

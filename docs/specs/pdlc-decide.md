@@ -1,5 +1,7 @@
 # Spec — pdlc-decide
 
+> **Status: Shipped**
+>
 > Living document: any change to the `pdlc-decide` skill is reflected here in
 > the same change. Revised 2026-09-15.
 >
@@ -25,8 +27,8 @@ implementation, and [`pdlc-init`](pdlc-init.md), which writes none by design.
 ## Decisions
 
 1. **Decisions without code get their own skill rather than a mode of
-   `pdlc-feature`.** `pdlc-feature`'s whole shape — question round, recap,
-   go-ahead, implement, record — is organised around producing a diff. A
+   `pdlc-feature`.** `pdlc-feature`'s whole shape — question round, spec,
+   go-ahead, implement, reconcile — is organised around producing a diff. A
    decision with no diff would have to skip four of its five steps, and a
    skill that is mostly skipped is a skill nobody reaches for.
 2. **The alternatives come from the user, never from inference.** This is

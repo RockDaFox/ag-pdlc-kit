@@ -1,5 +1,9 @@
 # Spec — <feature>
 
+> **Status: Draft | Shipped** — <!-- Keep one. `Draft`: the work is authorised
+> and not yet shipped. It becomes `Shipped` when this document is reconciled
+> with the code, in the same change as it. -->
+>
 > Living document: any change to <feature> is reflected here in the same
 > change. Revised YYYY-MM-DD.
 >

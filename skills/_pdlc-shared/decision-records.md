@@ -68,6 +68,35 @@ A spec has no such constraint: it describes the feature as it stands today, and
 it is rewritten whenever the feature changes. A spec that rests on an ADR links
 to it rather than restating the reasoning.
 
+## A spec is written before the work, and reconciled after
+
+A spec is written at two moments, and they do different jobs.
+
+**Before the work**, once the scope is agreed: the decisions taken, the
+alternatives raised and rejected with their reasons, the behavior expected, the
+non-goals. It carries `Status: Draft` and is committed as it stands, because it
+is two things at once — the contract the work is authorised against, and the
+context the implementation and its tests are written from. A contract that
+exists only inside a session is available neither to the session after it nor
+to a second agent working in parallel.
+
+**After the work**, in the same change as the code: the spec is reconciled with
+what shipped, and its `Status` becomes `Shipped`. Where the draft and the
+implementation diverged, the divergence is recorded — the decision as drafted,
+what the implementation showed, and which one the code follows. That entry is a
+rejected alternative with evidence behind it, which is worth more than one
+rejected in discussion.
+
+A spec written before the work and never reconciled documents the plan rather
+than the system, and does it with the authority of a record. The second moment
+is not optional.
+
+**An ADR is not written before the work.** Immutability starts at the commit,
+so a committed draft freezes a decision that can still move and leaves
+supersession as the only way out of a wording chosen too early. An ADR that a
+piece of work produces is written when what it decides is settled, which is
+with the code.
+
 ## Regulated data
 
 A feature that touches personal, health or payment data — or anything else
