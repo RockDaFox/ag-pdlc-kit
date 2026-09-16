@@ -48,7 +48,3 @@ resolved path, never the placeholder.
   to discovery, then to `docs/` — wrong, but quietly so.
 - Inline links inside the generated documents hold real relative paths, so
   they survive the placeholder never existing on disk.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

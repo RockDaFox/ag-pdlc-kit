@@ -61,7 +61,3 @@ the day someone decides to change it.
   generates, not what a team knows.
 - `adr/` and `specs/` are not created empty. The first record creates its
   directory, on the day there is something true to put in it.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

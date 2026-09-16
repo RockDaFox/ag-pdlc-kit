@@ -15,7 +15,8 @@ Run it before committing, and prefer it to verifying by hand: its output is
 two tokens where reading the same files is several thousand. It catches what
 breaks silently — a manifest disagreeing with its three siblings, a
 supersession recorded on one side only, a skill no host can discover, a dead
-link, a heading written twice. It reports, never fixes, and writes nothing. No
+link, a heading written twice, an ADR about to be committed with its review
+marker still on. It reports, never fixes, and writes nothing. No
 skill invokes it and none ever will
 ([ADR-0008](docs/adr/0008-one-maintainer-side-check-script.md)).
 

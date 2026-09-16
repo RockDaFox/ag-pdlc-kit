@@ -38,4 +38,6 @@
 
 ---
 
-<!-- Drafted with an AI assistant — review before treating as authoritative. -->
+<!-- Drafted with an AI assistant — review before treating as authoritative.
+     Remove this line as part of that review, before the commit: afterwards
+     the record is immutable and the line stays for good. -->

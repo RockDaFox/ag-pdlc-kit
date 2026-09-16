@@ -78,7 +78,3 @@ manifest, never a copy of the content.
 - Only Claude Code and Copilot are claimed. Other hosts reading `~/.agents/`
   will probably work; none has been tested, and the README says so rather
   than implying support.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

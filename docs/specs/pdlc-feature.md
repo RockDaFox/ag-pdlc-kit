@@ -4,8 +4,6 @@
 >
 > Living document: any change to the `pdlc-feature` skill is reflected here in
 > the same change. Revised 2026-09-16.
->
-> Drafted with an AI assistant — review before sharing outside the team.
 
 ## Summary
 

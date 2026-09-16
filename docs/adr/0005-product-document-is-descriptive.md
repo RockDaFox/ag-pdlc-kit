@@ -75,7 +75,3 @@ absorbs them.
   situation at its date, and that is what the append-only rule protects.
 - The vocabulary is now a repository convention, recorded in `AGENTS.md`, and
   binds every future template and skill.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

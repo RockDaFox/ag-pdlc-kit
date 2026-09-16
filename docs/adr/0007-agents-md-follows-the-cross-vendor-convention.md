@@ -113,7 +113,3 @@ skills that write or merge the file apply it from there.
   loses either document, but the merge is a proposal every time. There is no
   automatic path, by design — a contract's rules are the kind written to be
   opposable, and quietly rewording one is worse than asking.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

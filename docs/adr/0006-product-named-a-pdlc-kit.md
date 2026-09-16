@@ -69,7 +69,3 @@ What was weighed is the shape of the new names.
 - Four manifests now agree on the name, and — for the first time — on the
   `skills` field, which had drifted between `./skills` and `skills/`. Nothing
   enforces it; the trap is recorded in `AGENTS.md`.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

@@ -12,8 +12,6 @@
 > [`specs/pdlc-init.md`](specs/pdlc-init.md). Structural decisions live
 > in [`adr/`](adr/). Repository conventions are in [`AGENTS.md`](../AGENTS.md).
 > This document repeats none of them.
->
-> Drafted with an AI assistant — review before sharing outside the team.
 
 ## 1. Executive summary
 
@@ -220,7 +218,11 @@ every invocation, and they displace the repository being documented.
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
 - **Every generated document carries the AI-assistance notice** and a reminder
-  to review before sharing with a third party.
+  to review before sharing with a third party. The notice stays until a human
+  has read the document, and removing it is that review — so a document still
+  carrying one has not been checked. On an ADR that review precedes the commit,
+  because a committed record is immutable
+  ([ADR-0013](adr/0013-notice-removed-by-the-review-before-commit.md)).
 - **The product gives no legal, financial or regulatory reading.** It
   establishes whether a feature touches regulated data, names the function
   that answers, and records the answer. Which regime applies, and what it

@@ -136,3 +136,14 @@ and its `Status` line says so.
 A document written or revised with an AI assistant carries a line saying so,
 and a reminder that it needs review before it goes to a third party. Keep the
 line in the document header, not buried at the bottom.
+
+**The line stays until a human has read the document, and removing it is that
+review.** So a document still carrying it is one nobody has checked, which is
+the only thing the line is good for. Kept on every document forever, it
+distinguishes nothing and is skipped as boilerplate.
+
+**For an ADR, that review happens before the commit, and removing the line is
+part of it.** A record is immutable once committed, so the line has to go while
+the file is still a draft — a human validates the record, strips the notice,
+then commits. A notice found on a committed ADR stays, in the same position as
+a typo found on one.

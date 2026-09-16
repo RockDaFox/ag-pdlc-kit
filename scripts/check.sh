@@ -2,8 +2,9 @@
 #
 # Checks this repository for the things that break silently — a manifest that
 # disagrees with its three siblings, a supersession recorded on one side only,
-# a skill no host can discover, a link that stopped resolving. Reports, never
-# fixes: every finding is a line of prose for a human or an agent to act on.
+# a skill no host can discover, a link that stopped resolving, an ADR about to
+# be committed with its review marker still on. Reports, never fixes: every
+# finding is a line of prose for a human or an agent to act on.
 #
 # Nothing under skills/ invokes this file, and no skill ever will — it is
 # maintainer tooling, not product surface (ADR-0008).
@@ -18,8 +19,16 @@ set -u
 
 cd "$(dirname "$0")/.." || exit 1
 
+# Whether git can answer questions about this tree. The check that needs to
+# know whether a record is still a draft says so rather than guessing when it
+# cannot: a check that goes quiet is worse than one that admits it is blind.
+have_git=no
+if [ -d .git ] && command -v git >/dev/null 2>&1; then
+	have_git=yes
+fi
+
 md_files() {
-	if [ -d .git ] && command -v git >/dev/null 2>&1; then
+	if [ "$have_git" = yes ]; then
 		git ls-files '*.md'
 	else
 		find . -name '*.md' -not -path './.git/*' -not -path './.claude/*' |
@@ -159,6 +168,19 @@ check_decision_log() {
 			echo "docs/adr/  numbering breaks at $_num, $_exp expected — and a number is never reused"
 		grep -q '^| \*\*Status\*\* |' "$f" || echo "$f  has no Status row"
 		grep -q '^| \*\*Date\*\* |' "$f" || echo "$f  has no Date row"
+
+		# The AI-assistance notice marks a record nobody has read, and a human
+		# strips it as part of the review that precedes the commit (ADR-0013).
+		# Uncommitted files only: afterwards the record is immutable, the line
+		# is permanent, and reporting it on every run would be crying wolf over
+		# something nobody is allowed to fix.
+		if grep -q 'Drafted with an AI assistant' "$f"; then
+			if [ "$have_git" != yes ]; then
+				echo "note: git unavailable, so whether $f is still a draft cannot be established"
+			elif [ -z "$(git log --oneline -1 -- "$f" 2>/dev/null)" ]; then
+				echo "$f  still carries the AI-assistance notice — read the record and strip the line before the commit makes it permanent"
+			fi
+		fi
 
 		_sup=$(sed -n \
 			's/^| \*\*Supersedes\*\* | \[ADR-\([0-9][0-9]*\)\].*/\1/p' "$f")

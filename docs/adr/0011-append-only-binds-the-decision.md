@@ -43,7 +43,3 @@ And underneath that, a third thing, which is the actual cause. The bullet that r
 - A typo found in an ADR after committing it stays. The remedy is to read the file and run the check before committing, not to loosen the boundary.
 - Someone reconstructing history has to know that an ADR's Consequences are expectations rather than a maintained list, and nothing marks which bullets have since resolved. Accepted: the alternative is a maintained ADR, which is not an ADR.
 - The rule is now stated once, so the two readings can no longer diverge. Nothing checks that it stays that way — a future edit reintroducing "pushed" somewhere would not be caught by anything.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

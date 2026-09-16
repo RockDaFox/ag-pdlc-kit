@@ -3,8 +3,6 @@
 > **Status: Draft** — the work is authorised and not yet shipped. This document becomes `Shipped` when it is reconciled with the skill, in the same change as it.
 >
 > Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-09-16.
->
-> Drafted with an AI assistant — review before sharing outside the team.
 
 ## Summary
 

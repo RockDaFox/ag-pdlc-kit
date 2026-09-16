@@ -45,7 +45,3 @@ And a spec written only at the end preserves the final state alone. What moved d
 - `scripts/check.sh` does not verify the `Status` row, nor that a `Shipped` spec was reconciled rather than merely relabelled. The discipline holds by agreement, as most of it does.
 - A spec on disk before the code exists can be read by the build as authority rather than as a contract under test. The counterweight belongs to the build loop — a repository that contradicts the spec stops the work and returns for a new go-ahead — and it is stated there, not here.
 - The go-ahead now costs a file write before the user has approved anything. A user who declines has a spec file to discard; that is cheaper than the alternative and it is not free.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

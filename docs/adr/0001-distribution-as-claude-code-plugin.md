@@ -53,7 +53,3 @@ reached through `${CLAUDE_PLUGIN_ROOT}`.
   polluting what it distributes.
 - Anyone installing it needs Claude Code plugin support. There is no fallback
   path for another agent, and adding one would mean revisiting this ADR.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

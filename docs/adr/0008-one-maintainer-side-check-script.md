@@ -48,7 +48,3 @@ The constraint in `PRODUCT.md` is reworded to say what it actually protects: **t
 - Nothing runs it automatically. It works because it is written under Commands, where an agent editing this repository reads it. A human maintainer will forget it, and that is accepted rather than solved.
 - The asymmetry between the two marketplace plugin entries — `skills` declared in one and absent from the other — is printed as a note on every run. Whether either host requires the key there is unverified, so nothing was changed; the note keeps the question in view instead of it being rediscovered later.
 - Every future check has to earn its place against the same two questions: does it catch something that breaks silently, and does it cost less context than reading the files would. Most candidates fail the first.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

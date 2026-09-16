@@ -37,7 +37,3 @@ The check script loses its line-length check, and with it the two mechanisms tha
 - Marginally fewer tokens per paragraph, one newline instead of one per wrapped line. One or two percent; an effect, not a reason.
 - The 150-line budget on an `AGENTS.md` is untouched, and is not this rule's business: it belongs to the cross-vendor convention ([ADR-0007](0007-agents-md-follows-the-cross-vendor-convention.md)) and it governs the file written into a target repository, whose template stays wrapped. Worth keeping in view, though — a line budget is a proxy for context cost, and unwrapped lines carry more content per line than the convention's authors were counting.
 - Nothing enforces this, and nothing can. It is the first style rule in this repository held by agreement alone.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.

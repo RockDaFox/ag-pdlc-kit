@@ -42,7 +42,3 @@ Measured against the 2,970 tokens a skill loaded before: `pdlc-init` loads about
 - "The discipline reference", in records written before today, now denotes three files. Those records keep their wording; they are accurate about the shape of the product when they were written.
 - The saving is a fraction, not an order of magnitude, and it is not durable on its own: a single rule stated more carefully took most of it back within the hour. The reference is still the largest single cost of an invocation — roughly 2,500 of the 6,000 tokens a `pdlc-init` run carries before it has read a line of the target repository. Reducing it further means writing less, not filing it differently, and the alternative above says why that is not free.
 - Splitting by need means the total across the three files is larger than the one file was, because each carries a header and the entry point carries pointers. A reader opening all three pays more than before; a skill running one of the three pays less. The design favours the second, which is the one that happens on every invocation.
-
----
-
-Drafted with an AI assistant — review before treating as authoritative.
