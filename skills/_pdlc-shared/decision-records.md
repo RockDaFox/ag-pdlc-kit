@@ -74,11 +74,13 @@ A spec is written at two moments, and they do different jobs.
 
 **Before the work**, once the scope is agreed: the decisions taken, the
 alternatives raised and rejected with their reasons, the behavior expected, the
-non-goals. It carries `Status: Draft` and is committed as it stands, because it
-is two things at once — the contract the work is authorised against, and the
-context the implementation and its tests are written from. A contract that
-exists only inside a session is available neither to the session after it nor
-to a second agent working in parallel.
+non-goals. It carries `Status: Draft`, and once the user has reviewed and
+approved it, is committed as it stands, because it is two things at once —
+the contract the work is authorised against, and the context the
+implementation and its tests are written from. A contract that exists only
+inside a session is available neither to the session after it nor to a second
+agent working in parallel; but a contract nobody has looked at yet is not a
+contract, so the commit waits for that review.
 
 **After the work**, in the same change as the code: the spec is reconciled with
 what shipped, and its `Status` becomes `Shipped`. Where the draft and the

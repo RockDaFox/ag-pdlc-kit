@@ -53,14 +53,16 @@ forward.
 3. **Ask, before planning.** Use discrete-choice questions where the options
    are clear, plain text for open-ended points. Batch everything into as few
    rounds as possible; do not trickle questions one at a time.
-4. **Write the spec, and commit it.** It replaces the recap rather than
-   following it — the same content, in a file instead of a message: what gets
-   built, explicit non-goals, the decisions taken with the reason each won, the
-   alternatives just rejected with the reason each lost, the files and areas
-   touched, and how it fits existing conventions. `Status: Draft`. Say in one
-   line whether an ADR looks warranted, and do not write it yet.
-5. **Wait for an explicit go-ahead on the spec.** What is being approved is the
-   spec, not a summary of it. No code before the answer.
+4. **Write the spec.** It replaces the recap rather than following it — the
+   same content, in a file instead of a message: what gets built, explicit
+   non-goals, the decisions taken with the reason each won, the alternatives
+   just rejected with the reason each lost, the files and areas touched, and
+   how it fits existing conventions. `Status: Draft`. Say in one line whether
+   an ADR looks warranted, and do not write it yet.
+5. **Wait for an explicit go-ahead on the spec, then commit it.** What is
+   being approved is the spec, not a summary of it. No commit and no code
+   before the answer — the draft sits in the working tree, unreviewed, until
+   the user says otherwise.
 6. **Implement against the spec, running the loop
    [`build-loop.md`](../_pdlc-shared/build-loop.md) states** — read it now, not
    before: the clarification round has no use for build instructions, and a
