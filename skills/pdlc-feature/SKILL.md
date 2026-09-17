@@ -78,7 +78,8 @@ forward.
    implementation, with what the implementation showed. Then, and only then,
    the ADR the work turned out to warrant. Never leave any of this as a
    follow-up: by the next session the rejected options are gone, and no later
-   pass can recover them.
+   pass can recover them. Ask before committing this change — no commit before
+   the answer, same as step 5.
 
 ## What to record, and where
 

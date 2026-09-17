@@ -91,3 +91,7 @@ none existed — and any record just written. Remind the user that anything
 drafted here was AI-drafted and needs review before it is treated as
 authoritative; for an ADR, that review has to happen before the commit that
 makes it immutable.
+
+Ask before committing the code and the reconciled spec. What is being
+approved is the diff and the evidence behind it, not the report of them —
+no commit before the answer.
