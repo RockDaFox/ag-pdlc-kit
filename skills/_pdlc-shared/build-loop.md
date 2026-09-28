@@ -45,6 +45,8 @@ For each behavior the spec names, in the order the spec states it:
    not because it was weakened, not because an unrelated change happened to
    satisfy it.
 
+Steps 1–5 are performed, not narrated — see below.
+
 Once every behavior has cleared its own pass through 1–5:
 
 6. **Run the repository's lint, typecheck and build commands**, where they
@@ -52,6 +54,20 @@ Once every behavior has cleared its own pass through 1–5:
 7. **Inspect the diff.** Anything in it beyond what the spec's behaviors
    required is either removed or is a discrepancy — see below.
 8. **Report the evidence block.**
+
+## What is said while the loop runs
+
+Nothing, ordinarily. A test that fails before its implementation exists is
+the loop working as designed, and a line announcing it — or announcing which
+file is about to be written next — spends output on the one outcome that was
+expected. The failure expected at step 1 is stated in the test's own name and
+assertion, where it is re-readable; the red and its reason reach the user
+once, in the evidence block, as evidence rather than commentary.
+
+Mid-loop, a surprise is worth a line and nothing else is: a red for a reason
+other than the one expected, a repository that contradicts the spec, a
+command that does not exist. Progress through 1–5 is read from the diff and
+the evidence block, not from a running account of it.
 
 ## A repository that contradicts the spec
 

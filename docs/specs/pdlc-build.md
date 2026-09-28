@@ -2,7 +2,7 @@
 
 > **Status: Shipped**
 >
-> Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-09-16.
+> Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-09-28.
 
 ## Summary
 
@@ -31,13 +31,14 @@ The loop itself lives in `skills/_pdlc-shared/build-loop.md` so that both entry 
 10. **The evidence block is session and pull-request output, never a spec section.** Commands run, their output, which acceptance criterion each test covers, what was left. That is perishable state — a passing count is true for one commit — and the spec records decisions.
 11. **It runs the repository's own commands, discovered, never invented.** Test, lint and typecheck commands come from `AGENTS.md` or from the task runner's manifest, with their real flags, which is the rule `pdlc-init` already follows when it writes them down. The skill ships no per-stack command table: it would be an invented example that rots, and this is the one skill where a guessed command does something rather than merely reading wrong. [ADR-0014](../adr/0014-a-skill-may-run-discovered-repository-commands.md) records the widening this decision needed against `docs/PRODUCT.md` §4's git-only constraint.
 12. **`pdlc-feature` loads `build-loop.md` at step 6, not at the start.** The clarification round has no use for build instructions, and a session that stops at the go-ahead would have paid for them anyway — ADR-0010's reasoning applied inside a single invocation rather than across skills.
+13. **The loop is performed, not narrated.** The red step is a check the agent runs, not a message it sends: a test failing before its implementation exists is the expected outcome, so a line reporting it — or reporting which file comes next — pays output tokens for what the reader already knows. The failure expected at step 1 lives in the test's name and assertion, which are re-readable; the red reaches the user once, in the evidence block. Mid-loop output is reserved for what is not expected: a red for the wrong reason, a contradiction, a missing command. This is ADR-0010's economy applied to output rather than input — the loop is long, and a per-step account of it is paid again for every behavior the spec names.
 
 ## Behavior
 
 The loop, once a spec is in hand:
 
 1. Derive the test list from the spec — one test per named behavior, none beyond it.
-2. For each: state the failure expected, write the test, run it, confirm that failure.
+2. For each: state the failure expected, write the test, run it, confirm that failure. Silently — only an unexpected red or a contradiction is reported before the end.
 3. Implement against that failure only.
 4. Run the targeted tests, then the repository's lint, typecheck and build where they exist.
 5. Inspect the diff, then report the evidence block.

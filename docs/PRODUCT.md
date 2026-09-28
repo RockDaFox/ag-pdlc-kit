@@ -187,6 +187,12 @@ point where this skill's execution surface is wider than every other skill's
 repository with no test suite gets a stated, executed verification instead of
 an invented one.
 
+The loop is performed rather than narrated: an expected red is the loop
+working, so it is not announced as it happens and neither is what comes next.
+Mid-loop output is reserved for a red for the wrong reason, a repository that
+contradicts the spec, or a command that does not exist; everything else
+reaches the user once, in the evidence block at the end.
+
 ### 3.5 Ship the skeletons
 
 Four templates (`AGENTS.md`, `PRODUCT.md`, `adr.md`, `spec.md`) bundled with
