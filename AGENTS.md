@@ -58,7 +58,8 @@ skills/
 ├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
 ├── pdlc-feature/SKILL.md
 ├── pdlc-decide/SKILL.md
-└── pdlc-build/SKILL.md
+├── pdlc-build/SKILL.md
+└── pdlc-review/SKILL.md
 scripts/check.sh             maintainer tooling; no skill invokes it
 scripts/bump-version.sh      maintainer tooling; no skill invokes it
 AGENTS.md, docs/             this repository's own documentation
@@ -69,8 +70,8 @@ Adding a host means adding a manifest pair, never copying anything out of
 `skills/`.
 
 `_pdlc-shared/` has no `SKILL.md`, so no host discovers it as a skill. The
-three skills reach it by relative path, which resolves the same whether the
-tree sits in a Claude Code plugin directory or under `~/.agents/skills/`.
+skills reach it by relative path, which resolves the same whether the tree
+sits in a Claude Code plugin directory or under `~/.agents/skills/`.
 
 ## Documentation
 
@@ -90,8 +91,9 @@ The discipline itself is in
 every skill needs, `state-documents.md` and `decision-records.md` hold what
 only some do, so no session loads instructions it will not use
 ([ADR-0010](docs/adr/0010-shared-reference-split-by-need.md)). `build-loop.md`
-holds the test-first loop, read by `pdlc-build` and by `pdlc-feature` at its
-own step 6 only, never at the start. This repository follows the discipline it
+holds the test-first loop, read by `pdlc-build`, by `pdlc-feature` at its own
+step 6 and by `pdlc-review` once corrections are selected — never at the
+start. This repository follows the discipline it
 distributes, so those files are both the product and the rule this repo is
 held to.
 
@@ -148,8 +150,8 @@ a product change, and shows up in `docs/PRODUCT.md` or an ADR.
   Renaming touches all four; releasing touches both `plugin.json`. The check
   script is what notices when they disagree.
 - **`_pdlc-shared/` is reached by relative path.** A host that loads a
-  `SKILL.md` without its surrounding directory leaves all three skills with
-  dead links and no error.
+  `SKILL.md` without its surrounding directory leaves every skill with dead
+  links and no error.
 - **The two hosts' marketplace entries differ on purpose.** Copilot declares
   `skills` in its plugin entry, Claude Code discovers components from the
   plugin root. Aligning them is not a fix.

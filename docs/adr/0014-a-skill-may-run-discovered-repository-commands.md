@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Accepted |
+| **Status** | Superseded by [ADR-0015](0015-review-corrections-enter-the-build-loop.md) |
 | **Date** | 2026-09-16 |
 | **Supersedes** | — |
 

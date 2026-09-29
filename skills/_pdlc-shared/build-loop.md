@@ -1,17 +1,21 @@
 # The build loop
 
 Read [`doc-discipline.md`](doc-discipline.md) first: `{docs_root}` and the
-routing test. This loop's only input is a spec already on disk —
+routing test. This loop takes one of two inputs, and neither is ever a
+paraphrase held in the conversation. A spec already on disk —
 `{docs_root}/specs/<feature>.md`, carrying `Status: Draft` — read fresh each
-time it is needed, never from a paraphrase held in the conversation: a file
-survives the session and is re-readable mid-task; a message is neither.
+time it is needed, because a file survives the session and is re-readable
+mid-task. Or a review finding the user has selected, which is a correction
+they were shown in writing before they chose it. A message is neither of
+those.
 
-Two callers reach this same loop: [`pdlc-build`](../pdlc-build/SKILL.md),
-standalone, and [`pdlc-feature`](../pdlc-feature/SKILL.md), at its own step 6,
-on the spec the go-ahead was just given on. Whichever decisions the build
-itself produces still need routing — read
-[`decision-records.md`](decision-records.md) too, unless the caller already
-carries it.
+Three callers reach this same loop: [`pdlc-build`](../pdlc-build/SKILL.md),
+standalone; [`pdlc-feature`](../pdlc-feature/SKILL.md), at its own step 6, on
+the spec the go-ahead was just given on; and
+[`pdlc-review`](../pdlc-review/SKILL.md), on each correction the user
+selected. Whichever decisions the build itself produces still need routing —
+read [`decision-records.md`](decision-records.md) too, unless the caller
+already carries it.
 
 ## The commands
 
@@ -28,31 +32,42 @@ step that ran no command is not reportable as one.
 
 ## The loop
 
-For each behavior the spec names, in the order the spec states it:
+For each unit of work — a behavior the spec names, in the order the spec
+states it, or a correction the review selected:
 
 1. **State the failure expected**, in one line, before writing anything: what
    assertion is expected to fail, and why. "Something breaks" is not a stated
    failure.
-2. **Write the test** for that behavior only — none beyond what the spec
-   names, and nothing inside its non-goals.
+2. **Write the test** for that unit only — none beyond what the spec names,
+   and nothing inside its non-goals; from a review, none beyond the finding
+   the user selected.
 3. **Run it, and read why it failed.** A red for the reason just stated
    clears this step. A red from an import error, a typo, or a missing fixture
    is not exercising the behavior; fix the test and run it again rather than
    moving on with a false red.
 4. **Implement against that failure, and nothing else.** A change the failing
-   test does not require is scope the spec did not authorise.
+   test does not require is scope the spec did not authorise — or, from a
+   review, a correction the user did not select.
 5. **Run the test again and confirm it is green for the reason implemented** —
    not because it was weakened, not because an unrelated change happened to
    satisfy it.
 
 Steps 1–5 are performed, not narrated — see below.
 
-Once every behavior has cleared its own pass through 1–5:
+A correction that changes no behavior — a shape made clearer, a hand-rolled
+helper replaced by what the library already provides — has no failure to
+state at step 1 and no test to write at step 2. Say it has none. What it owes
+instead is that the tests already covering that code are green afterwards for
+the same reasons they were before, and that the closing steps hold. A test
+written to have written one proves nothing and hides what the pass actually
+established.
+
+Once every unit has cleared its own pass through 1–5:
 
 6. **Run the repository's lint, typecheck and build commands**, where they
    exist, over the whole change.
-7. **Inspect the diff.** Anything in it beyond what the spec's behaviors
-   required is either removed or is a discrepancy — see below.
+7. **Inspect the diff.** Anything in it beyond what the units required is
+   either removed or is a discrepancy — see below.
 8. **Report the evidence block.**
 
 ## What is said while the loop runs
@@ -82,11 +97,12 @@ overrides what a test just showed.
 ## Evidence block
 
 Session and pull-request output, never a spec section: a passing count is
-true for one commit, and a spec records decisions, not state. For each
-behavior — the command run, its result, and which acceptance criterion it
-covers. Then the repository's lint, typecheck and build output. Then what was
-left: a non-goal reached, a gap the spec already names, anything a
-discrepancy above returned for.
+true for one commit, and a spec records decisions, not state. For each unit —
+the command run, its result, and which acceptance criterion or which
+selected finding it covers, or that the unit had nothing to assert and why.
+Then the repository's lint, typecheck and build output. Then what was left: a
+non-goal reached, a gap the spec already names, anything a discrepancy above
+returned for.
 
 Done is not reportable while any of this is missing: every test read red
 before its implementation existed, the targeted tests green, the repository's

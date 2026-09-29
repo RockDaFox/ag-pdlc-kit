@@ -50,14 +50,16 @@ the kit is for is wider than what it currently ships. What ships is below and
 in section 3; what is deliberately absent, with the condition that would bring
 it in, is in section 5.
 
-Implementation status: four skills — `pdlc-init` (bootstrap),
+Implementation status: five skills — `pdlc-init` (bootstrap),
 `pdlc-feature` (record a decision that arrives with code), `pdlc-decide`
-(record one that does not) and `pdlc-build` (carry out the work a spec
-authorises, test-first) — four templates, and a shared reference of four
+(record one that does not), `pdlc-build` (carry out the work a spec
+authorises, test-first) and `pdlc-review` (hold the result to a standard
+before it is committed) — four templates, and a shared reference of four
 files: three for the documentation discipline, each skill loading only the
 ones it uses ([ADR-0010](adr/0010-shared-reference-split-by-need.md)), and one
-for the build loop, read by `pdlc-build` and by `pdlc-feature` at its own step
-6. The product itself is Markdown plus two JSON manifests and installs
+for the build loop, read by `pdlc-build`, by `pdlc-feature` at its own step 6,
+and by `pdlc-review` once corrections are selected. The product itself is
+Markdown plus two JSON manifests and installs
 nothing executable; the repository carries one maintainer-side check script,
 which is not product surface and which no skill invokes
 ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
@@ -171,7 +173,7 @@ confirms it fails for the reason stated, implements against that failure,
 returns to green, then runs the repository's lint, typecheck and build
 commands and reports what ran, what it covered and what it left.
 
-Two entry points reach the same loop, stated once in
+Two entry points reach that loop for a build, stated once in
 `skills/_pdlc-shared/build-loop.md`: inside `pdlc-feature`, at its own step 6,
 on the spec the go-ahead was just given on; and standalone, on a scope settled
 elsewhere — a `Draft` spec committed earlier, a ticket, a bug with a known
@@ -193,7 +195,55 @@ Mid-loop output is reserved for a red for the wrong reason, a repository that
 contradicts the spec, or a command that does not exist; everything else
 reaches the user once, in the evidence block at the end.
 
-### 3.5 Ship the skeletons
+### 3.5 Review a change before it is committed
+
+The `pdlc-review` skill reads a diff and reports what an experienced tech
+lead would raise on it: code quality, the repository's own conventions,
+correct use of the libraries the change calls into, readability and
+maintainability for a human, and whether the change stayed inside what its
+spec authorised. It reports graded findings, asks which ones to apply, and
+sends each one the user selected into the build loop, which is what changes
+the code and what proves the change.
+
+It is invoked on demand and nothing calls it automatically. A review before
+a commit is the user's step to take, not a gate the product imposes —
+section 5's refusal of a blocking pre-commit check is unchanged by this
+skill existing.
+
+Five behaviors are the point rather than the implementation:
+
+- **It reviews against what the repository has written down.** The code
+  style zone of `AGENTS.md` for the conventions, the governing spec for the
+  scope the work was authorised against, and the dependency versions
+  actually installed for how a library is meant to be used. It ships no
+  quality checklist of its own, for the reason `pdlc-build` ships no
+  command table. Sources the repository does not have are named as missing
+  rather than passed over.
+- **A library finding is grounded or it is marked unverified.** The
+  installed version decides — manifest and lockfile, then the source, type
+  definitions or docstrings in the tree, then that version's published
+  documentation. A misremembered API produces the most confident wrong
+  finding a model can emit, and it is indistinguishable from a grounded one
+  unless the grounding is stated.
+- **Findings are graded and one line each** — blocking, to fix, detail. The
+  grade is the bar: a review that raises everything at equal weight is read
+  once and skipped afterwards.
+- **A substantive finding the user declines goes into the governing spec's
+  Known gaps**, so it is not re-raised at every later review. Declined
+  details leave nothing behind, and where no spec governs the change
+  nothing is written.
+- **A correction is applied through the build loop, never beside it**
+  ([ADR-0015](adr/0015-review-corrections-enter-the-build-loop.md)). Each
+  one is a unit of work there, exactly as a behavior the spec names is: a
+  correction that changes behavior arrives with a test, one that changes
+  none says it has nothing to assert, and the loop's closing steps run once
+  over the set. The skill executes nothing on its own authority, so it adds
+  no execution surface to the product.
+
+The skill commits nothing. The review ends on a working tree, and the
+commit stays with whoever owns it.
+
+### 3.6 Ship the skeletons
 
 Four templates (`AGENTS.md`, `PRODUCT.md`, `adr.md`, `spec.md`) bundled with
 the skills and read at runtime. They are commented skeletons, not tutorials:
@@ -213,14 +263,14 @@ estimated: it is what decides whether the file splits into nested files. The
 spec template carries the Regulated data section, deleted when it does not
 apply rather than left empty.
 
-### 3.6 Adapt to a repository that already uses `docs/`
+### 3.7 Adapt to a repository that already uses `docs/`
 
 The documentation root defaults to `docs/`. A repository where that directory
 is taken puts A-PDLC Kit elsewhere and records it in `AGENTS.md`, in one
 line. No configuration file is created
 ([ADR-0002](adr/0002-docs-root-without-config-file.md)).
 
-### 3.7 Run on more than one host
+### 3.8 Run on more than one host
 
 The same `skills/` tree serves Claude Code and GitHub Copilot. Nothing in it
 is host-specific: bundled files are reached by paths relative to the skill's
@@ -237,8 +287,9 @@ documentation discipline is three files — what every skill needs, what a
 skill writing `AGENTS.md` or `PRODUCT.md` needs, what a skill writing a
 decision record needs — and a skill names the ones it uses
 ([ADR-0010](adr/0010-shared-reference-split-by-need.md)). The build loop is a
-fourth, separate file for a separate concern, read only by `pdlc-build` and by
-`pdlc-feature` at its own step 6. An agent's context is the scarce resource:
+fourth, separate file for a separate concern, read by `pdlc-build`, by
+`pdlc-feature` at its own step 6, and by `pdlc-review` only once the user has
+selected corrections to apply. An agent's context is the scarce resource:
 instructions loaded and never applied are paid for on every invocation, and
 they displace the repository being documented.
 
@@ -252,18 +303,22 @@ they displace the repository being documented.
   script that checks its own documents; it ships inert, no skill invokes it,
   and it never runs on a documented repository
   ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
-- **The commands a skill has an agent run are git's, and — inside the build
-  loop only — a repository's own.** Reading a repository was never in
-  question — `pdlc-init` has always used `git log`. Since
+- **The commands a skill has an agent run are git's, plus — inside the build
+  loop — the repository's own.** Reading a repository was never in question:
+  `pdlc-init` has always used `git log`. Since
   [ADR-0012](adr/0012-a-spec-precedes-the-implementation-it-governs.md) a
-  skill also has the agent commit: `pdlc-feature` commits the draft spec the
-  go-ahead is given on, and commits the reconciled spec with the code.
+  skill also has the agent commit — `pdlc-feature` commits the draft spec
+  the go-ahead is given on, and the reconciled spec with the code.
   [ADR-0014](adr/0014-a-skill-may-run-discovered-repository-commands.md)
-  widens this for `pdlc-build`, and for `pdlc-feature` at its own step 6
-  alone: their test, lint, typecheck and build commands come from `AGENTS.md`
-  or the task runner's manifest, discovered and never invented. Nothing else
-  is executed, and nothing is executed without the user having approved what
-  it does.
+  widened the surface to a repository's own test, lint, typecheck and build
+  commands, discovered from `AGENTS.md` or the task runner's manifest and
+  never invented, and
+  [ADR-0015](adr/0015-review-corrections-enter-the-build-loop.md) supersedes
+  it to place that surface in the build loop rather than in a list of skills
+  — `pdlc-build`, `pdlc-feature` at its own step 6 and `pdlc-review` all
+  reach the same loop, and none of them executes anything outside it. The
+  set is exhaustive; nothing else is executed, and nothing is executed
+  without the user having approved the work it verifies.
 - **A-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
