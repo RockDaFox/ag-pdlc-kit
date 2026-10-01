@@ -1,6 +1,6 @@
 {
   "name": "a-pdlc-kit",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Installs and maintains a four-level documentation discipline on a repository — AGENTS.md (how the repo is written, to the cross-vendor convention), PRODUCT.md (what the product does and why, as delivered), adr/ (structural decisions, append-only), specs/ (a feature's decisions and rejected alternatives) — builds a spec into code and tests, test-first, once it has a go-ahead, and reviews a change against the repository's own conventions, its governing spec and the library versions actually installed. Use when bootstrapping documentation on an existing codebase, when building a feature whose decisions should be recorded, when recording a decision that produces no code, when a spec is ready to build against, or when a change is ready to be reviewed before a commit.",
   "author": {
     "name": "RockDaFox"
