@@ -62,7 +62,7 @@ forward.
    to the length and the plain wording
    [`decision-records.md`](../_pdlc-shared/decision-records.md) and
    [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) state, and report
-   the word count. `Status: Draft`. Say in one line whether an ADR looks
+   the line count. `Status: Draft`. Say in one line whether an ADR looks
    warranted, and do not write it yet.
 5. **Wait for an explicit go-ahead on the spec, then commit it.** What is
    being approved is the spec, not a summary of it. No commit and no code

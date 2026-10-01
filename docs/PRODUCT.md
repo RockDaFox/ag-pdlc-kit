@@ -261,8 +261,8 @@ boundaries — opens with a statement of the agent's role, and targets 150 lines
 budget is measured — `wc -l` on the file — and the count reported, never
 estimated: it is what decides whether the file splits into nested files. The
 spec template carries the Regulated data section, deleted when it does not
-apply rather than left empty. A spec stays near 500 words when drafted,
-counted with `wc -w` and reported. Every document is worded plainly: one idea
+apply rather than left empty. A spec stays within 200 lines, counted
+with `wc -l` and reported. Every document is worded plainly: one idea
 per sentence, the common word, the rule before its reason.
 
 ### 3.7 Adapt to a repository that already uses `docs/`
