@@ -75,6 +75,19 @@ commands run, their output, what was covered, what was left. Its test, lint
 and build commands come from the repository itself, discovered rather than
 guessed.
 
+**`/pdlc-review`** — on a change ready to be looked over before it is
+committed: the uncommitted working tree by default, or a branch, a commit range
+or a path. It reviews the way a tech lead would, against what the repository
+has already written down — its conventions, the spec that authorised the work,
+the installed version of the libraries the change calls into — and says which
+of those it does not have. Every finding is graded blocking, to fix or detail,
+fits on one line and is numbered. A finding about a library names what it is
+grounded in, or is reported as unverified. Nothing changes until you choose
+which findings to apply; those go through the build loop, so a correction that
+changes behavior arrives with a test. A substantive finding you decline is
+recorded in the spec's Known gaps, so it does not come back at the next review.
+Nothing calls it automatically, and it commits nothing.
+
 ## Contributing
 
 Read [`AGENTS.md`](AGENTS.md). The repository follows the discipline it
