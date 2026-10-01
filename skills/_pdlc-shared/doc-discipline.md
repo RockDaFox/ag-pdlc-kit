@@ -115,6 +115,24 @@ These apply to all four levels.
   condition under which it should be added. A gap nobody wrote down comes back
   as a bug report.
 
+## Plain wording
+
+The reader is a teammate who was not in the session, and reads each sentence
+once. A document that needs a second reading to be understood has not done its
+job, however accurate it is.
+
+- **One idea per sentence, 25 words at most.** No chain of clauses joined by
+  semicolons or dashes. A sentence that needs a second reading is split in two.
+- **A verb for the action, not a noun built from it.** "The service retries
+  the payment", not "retrying of the payment is performed by the service".
+- **The common word.** "Use", "so", "because" — not "leverage", "in order to",
+  "ensures that".
+- **What happens, not an image for it.** "A stale entry is served after the
+  update", not "the cache drifts".
+- **The rule first, its reason in one clause after it.** How the decision was
+  reached is not part of it. An option that was weighed and lost goes in
+  Rejected alternatives, in one line.
+
 ## Language
 
 Write in the language the repository already documents in — check existing

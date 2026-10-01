@@ -3,7 +3,7 @@
 > **Status: Shipped**
 >
 > Living document: any change to the `pdlc-feature` skill is reflected here in
-> the same change. Revised 2026-09-16.
+> the same change. Revised 2026-10-01.
 
 ## Summary
 
@@ -85,6 +85,15 @@ The routing between spec and ADR is not decided here. It is stated once in
     the shared reference, rather than kept as this skill's own implicit
     version of it. A session that stops at the go-ahead never pays for build
     instructions it will not use.
+15. **The spec is short and plainly worded, by instruction.** The template
+    asks for one sentence per decision and one line per rejected alternative.
+    `decision-records.md` sets a budget of about 500 words, counted with
+    `wc -w` and reported. `doc-discipline.md` holds the wording rules, such as
+    one idea per sentence. The kit's five specs have items of 46 words at the
+    median and 105 at the 90th percentile, and no instruction asked for less.
+16. **The spec has a Non-goals section and none for the files touched.** The
+    build loop stops at the non-goals, so they need a fixed place. The files
+    touched are in the code, and a list of them goes stale at the next rename.
 
 ## Rejected alternatives
 
@@ -123,6 +132,13 @@ The routing between spec and ADR is not decided here. It is stated once in
 - **A regulated-data section in every spec, empty when it does not apply** —
   rejected: an empty compliance section in ninety specs trains the reader to
   skim past the one that is filled. The section is present or absent.
+- **A length budget with no wording rules** — rejected: it cuts earlier but
+  does not make a sentence simpler.
+- **Wording rules with no budget** — rejected: a word count can be checked and
+  reported, a style rule cannot.
+- **Wording rules in `decision-records.md`, for specs only** — rejected: ADRs,
+  `PRODUCT.md` and `AGENTS.md` show the same noise, and `doc-discipline.md` is
+  already read before any write.
 
 ## Known gaps
 
@@ -135,3 +151,6 @@ The routing between spec and ADR is not decided here. It is stated once in
 | No handling of a feature spanning several repositories | A monorepo or a split front/back project needs it |
 | Nothing verifies the regulated-data answer ever arrived, once a spec records the question as unanswered | A spec is found carrying an unanswered escalation long after the feature shipped |
 | The whole flow — question round, recap, go-ahead — runs at the same weight for a one-line change as for a new subsystem | A real session is observed paying the full ceremony on a trivial fix |
+| Nothing enforces the budget or the wording: the model counts and reports | A spec is found well past the budget |
+| The effect of the wording rules on a real session is not measured | A spec written in a target repository is read and found still wordy |
+| The kit's own specs are 2 to 5 times the budget | Each is next revised for another reason |

@@ -55,10 +55,15 @@ forward.
    rounds as possible; do not trickle questions one at a time.
 4. **Write the spec.** It replaces the recap rather than following it — the
    same content, in a file instead of a message: what gets built, explicit
-   non-goals, the decisions taken with the reason each won, the alternatives
-   just rejected with the reason each lost, the files and areas touched, and
-   how it fits existing conventions. `Status: Draft`. Say in one line whether
-   an ADR looks warranted, and do not write it yet.
+   non-goals, the decisions taken with the reason each won, and the
+   alternatives just rejected with the reason each lost. The template's
+   sections are the whole list: the files touched and the conventions followed
+   are not recorded, because the code and `AGENTS.md` already show them. Keep
+   to the length and the plain wording
+   [`decision-records.md`](../_pdlc-shared/decision-records.md) and
+   [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) state, and report
+   the word count. `Status: Draft`. Say in one line whether an ADR looks
+   warranted, and do not write it yet.
 5. **Wait for an explicit go-ahead on the spec, then commit it.** What is
    being approved is the spec, not a summary of it. No commit and no code
    before the answer — the draft sits in the working tree, unreviewed, until
@@ -75,7 +80,8 @@ forward.
    without a record.
 7. **Reconcile the spec with what shipped**, in the same change as the code,
    and set `Status: Shipped`. Record each divergence between the draft and the
-   implementation, with what the implementation showed. Then, and only then,
+   implementation, with what the implementation showed, as a line in Rejected
+   alternatives. Then, and only then,
    the ADR the work turned out to warrant. Never leave any of this as a
    follow-up: by the next session the rejected options are gone, and no later
    pass can recover them. Ask before committing this change — no commit before
@@ -93,10 +99,12 @@ when it does not exist yet. Written at step 4, reconciled at step 7; what each
 moment holds is stated in
 [`../_pdlc-shared/decision-records.md`](../_pdlc-shared/decision-records.md):
 
+- The non-goals, one line each.
 - The decisions taken, each with the reason that made it win.
 - The alternatives raised during step 3 and rejected, each with why. This is
   the section that only exists if written now.
-- Where the implementation diverged from the draft, and what it showed.
+- Where the implementation diverged from the draft, and what it showed, among
+  the rejected alternatives.
 - Known gaps, each with the condition that should bring it back.
 
 **An ADR** — `{docs_root}/adr/NNNN-<title>.md`, from

@@ -93,6 +93,15 @@ A spec written before the work and never reconciled documents the plan rather
 than the system, and does it with the authority of a record. The second moment
 is not optional.
 
+**A spec is read by a person before anything else, so it stays short.** About
+500 words when drafted, counted with `wc -w` on the file and the count
+reported, never estimated. Reconciliation adds a line per divergence. A spec
+that cannot fit is usually two features, and gets two specs. Three things are
+left out, because the reader finds them elsewhere. They are the request
+restated, the mechanics the code shows, and a decision that only follows a
+repository convention. Wording follows the Plain wording rules in
+[`doc-discipline.md`](doc-discipline.md).
+
 **An ADR is not written before the work.** Immutability starts at the commit,
 so a committed draft freezes a decision that can still move and leaves
 supersession as the only way out of a wording chosen too early. An ADR that a
