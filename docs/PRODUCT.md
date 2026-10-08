@@ -15,7 +15,7 @@
 
 A-PDLC Kit is the toolbox of the agentic developer: the skills a team invokes
 to work with a coding agent on a real repository, from one set of files that
-runs on both Claude Code and GitHub Copilot.
+runs on Claude Code, GitHub Copilot, and Vibe.
 
 It is internal tooling, not a deliverable: it is not sold, licensed or handed
 to anyone outside the organisation. The repositories it documents are another
@@ -274,9 +274,9 @@ line. No configuration file is created
 
 ### 3.8 Run on more than one host
 
-The same `skills/` tree serves Claude Code and GitHub Copilot. Nothing in it
+The same `skills/` tree serves Claude Code, GitHub Copilot, and Vibe. Nothing in it
 is host-specific: bundled files are reached by paths relative to the skill's
-own directory, and no host-provided variable is used. Both hosts have a plugin
+own directory, and no host-provided variable is used. All three hosts have a plugin
 marketplace and both install the repository whole; only the location of the
 manifest pair differs
 ([ADR-0003](adr/0003-provider-neutral-skills-layout.md)).
@@ -350,5 +350,5 @@ they displace the repository being documented.
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |
 | A blocking pre-commit check | Never, barring an explicit request from a team that wants it |
 | API or code-reference documentation generation | Never: that level is produced by language tooling, not by a decision discipline |
-| Hosts beyond Claude Code and Copilot | One is actually used. Others reading the same `SKILL.md` format will likely work already; none is claimed until tested |
+| Hosts beyond Claude Code, Copilot and Vibe | One is actually used. Others reading the same `SKILL.md` format will likely work already; none is claimed until tested |
 | A consistency check running on a documented repository | Never as product surface: it would execute on a machine the product does not own. This repository checks its own documents with maintainer tooling that ships inert and that no skill invokes ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)) |

@@ -51,6 +51,7 @@ gets a manifest pair pointing at the same tree
 ├── marketplace.json         one plugin, sourced from "./"
 └── plugin.json
 .github/plugin/              GitHub Copilot — same two files, its own location
+.vibe/                       Vibe — same two files, its own location
 ├── marketplace.json
 └── plugin.json
 skills/
