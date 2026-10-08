@@ -101,7 +101,7 @@ The routing between spec and ADR is not decided here. It is stated once in
   rejected: it needs hook configuration, which means something executing on
   the user's machine, against the no-executables constraint in `PRODUCT.md`.
   It is also noisy on exactly the repositories with the most specs.
-- **A blocking check before commit** — rejected: A-PDLC Kit cannot tell a
+- **A blocking check before commit** — rejected: Ag-PDLC Kit cannot tell a
   behavior change from a rename, so it would block on the second and be
   disabled by the end of the week.
 - **Writing the spec only after implementing** — this skill's original shape,

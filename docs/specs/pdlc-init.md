@@ -99,7 +99,7 @@ It runs once per repository. Keeping the documents alive afterwards is
 |---|---|
 | No strategy for a repository too large to survey in one pass | A monorepo is attempted and the survey step runs out of context |
 | Assumes git; a repository without history yields a thinner `AGENTS.md` | A target project uses another VCS, or none |
-| No refresh mode for a repository where A-PDLC Kit already ran | The documents have drifted enough that re-deriving beats editing |
+| No refresh mode for a repository where Ag-PDLC Kit already ran | The documents have drifted enough that re-deriving beats editing |
 | No migration for a repository initialised at 0.1.0, whose product document is named `PRD.md` | A repository on the old name asks for it. The skill treats the file as existing prose and proposes a merge, but never renames it |
 | No check that the merged `AGENTS.md` follows the section order it was written to | Section order is judgment, so a check would need a model reading the file, not a command. The line budget is no longer a gap: it is measured with `wc -l` ([ADR-0008](../adr/0008-one-maintainer-side-check-script.md) draws the line between a command an agent runs and a file the product ships) |
 | Contract recognition is by section heading, so a contract naming those sections differently is merged as ordinary prose | A real repository is met whose contract headings do not match |

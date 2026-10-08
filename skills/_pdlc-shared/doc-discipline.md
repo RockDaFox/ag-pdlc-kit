@@ -76,7 +76,7 @@ any time from the code: what the repo contains is readable today.
 ADRs and specs record **decisions** — what was weighed, what was rejected, why
 one option won — and none of that survives in a repository. The code shows the
 surviving choice and nothing else. So the decision log starts on the day
-A-PDLC Kit is installed and only grows forward; nothing is backfilled.
+Ag-PDLC Kit is installed and only grows forward; nothing is backfilled.
 
 A structural choice already visible in the code is not a missing ADR. It is
 state, and it belongs in the Architecture or Traps section of `AGENTS.md`. It

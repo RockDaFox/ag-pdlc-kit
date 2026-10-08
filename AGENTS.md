@@ -1,4 +1,4 @@
-# A-PDLC Kit
+# Ag-PDLC Kit
 
 How this repository is written. What the product does is in
 [`docs/PRODUCT.md`](docs/PRODUCT.md); why it is built this way is in
@@ -34,7 +34,7 @@ both hosts install the same tree through their own marketplace:
 
 ```
 /plugin marketplace add <absolute path to this repository>
-/plugin install a-pdlc-kit@a-pdlc-kit
+/plugin install ag-pdlc-kit@ag-pdlc-kit
 ```
 
 Components are discovered at session start, so a change needs a new session,

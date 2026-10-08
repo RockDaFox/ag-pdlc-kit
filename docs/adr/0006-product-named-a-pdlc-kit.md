@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Accepted |
+| **Status** | Superseded by ADR-0016 |
 | **Date** | 2026-09-15 |
 | **Supersedes** | — |
 

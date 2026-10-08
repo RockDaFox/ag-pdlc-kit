@@ -1,6 +1,6 @@
-# Product — A-PDLC Kit
+# Product — Ag-PDLC Kit
 
-> Product document: what A-PDLC Kit does and why, as delivered. **Written
+> Product document: what Ag-PDLC Kit does and why, as delivered. **Written
 > 2026-09-14 alongside the first version of the plugin, revised 2026-09-16** —
 > not by reading the code and history, which did not exist yet. The sections
 > describe what ships; the gap between intent and delivered is for a later
@@ -13,7 +13,7 @@
 
 ## 1. Executive summary
 
-A-PDLC Kit is the toolbox of the agentic developer: the skills a team invokes
+Ag-PDLC Kit is the toolbox of the agentic developer: the skills a team invokes
 to work with a coding agent on a real repository, from one set of files that
 runs on Claude Code, GitHub Copilot, and Vibe.
 
@@ -42,7 +42,7 @@ files sits in one, and the others link to it.
 The second invariant is that **records are written forward**. What is readable
 from the code — state — can be generated at any time. What is not — why one
 option won over another — is only recorded at the moment it is decided.
-A-PDLC Kit never backfills
+Ag-PDLC Kit never backfills
 ([ADR-0004](adr/0004-decision-records-are-written-forward.md)).
 
 The discipline is the first family in the toolbox and not the whole of it: what
@@ -66,7 +66,7 @@ which is not product surface and which no skill invokes
 
 ## 2. Users
 
-- **The developer installing A-PDLC Kit** on an existing repository. They run
+- **The developer installing Ag-PDLC Kit** on an existing repository. They run
   `pdlc-init` once, read what came out, correct it, commit it.
 - **The coding agent** that works on the repository afterwards. It is both the
   first reader of the four documents — the reason they are structured rather
@@ -74,7 +74,7 @@ which is not product surface and which no skill invokes
   instruction addressed to it, not a program run beside it.
 - **The human newcomer**, reading the same files for the same reasons.
 
-No roles, no accounts, no notion of a team in the product: A-PDLC Kit is a
+No roles, no accounts, no notion of a team in the product: Ag-PDLC Kit is a
 set of files in a repository.
 
 ## 3. Functional behavior
@@ -268,7 +268,7 @@ per sentence, the common word, the rule before its reason.
 ### 3.7 Adapt to a repository that already uses `docs/`
 
 The documentation root defaults to `docs/`. A repository where that directory
-is taken puts A-PDLC Kit elsewhere and records it in `AGENTS.md`, in one
+is taken puts Ag-PDLC Kit elsewhere and records it in `AGENTS.md`, in one
 line. No configuration file is created
 ([ADR-0002](adr/0002-docs-root-without-config-file.md)).
 
@@ -321,7 +321,7 @@ they displace the repository being documented.
   reach the same loop, and none of them executes anything outside it. The
   set is exhaustive; nothing else is executed, and nothing is executed
   without the user having approved the work it verifies.
-- **A-PDLC Kit does not act, it instructs.** Everything it produces goes
+- **Ag-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
 - **Every generated document carries the AI-assistance notice** and a reminder

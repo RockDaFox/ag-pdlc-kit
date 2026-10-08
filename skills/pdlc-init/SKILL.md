@@ -1,9 +1,9 @@
 ---
 name: pdlc-init
-description: Bootstrap the A-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Use when a repo has no product document, no specs and no AGENTS.md, or when the user asks to set up, install or initialise A-PDLC Kit on a project.
+description: Bootstrap the Ag-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Use when a repo has no product document, no specs and no AGENTS.md, or when the user asks to set up, install or initialise Ag-PDLC Kit on a project.
 ---
 
-# A-PDLC Kit init
+# Ag-PDLC Kit init
 
 Documentation written from a repo's code and history describes what was
 actually shipped. Documentation written from memory or from an old ticket
@@ -97,7 +97,7 @@ guessed), the architecture in a paragraph, the code style the code actually
 exhibits, and every trap the history shows someone already hit. A rule you
 cannot point at evidence for does not go in. Its Documentation section names
 `{docs_root}`, says what each level holds, and states that the decision log
-starts from the A-PDLC Kit installation.
+starts from the Ag-PDLC Kit installation.
 
 Keep to the template's section order and to the 150-line budget — both come
 from the cross-vendor convention, stated once in `state-documents.md`.

@@ -9,7 +9,7 @@ restructured.
 
 `AGENTS.md` is not this product's invention. It is the cross-vendor format for
 instructing coding agents: plain Markdown, no frontmatter, no required field,
-and nested files where the one nearest the edited code wins. A-PDLC Kit writes
+and nested files where the one nearest the edited code wins. Ag-PDLC Kit writes
 that file rather than one of its own, and stays inside the convention. Two
 properties of it shape every `AGENTS.md` written or merged here.
 
