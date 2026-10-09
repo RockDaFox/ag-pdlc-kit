@@ -3,7 +3,7 @@
 > **Status: Shipped**
 >
 > Living document: any change to the `pdlc-feature` skill is reflected here in
-> the same change. Revised 2026-10-01.
+> the same change. Revised 2026-10-09.
 
 ## Summary
 
@@ -87,13 +87,19 @@ The routing between spec and ADR is not decided here. It is stated once in
     instructions it will not use.
 15. **The spec is short and plainly worded, by instruction.** The template
     asks for one sentence per decision and one line per rejected alternative.
-    `decision-records.md` sets a budget of 200 lines, counted with `wc -l`
+    `decision-records.md` sets a budget of 500 lines, counted with `wc -l`
     and reported. `doc-discipline.md` holds the wording rules, such as
     one idea per sentence. The kit's five specs have items of 46 words at the
     median and 105 at the 90th percentile, and no instruction asked for less.
 16. **The spec has a Non-goals section and none for the files touched.** The
     build loop stops at the non-goals, so they need a fixed place. The files
     touched are in the code, and a list of them goes stale at the next rename.
+17. **The spec states its behavior as numbered, observable results.** The
+    build writes at least one test per line, so a line has to be something a test can
+    assert from outside; a decision's reason is not. The go-ahead at step 5
+    now covers what will be tested as well as what was decided, which is the
+    one review of the tests' relevance that happens before they exist
+    ([ADR-0017](../adr/0017-a-spec-states-its-behavior-as-testable-lines.md)).
 
 ## Rejected alternatives
 

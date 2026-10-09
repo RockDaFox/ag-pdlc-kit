@@ -110,8 +110,8 @@ Three guardrails are part of the behavior, not of the implementation:
 The `pdlc-feature` skill takes an informal request and builds it, keeping the
 record of what it decides. The sequence: read the repo, list the open points,
 ask in as few rounds as possible, write the spec — decisions taken,
-alternatives rejected with their reason, expected behavior, non-goals, known
-gaps — and commit it as a draft, **wait for an explicit go-ahead on that
+alternatives rejected with their reason, expected behavior as numbered
+observable results, non-goals, known gaps — and commit it as a draft, **wait for an explicit go-ahead on that
 spec**, implement against it, then reconcile it with what shipped, in the same
 change as the code.
 
@@ -168,10 +168,13 @@ behaviors are the point rather than the implementation:
 ### 3.4 Build a spec, test-first
 
 The `pdlc-build` skill turns a spec into code, tests and an evidence block.
-It derives one test per behavior the spec states, writes it, runs it,
-confirms it fails for the reason stated, implements against that failure,
+It derives at least one test per numbered line of the spec's Behavior
+section, adds the edge cases it finds worth a test, names the line each
+covers, writes it against the result that line states, runs it, confirms it
+fails for the reason stated, implements against that failure,
 returns to green, then runs the repository's lint, typecheck and build
-commands and reports what ran, what it covered and what it left.
+commands and reports what ran, one row per Behavior line with its test, and
+what it left ([ADR-0017](adr/0017-a-spec-states-its-behavior-as-testable-lines.md)).
 
 Two entry points reach that loop for a build, stated once in
 `skills/_pdlc-shared/build-loop.md`: inside `pdlc-feature`, at its own step 6,
@@ -200,10 +203,13 @@ reaches the user once, in the evidence block at the end.
 The `pdlc-review` skill reads a diff and reports what an experienced tech
 lead would raise on it: code quality, the repository's own conventions,
 correct use of the libraries the change calls into, readability and
-maintainability for a human, and whether the change stayed inside what its
-spec authorised. It reports graded findings, asks which ones to apply, and
-sends each one the user selected into the build loop, which is what changes
-the code and what proves the change.
+maintainability for a human, whether the change stayed inside what its
+spec authorised, and whether its tests assert the results the spec's Behavior
+lines state. The change is read by an agent that did not write it, with no
+sight of the build's session or of its evidence block. The skill reports
+graded findings, asks which ones to apply, and sends each one the user
+selected into the build loop, which is what changes the code and what proves
+the change.
 
 It is invoked on demand and nothing calls it automatically. A review before
 a commit is the user's step to take, not a gate the product imposes —
@@ -261,7 +267,7 @@ boundaries — opens with a statement of the agent's role, and targets 150 lines
 budget is measured — `wc -l` on the file — and the count reported, never
 estimated: it is what decides whether the file splits into nested files. The
 spec template carries the Regulated data section, deleted when it does not
-apply rather than left empty. A spec stays within 200 lines, counted
+apply rather than left empty. A spec stays within 500 lines, counted
 with `wc -l` and reported. Every document is worded plainly: one idea
 per sentence, the common word, the rule before its reason.
 

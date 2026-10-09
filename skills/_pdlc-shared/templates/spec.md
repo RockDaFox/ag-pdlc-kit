@@ -49,9 +49,13 @@
 
 ## Behavior
 
-<!-- Optional. Only what a reader cannot infer: states and transitions, who
-     may trigger what, empty and error states, concurrency rules. A short list
-     or a table. Drop this section if the Decisions cover it. -->
+<!-- Numbered B1, B2... The build writes at least one test per line, so each
+     line is one result a test can assert from outside: what triggers it, and
+     what is returned, shown, stored or sent. Cover the empty and error
+     states, who may trigger what, and concurrency rules. A decision with
+     nothing to observe has no line here. Never name a function or a call. -->
+
+- **B1** — <trigger>: <observable result>.
 
 ## Rejected alternatives
 

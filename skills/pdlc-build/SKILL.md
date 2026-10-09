@@ -8,8 +8,9 @@ description: Turn a spec into code, tests and an evidence block, test-first — 
 A spec written before the work is a contract and a source of context at once:
 what the go-ahead was given on, and what the implementation and its tests are
 written from. This skill is what reads that contract and carries it out —
-one test per behavior it states, each one read red before it is made green,
-nothing beyond what the spec authorised.
+a test for each behavior it states and for the cases around them that the
+agent finds worth one, each read red before it is made green, and no behavior
+the spec leaves open decided on its own.
 
 Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) first, then
 [`build-loop.md`](../_pdlc-shared/build-loop.md) — the loop itself, its
@@ -52,7 +53,8 @@ stated-once rule exists to prevent.
 
 **No spec at all, and the scope came from elsewhere** — a ticket, a bug with a
 known cause. State in a few lines what the work is understood to be, from what
-was given, and wait for confirmation before the loop runs. This is not a
+was given, as the observable results the loop will write its tests from, and
+wait for confirmation before the loop runs. This is not a
 clarification round: if what was given does not actually settle the scope, say
 that plainly and point at `pdlc-feature` rather than guessing or asking
 questions of your own — asking is that skill's job, and a second skill that

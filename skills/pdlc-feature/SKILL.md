@@ -54,7 +54,8 @@ forward.
    are clear, plain text for open-ended points. Batch everything into as few
    rounds as possible; do not trickle questions one at a time.
 4. **Write the spec.** It replaces the recap rather than following it — the
-   same content, in a file instead of a message: what gets built, explicit
+   same content, in a file instead of a message: what gets built, as numbered
+   observable results the build can write a test from, explicit
    non-goals, the decisions taken with the reason each won, and the
    alternatives just rejected with the reason each lost. The template's
    sections are the whole list: the files touched and the conventions followed
@@ -100,6 +101,8 @@ moment holds is stated in
 [`../_pdlc-shared/decision-records.md`](../_pdlc-shared/decision-records.md):
 
 - The non-goals, one line each.
+- The behavior, one numbered line per result a test can assert — what
+  triggers it and what is observed, with the empty and error states.
 - The decisions taken, each with the reason that made it win.
 - The alternatives raised during step 3 and rejected, each with why. This is
   the section that only exists if written now.

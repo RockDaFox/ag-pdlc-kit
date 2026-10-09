@@ -32,15 +32,23 @@ step that ran no command is not reportable as one.
 
 ## The loop
 
-For each unit of work — a behavior the spec names, in the order the spec
-states it, or a correction the review selected:
+For each unit of work — a line of the spec's Behavior section (B1, B2...), in
+the order the spec states them, or a correction the review selected. A spec
+with no Behavior section, written before the template required one, has none
+to number: before the first test, state in a few lines the observable results
+read from its Decisions, so that each unit still has a line to cite.
 
-1. **State the failure expected**, in one line, before writing anything: what
-   assertion is expected to fail, and why. "Something breaks" is not a stated
-   failure.
-2. **Write the test** for that unit only — none beyond what the spec names,
-   and nothing inside its non-goals; from a review, none beyond the finding
-   the user selected.
+1. **State the failure expected**, in one line, before writing anything: which
+   Behavior line the unit covers, which assertion is expected to fail, and
+   why. "Something breaks" is not a stated failure.
+2. **Write the test** for that unit: the line's own result first, then the
+   cases around it that are worth a test — a boundary, an empty or invalid
+   input, a dependency that fails, an interaction with another line. None
+   inside the non-goals; from a review, none beyond the finding the user
+   selected. Name it after the behavior and assert the result the line states, as the caller would see it: a return value, an output, a
+   stored record, a response. A call made, an internal structure or a mock's
+   own answer is not that result, so a test whose assertion a mock satisfies
+   by itself covers nothing. Stub only what lies outside the unit.
 3. **Run it, and read why it failed.** A red for the reason just stated
    clears this step. A red from an import error, a typo, or a missing fixture
    is not exercising the behavior; fix the test and run it again rather than
@@ -53,6 +61,18 @@ states it, or a correction the review selected:
    satisfy it.
 
 Steps 1–5 are performed, not narrated — see below.
+
+**Tests the spec did not list.** The spec cannot name every case worth a test,
+and the loop does not wait for it to. A test found this way cites the line it
+extends, is marked as found in the evidence block, and goes through steps 1–5
+like any other. Two limits keep it from becoming scope. When its expected
+result follows from the line it extends, it is written and implemented. When
+that result is a choice the spec does not make — what should happen on an
+input the line never mentions — the loop decides nothing: it writes no test
+and no code for it, and the evidence block carries it as a proposed Behavior
+line for the user to add to the spec. A found test that is green on its first
+run exercised no gap: keep it only if it asserts something the line's own test
+does not, and report it as green on first run.
 
 A correction that changes no behavior — a shape made clearer, a hand-rolled
 helper replaced by what the library already provides — has no failure to
@@ -98,13 +118,18 @@ overrides what a test just showed.
 
 Session and pull-request output, never a spec section: a passing count is
 true for one commit, and a spec records decisions, not state. For each unit —
-the command run, its result, and which acceptance criterion or which
-selected finding it covers, or that the unit had nothing to assert and why.
-Then the repository's lint, typecheck and build output. Then what was left: a
-non-goal reached, a gap the spec already names, anything a discrepancy above
-returned for.
+the command run, its result, and which Behavior line or which selected finding
+it covers, or that the unit had nothing to assert and why. Give one row per
+Behavior line with the test that exercises it, so that a line with no test
+shows as an empty row and a test with no line cannot hide. Then the
+repository's lint, typecheck and build output. Then what was left: a Behavior
+line with no test and the reason, each proposed Behavior line, a non-goal
+reached, a gap the spec already
+names, anything a discrepancy above returned for.
 
 Done is not reportable while any of this is missing: every test read red
-before its implementation existed, the targeted tests green, the repository's
-own checks run, the diff inspected, the remaining limitations named. "Tests
-pass" without the command and its output is a claim, not evidence.
+before its implementation existed, apart from a found test reported as green
+on first run, every Behavior line covered by a test or
+named as left, the targeted tests green, the repository's own checks run, the
+diff inspected, the remaining limitations named. "Tests pass" without the
+command and its output is a claim, not evidence.

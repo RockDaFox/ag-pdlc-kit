@@ -73,7 +73,8 @@ to it rather than restating the reasoning.
 A spec is written at two moments, and they do different jobs.
 
 **Before the work**, once the scope is agreed: the decisions taken, the
-alternatives raised and rejected with their reasons, the behavior expected, the
+alternatives raised and rejected with their reasons, the behavior expected as
+numbered, observable results — the build writes at least one test per line — and the
 non-goals. It carries `Status: Draft`, and once the user has reviewed and
 approved it, is committed as it stands, because it is two things at once —
 the contract the work is authorised against, and the context the
@@ -93,7 +94,7 @@ A spec written before the work and never reconciled documents the plan rather
 than the system, and does it with the authority of a record. The second moment
 is not optional.
 
-**A spec is read by a person before anything else, so it stays short.** 200
+**A spec is read by a person before anything else, so it stays short.** 500
 lines at most, counted with `wc -l` on the file and the count reported, never
 estimated. A spec that cannot fit is usually two features, and gets two specs.
 Three things are

@@ -2,7 +2,7 @@
 
 > **Status: Shipped**
 >
-> Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-09-28.
+> Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-10-09.
 
 ## Summary
 
@@ -22,7 +22,7 @@ The loop itself lives in `skills/_pdlc-shared/build-loop.md` so that both entry 
 1. **The build loop is a skill, and `pdlc-feature` delegates to it rather than absorbing it.** The loop is identical whether the scope came from a clarification round or arrived already settled, and the second case is common — a ticket, a plan from another session, a bug fix. Folding the loop into `pdlc-feature` would leave that case with no route, or with a route through four steps it has to skip.
 2. **Test-first is an ordering requirement, not a recommendation.** An implementer that writes code and then tests is grading its own homework: the test that results confirms what the implementation does, not what the spec asked for. Writing it before the implementation exists to read removes the failure mode structurally instead of asking the agent to resist it. The reason this is firmer for an agent than the same discipline is for a human is the self-reference, not rigour.
 3. **The red is read, not merely observed.** A test failing on an import error, a typo or a missing fixture is not exercising the behavior; one failing on a false assertion is. The loop states the failure it expects before running, and a failure for any other reason sends the test back rather than forward into implementation. Without this, the red step reduces to a ritual that any broken file passes.
-4. **The spec is the input, read from disk and not from memory.** It is a file, so it is re-readable mid-task, survives the session, and can be picked up by a different agent — which is why it is committed at the go-ahead rather than held in a message. The test list comes from the behavior it states, and its non-goals bind the suite as much as its behavior does: no test beyond what the spec names.
+4. **The spec is the input, read from disk and not from memory.** It is a file, so it is re-readable mid-task, survives the session, and can be picked up by a different agent — which is why it is committed at the go-ahead rather than held in a message. The test list starts from the behavior it states, and its non-goals bind the suite as much as its behavior does: no test inside them. Beyond the lines it names, the agent adds the cases it finds worth a test (decision 15).
 5. **A repository that contradicts the spec stops the build.** A pattern absent where the spec assumed one, an assumption a test disproves: the skill reports the discrepancy and returns for a new go-ahead. It never reconciles a wrong assumption on its own initiative, because a quiet repair is a scope decision taken without a record. This is the counterweight to a spec existing before the code — the spec is a contract under test, not an authority.
 6. **It owns no document when it runs inside `pdlc-feature`.** The reconciliation, the ADR and `PRODUCT.md` stay with that skill's step 7. One record, one writer.
 7. **Standalone, it routes what the build decided through the three tests.** A build with no `pdlc-feature` around it still produces decisions that constrain later code, and those must not fall on the floor because of which entry point was used. It loads `decision-records.md` in that case only, applies the scope, reversal-cost and lifetime tests, and writes the spec entry or the ADR they select. Where the build decided nothing worth a record, it says so and writes nothing.
@@ -32,18 +32,20 @@ The loop itself lives in `skills/_pdlc-shared/build-loop.md` so that both entry 
 11. **It runs the repository's own commands, discovered, never invented.** Test, lint and typecheck commands come from `AGENTS.md` or from the task runner's manifest, with their real flags, which is the rule `pdlc-init` already follows when it writes them down. The skill ships no per-stack command table: it would be an invented example that rots, and this is a skill where a guessed command does something rather than merely reading wrong. [ADR-0014](../adr/0014-a-skill-may-run-discovered-repository-commands.md) recorded the widening this decision needed against `docs/PRODUCT.md` §4's git-only constraint, and [ADR-0015](../adr/0015-review-corrections-enter-the-build-loop.md) carries it forward unchanged in substance.
 12. **`pdlc-feature` loads `build-loop.md` at step 6, not at the start.** The clarification round has no use for build instructions, and a session that stops at the go-ahead would have paid for them anyway — ADR-0010's reasoning applied inside a single invocation rather than across skills.
 13. **The loop is performed, not narrated.** The red step is a check the agent runs, not a message it sends: a test failing before its implementation exists is the expected outcome, so a line reporting it — or reporting which file comes next — pays output tokens for what the reader already knows. The failure expected at step 1 lives in the test's name and assertion, which are re-readable; the red reaches the user once, in the evidence block. Mid-loop output is reserved for what is not expected: a red for the wrong reason, a contradiction, a missing command. This is ADR-0010's economy applied to output rather than input — the loop is long, and a per-step account of it is paid again for every behavior the spec names.
+14. **Each test cites a line of the spec's Behavior section, and asserts the result that line states.** A test passes the loop's other checks — in scope, red for the stated reason — and can still check nothing the spec asked for: an internal call, a mock answering itself. Naming the line before writing makes the link between spec and test explicit, and asserting what a caller would see keeps the test on the behavior rather than on the implementation. The evidence block reports one row per line with its test, so an uncovered line and a test with no line are both visible. This narrows the gap without closing it: the agent that writes the test still judges whether it fits the line, and [`pdlc-review`](pdlc-review.md) makes the independent reading of the tests against the lines, on demand.
+15. **The agent adds the tests it finds relevant, and decides nothing the spec leaves open.** A spec cannot list every boundary, empty input or failing dependency, and an agent that stops at the listed lines tests only what the author thought of. A found test cites the line it extends and is marked as found in the evidence block. When its expected result follows from that line, it is written and implemented. When the result is a choice the spec does not make, the loop writes no test and no code for it and reports it as a proposed Behavior line, because a quiet decision there is the scope decision decision 5 forbids. A found test green on its first run is kept only if it asserts something the line's own test does not, and is reported as such.
 
 ## Behavior
 
 The loop, once a spec is in hand:
 
-1. Derive the test list from the spec — one test per named behavior, none beyond it.
-2. For each: state the failure expected, write the test, run it, confirm that failure. Silently — only an unexpected red or a contradiction is reported before the end.
+1. Derive the test list from the spec's Behavior section — at least one test per numbered line, then the edge cases worth a test around them, none inside the non-goals.
+2. For each: state the Behavior line covered and the failure expected, write the test against the result that line states, run it, confirm that failure. Silently — only an unexpected red or a contradiction is reported before the end.
 3. Implement against that failure only.
 4. Run the targeted tests, then the repository's lint, typecheck and build where they exist.
 5. Inspect the diff, then report the evidence block.
 
-Done is not reportable while any of these is missing: each test confirmed red before its implementation existed, the targeted tests green, the repository's own checks run, the diff inspected, and the remaining limitations named. "Tests pass" without the command and its output is a claim, not evidence.
+Done is not reportable while any of these is missing: each test confirmed red before its implementation existed, every Behavior line covered by a test or named as left, the targeted tests green, the repository's own checks run, the diff inspected, and the remaining limitations named. "Tests pass" without the command and its output is a claim, not evidence.
 
 ## Rejected alternatives
 
@@ -60,8 +62,10 @@ Done is not reportable while any of these is missing: each test confirmed red be
 
 | Left out | Add it when |
 |---|---|
-| Nothing verifies the test was really written and red first; the evidence block is the agent's own account | The evidence block is caught overstating itself, and a check on a repository the product owns becomes acceptable |
+| Nothing limits how many found tests a unit accumulates, and each costs a pass through the loop | A build is caught padding a unit with tests that add nothing |
+| Nothing verifies the test was really written and red first, or that it fits the Behavior line it cites; the evidence block is the agent's own account | The evidence block is caught overstating itself, and a check on a repository the product owns becomes acceptable |
 | No rule for a suite too slow to sit inside the loop | A repository is worked on where the targeted run takes minutes rather than seconds |
 | No handling of a flaky test, which produces a red that means nothing | A build stops on one and the loop draws the wrong conclusion |
 | Concurrency is not addressed: two builds in flight on one clone collide | The isolation skill exists and can own that rule rather than this one restating it |
 | Nothing routes a finished build into [`pdlc-review`](pdlc-review.md); reaching it is a step the user takes, by that skill's own decision 1 | Forgetting that step costs more than the automatic gate the kit deliberately did not impose |
+| A spec written before the template required a Behavior section has none to cite; the loop derives the lines from its Decisions and states them first | Such a build produces a test that misses what the spec meant |

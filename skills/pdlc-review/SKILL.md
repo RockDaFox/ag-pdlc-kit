@@ -1,6 +1,6 @@
 ---
 name: pdlc-review
-description: Review a change the way an experienced tech lead would — code quality, the repository's own conventions, correct use of the libraries in play, readability and maintainability for a human, and whether the change stayed inside what its spec authorised. Reports findings graded blocking, to fix and detail, asks which ones to apply, applies only those, then runs the repository's own checks. Invoked on demand, on the uncommitted working tree or on a target given. Use when a change is ready to be looked over before it is committed, or when the user invokes /pdlc-review.
+description: Review a change the way an experienced tech lead would — code quality, the repository's own conventions, correct use of the libraries in play, readability and maintainability for a human, whether the change stayed inside what its spec authorised, and whether its tests assert what the spec states. Reads the change in an agent independent of the one that built it, and reports findings graded blocking, to fix and detail, asks which ones to apply, applies only those, then runs the repository's own checks. Invoked on demand, on the uncommitted working tree or on a target given. Use when a change is ready to be looked over before it is committed, or when the user invokes /pdlc-review.
 ---
 
 # Review a change
@@ -10,6 +10,14 @@ A review is worth what it refuses to say. Asked to look at a diff, a model will 
 Read [`doc-discipline.md`](../_pdlc-shared/doc-discipline.md) first: it resolves `{docs_root}` and holds the routing test, which the last step needs. Read [`build-loop.md`](../_pdlc-shared/build-loop.md) later, and only once the user has selected something — that file is what applies the corrections, and a review the user closes without selecting any has no use for it.
 
 This skill is invoked on demand, and nothing calls it automatically: [`pdlc-build`](../pdlc-build/SKILL.md) ends on its own evidence block and its own ask, and a review before that commit is the user's decision to make, not a gate the kit imposes. The relation runs the other way round — a review does not sit inside the loop, it reaches into it once the user has chosen what to correct.
+
+## Who reads the change
+
+The review is made by an agent that did not write the change and has not seen the conversation that produced it. The session that wrote the tests is the worst judge of them: it knows what they were meant to say, and reads that into what they say.
+
+Where this session wrote, discussed or planned the change, hand the reading to a fresh agent — a subagent where the host offers one. Give it the target, the path of the spec when one governs the change, and this file's sections from What is reviewed to Grading, to follow as written. Give it nothing else: not the build's evidence block, not a summary of the change, not the reasons for a choice in it, because each of those carries the author's reading across with it. It reads and reports; it edits nothing and runs nothing. Where the host cannot start one, say so and ask the user to run this skill again in a new session, rather than reviewing from here and presenting it as independent. A session with no memory of the change, a new one, reviews directly.
+
+The invoking session relays the findings as returned: numbered, graded, the unverified ones marked. It does not drop, regrade or soften one; a disagreement is stated beside the finding, and the decision stays with the user. Everything from After the report on is done by this session, because it is the one that holds the conversation with the user and the build loop.
 
 ## What is reviewed
 
@@ -23,7 +31,7 @@ Four sources, in this order. Name at the start which of them the repository does
 
 **The conventions**, from the code style zone of `AGENTS.md` and from what the surrounding code actually does. Nothing here ships a quality checklist: a bundled one contradicts the repository the day the two disagree, and it goes stale without anyone noticing. Where the repository has written nothing down, say so and review against the surrounding code rather than declining to run.
 
-**The spec that authorised the work**, `{docs_root}/specs/<feature>.md`, on two questions no style guide answers: whether the diff reaches beyond what was authorised, and whether every behavior the spec states has something covering it. Where no spec governs the change, skip this axis and say it was skipped. Never reconstruct a contract from the code in order to have something to compare against — that is how a plausible invented record gets made.
+**The spec that authorised the work**, `{docs_root}/specs/<feature>.md`, on three questions no style guide answers: whether the diff reaches beyond what was authorised, whether every line of its Behavior section has a test, and whether each of those tests asserts the result its line states. Read the tests themselves, not the evidence block's account of them: that block is the account of the agent that wrote the tests, and this is the one reading of them made by someone else. A test that checks a call made, an internal structure or a mock's own answer covers nothing, and is a finding. So is a test that cites no line, a test found beyond the spec that sits inside its non-goals, and a result the spec leaves open that the code or a test decided instead of reporting it as a proposed line. A spec with no Behavior section has no lines to hold the tests to: say that, and do not write them from the code. Where no spec governs the change, skip this axis and say it was skipped. Never reconstruct a contract from the code in order to have something to compare against — that is how a plausible invented record gets made.
 
 **The libraries the change calls into**, standard and third party alike, judged on what the installed version provides. See below; this is the axis that needs the most care.
 
