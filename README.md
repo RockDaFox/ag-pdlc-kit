@@ -1,96 +1,57 @@
 # Ag-PDLC Kit
 
-The toolbox of the agentic developer: the skills you invoke to work with a
-coding agent on a real repository. Runs on Claude Code and GitHub Copilot from
-one set of files.
+The toolbox of the agentic developer: skills you invoke to work with a coding
+agent on a real repository. Runs on Claude Code and GitHub Copilot from one set
+of files, and on Vibe through the Claude Code manifest.
 
-The first family of tools in it writes down the reasons, because that is the
-gap that bites first. A coding agent has the code, never the reasons. Git
-history records what changed, not what was decided nor what was rejected. So
-settled questions get re-opened, rejected options get retried, and deliberately
-fixed bugs come back. Ag-PDLC Kit writes the reasons down at the moment they
-exist, and hands them back to the next piece of work as its context.
-
-## Four levels, each stating a thing once
-
-| File | Answers |
-|---|---|
-| `AGENTS.md` | How this repo is written — commands, conventions, traps. |
-| `docs/PRODUCT.md` | What the product does, and why, as delivered. |
-| `docs/adr/` | Structural technical decisions. Dated, append-only, superseded rather than rewritten. |
-| `docs/specs/` | A feature's decisions, its rejected alternatives, its known gaps. Living. |
-
-`PRODUCT.md` is deliberately not a PRD. It describes what the system does
-today, in the present indicative, and holds no requirement for work still to
-come — a team that owns real product requirements keeps them where they are.
-
-The documentation root defaults to `docs/` and can be anywhere — a repository
-that deviates says so in one line of `AGENTS.md`. There is no config file.
+A coding agent has the code, never the reasons: git history records what
+changed, not what was decided or rejected. So settled questions get re-opened
+and rejected options get retried. This kit writes the reasons down when they
+exist and hands them back to the next piece of work. Markdown only, nothing
+executable.
 
 ## Install
-
-Same command on both hosts, each reading its own manifest from this
-repository:
 
 ```
 /plugin marketplace add git@github.com:RockDaFox/ag-pdlc-kit
 /plugin install ag-pdlc-kit@ag-pdlc-kit
 ```
 
-Other hosts that read the same `SKILL.md` format will probably work from the
-`skills/` directory. None has been tested, so none is claimed.
+Start a new session afterwards: skills are discovered at session start.
 
 ## Use
 
-**`/pdlc-init`** — on a repository that has none of this. Reads the code
-and the git history, writes `AGENTS.md` and `PRODUCT.md` from what is
-actually delivered, and reports what it could not establish and needs a
-human. Run once.
+| Skill | When | You get |
+|---|---|---|
+| `/pdlc-init` | Once, on a repository that has none of this | `AGENTS.md`, `docs/PRODUCT.md`, and a list of what needs a human |
+| `/pdlc-feature <description>` | Building something from a loose description | Questions first, then a spec you approve, then the code and tests |
+| `/pdlc-decide` | A decision that produces no code: a stack, a boundary, reversing an ADR | An ADR, a spec entry, or a line in `AGENTS.md` |
+| `/pdlc-build` | A spec, ticket or bug is ready to build | Test-first implementation and an evidence block |
+| `/pdlc-review` | Before committing | Graded findings; you pick which to apply |
 
-It writes no ADR and no spec, and that is the point. A repository preserves
-the choice that survived and destroys the alternatives, so any decision record
-derived from it would be invention wearing the same clothes as the real thing.
-The decision log starts empty and grows forward.
+Typical path: `/pdlc-init` once, then `/pdlc-feature` for each feature, then
+`/pdlc-review` before the commit. `/pdlc-build` already runs inside
+`/pdlc-feature`; call it yourself only when the scope was settled elsewhere.
 
-**`/pdlc-feature <description>`** — for the work afterwards. Surfaces the open
-questions before any code, writes the spec and waits for a go-ahead on it,
-implements against it, then reconciles it with what shipped, in the same
-change as the code. The rejected alternatives are the point: the clarification
-round is the last moment they exist. And the spec written before the work is
-what the implementation and its tests are built from, rather than an epilogue.
+Generated documents start with an AI-assistance notice. Read the document, then
+delete the notice: that is the review.
 
-**`/pdlc-decide`** — for a decision that produces no code: a stack settled
-before anything is built, an architecture approved before the work is split, a
-boundary drawn, an earlier ADR being reversed. Those have no commit to ride
-along on, so nothing writes them down. It interviews for what was weighed —
-it never supplies the alternatives itself — and it walks the supersession of
-an existing ADR, which is two files and never an edit in place.
+## What it writes
 
-**`/pdlc-build`** — on a spec ready to build against: inside `/pdlc-feature`,
-automatically, at its own step 6; or standalone, on a `Draft` spec already
-committed, a ticket, or a bug with a known cause. It derives one test per
-behavior the spec states, confirms each is red for the stated reason before
-writing the implementation, returns to green, then reports the evidence — the
-commands run, their output, what was covered, what was left. Its test, lint
-and build commands come from the repository itself, discovered rather than
-guessed.
+| File | Answers |
+|---|---|
+| `AGENTS.md` | How the repo is written — commands, conventions, traps. |
+| `docs/PRODUCT.md` | What the product does, and why, as delivered. |
+| `docs/adr/` | Structural decisions. Dated, append-only, superseded rather than rewritten. |
+| `docs/specs/` | A feature's decisions, rejected alternatives and known gaps. Living. |
 
-**`/pdlc-review`** — on a change ready to be looked over before it is
-committed: the uncommitted working tree by default, or a branch, a commit range
-or a path. It reviews the way a tech lead would, against what the repository
-has already written down — its conventions, the spec that authorised the work,
-the installed version of the libraries the change calls into — and says which
-of those it does not have. Every finding is graded blocking, to fix or detail,
-fits on one line and is numbered. A finding about a library names what it is
-grounded in, or is reported as unverified. Nothing changes until you choose
-which findings to apply; those go through the build loop, so a correction that
-changes behavior arrives with a test. A substantive finding you decline is
-recorded in the spec's Known gaps, so it does not come back at the next review.
-Nothing calls it automatically, and it commits nothing.
+The docs root defaults to `docs/`; a repository that uses another says so in
+one line of `AGENTS.md`.
 
-## Contributing
+## More
 
-Read [`AGENTS.md`](AGENTS.md). The repository follows the discipline it
-distributes — a change to a skill updates its spec in the same change. Run
-`sh scripts/check.sh` before committing; it checks this repository's own
-documents and is never invoked by a skill.
+- [`docs/PRODUCT.md`](docs/PRODUCT.md) — what the kit does and leaves out.
+- [`docs/specs/`](docs/specs/) — what each skill decides.
+- [`docs/adr/`](docs/adr/) — why it is built this way.
+- Contributing: read [`AGENTS.md`](AGENTS.md), run `sh scripts/check.sh` before
+  committing.
