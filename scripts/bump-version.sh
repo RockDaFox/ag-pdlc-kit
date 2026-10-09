@@ -16,7 +16,6 @@ cd "$(dirname "$0")/.." || exit 1
 
 _cc_p=.claude-plugin/plugin.json
 _gh_p=.github/plugin/plugin.json
-_vibe_p=.vibe/plugin.json
 
 field() {
 	sed -n "s/.*\"$2\"[ ]*:[ ]*\"\([^\"]*\)\".*/\1/p" "$1" | sed -n 1p
@@ -60,7 +59,7 @@ patch)
 	;;
 esac
 
-for m in "$_cc_p" "$_gh_p" "$_vibe_p"; do
+for m in "$_cc_p" "$_gh_p"; do
 	[ -f "$m" ] || {
 		echo "$m  missing"
 		exit 1
@@ -72,8 +71,8 @@ for m in "$_cc_p" "$_gh_p" "$_vibe_p"; do
 	}
 done
 
-for m in "$_cc_p" "$_gh_p" "$_vibe_p"; do
+for m in "$_cc_p" "$_gh_p"; do
 	sed -i.bak "s/\"version\": \"$_cur\"/\"version\": \"$_new\"/" "$m" && rm -f "$m.bak"
 done
 
-echo "$_cur -> $_new in $_cc_p, $_gh_p and $_vibe_p"
+echo "$_cur -> $_new in $_cc_p and $_gh_p"

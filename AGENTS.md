@@ -51,7 +51,6 @@ gets a manifest pair pointing at the same tree
 ├── marketplace.json         one plugin, sourced from "./"
 └── plugin.json
 .github/plugin/              GitHub Copilot — same two files, its own location
-.vibe/                       Vibe — same two files, its own location
 ├── marketplace.json
 └── plugin.json
 skills/
@@ -68,7 +67,8 @@ AGENTS.md, docs/             this repository's own documentation
 
 `skills/` is the product; everything else is packaging or documentation.
 Adding a host means adding a manifest pair, never copying anything out of
-`skills/`.
+`skills/`. Vibe has no pair here: it installs from the Claude Code manifest in
+`.claude-plugin/`, so a change to that manifest changes what Vibe installs too.
 
 `_pdlc-shared/` has no `SKILL.md`, so no host discovers it as a skill. The
 skills reach it by relative path, which resolves the same whether the tree

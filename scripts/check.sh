@@ -87,34 +87,31 @@ check_links() {
 check_manifests() {
 	_cc_p=.claude-plugin/plugin.json
 	_gh_p=.github/plugin/plugin.json
-	_vibe_p=.vibe/plugin.json
 	_cc_m=.claude-plugin/marketplace.json
 	_gh_m=.github/plugin/marketplace.json
-	_vibe_m=.vibe/marketplace.json
 
-	for m in "$_cc_p" "$_gh_p" "$_vibe_p" "$_cc_m" "$_gh_m" "$_vibe_m"; do
+	for m in "$_cc_p" "$_gh_p" "$_cc_m" "$_gh_m"; do
 		[ -f "$m" ] || echo "$m  missing"
 	done
 
 	_v1=$(field "$_cc_p" version)
 	_v2=$(field "$_gh_p" version)
-	_v3=$(field "$_vibe_p" version)
-	if [ -z "$_v1" ] || [ -z "$_v2" ] || [ -z "$_v3" ]; then
-		echo "cannot read \"version\" from all plugin.json — shape changed, this check is blind"
-	elif [ "$_v1" != "$_v2" ] || [ "$_v1" != "$_v3" ]; then
-		echo "version disagrees: $_cc_p says $_v1, $_gh_p says $_v2, $_vibe_p says $_v3"
+	if [ -z "$_v1" ] || [ -z "$_v2" ]; then
+		echo "cannot read \"version\" from both plugin.json — shape changed, this check is blind"
+	elif [ "$_v1" != "$_v2" ]; then
+		echo "version disagrees: $_cc_p says $_v1, $_gh_p says $_v2"
 	fi
 
 	_want=$(field "$_cc_p" name)
 	if [ -z "$_want" ]; then
 		echo "$_cc_p  cannot read \"name\" — shape changed, this check is blind"
 	else
-		for m in "$_gh_p" "$_vibe_p" "$_cc_m" "$_gh_m" "$_vibe_m"; do
+		for m in "$_gh_p" "$_cc_m" "$_gh_m"; do
 			_got=$(field "$m" name)
 			[ "$_got" = "$_want" ] ||
 				echo "$m  name is \"$_got\", $_cc_p says \"$_want\""
 		done
-		for m in "$_cc_m" "$_gh_m" "$_vibe_m"; do
+		for m in "$_cc_m" "$_gh_m"; do
 			_got=$(entry_field "$m" name)
 			[ "$_got" = "$_want" ] ||
 				echo "$m  plugin entry is named \"$_got\", not \"$_want\""
@@ -123,29 +120,26 @@ check_manifests() {
 
 	_d1=$(field "$_cc_p" description)
 	_d2=$(field "$_gh_p" description)
-	_d3=$(field "$_vibe_p" description)
-	if [ -z "$_d1" ] || [ -z "$_d2" ] || [ -z "$_d3" ]; then
-		echo "cannot read \"description\" from all plugin.json — shape changed, this check is blind"
-	elif [ "$_d1" != "$_d2" ] || [ "$_d1" != "$_d3" ]; then
-		echo "the plugin.json files describe the product differently"
+	if [ -z "$_d1" ] || [ -z "$_d2" ]; then
+		echo "cannot read \"description\" from both plugin.json — shape changed, this check is blind"
+	elif [ "$_d1" != "$_d2" ]; then
+		echo "the two plugin.json describe the product differently"
 	fi
 
 	_a=$(field "$_cc_m" description)
 	_b=$(field "$_gh_m" description)
-	_c=$(field "$_vibe_m" description)
-	if [ -z "$_a" ] || [ -z "$_b" ] || [ -z "$_c" ]; then
-		echo "cannot read \"description\" from all marketplace.json — shape changed, this check is blind"
-	elif [ "$_a" != "$_b" ] || [ "$_a" != "$_c" ]; then
-		echo "the marketplace.json files describe the marketplace differently"
+	if [ -z "$_a" ] || [ -z "$_b" ]; then
+		echo "cannot read \"description\" from both marketplace.json — shape changed, this check is blind"
+	elif [ "$_a" != "$_b" ]; then
+		echo "the two marketplace.json describe the marketplace differently"
 	fi
 
 	_a=$(entry_field "$_cc_m" description)
 	_b=$(entry_field "$_gh_m" description)
-	_c=$(entry_field "$_vibe_m" description)
-	if [ -z "$_a" ] || [ -z "$_b" ] || [ -z "$_c" ]; then
-		echo "cannot read the plugin entry description from all marketplace.json — shape changed, this check is blind"
-	elif [ "$_a" != "$_b" ] || [ "$_a" != "$_c" ]; then
-		echo "the marketplace plugin entries describe the plugin differently"
+	if [ -z "$_a" ] || [ -z "$_b" ]; then
+		echo "cannot read the plugin entry description from both marketplace.json — shape changed, this check is blind"
+	elif [ "$_a" != "$_b" ]; then
+		echo "the two marketplace plugin entries describe the plugin differently"
 	fi
 
 	# A key in one marketplace plugin entry and not the other is a note, not a
@@ -158,9 +152,8 @@ check_manifests() {
 	for k in source category; do
 		grep -q "\"$k\"" "$_cc_m" && _a=present || _a=absent
 		grep -q "\"$k\"" "$_gh_m" && _b=present || _b=absent
-		grep -q "\"$k\"" "$_vibe_m" && _c=present || _c=absent
-		[ "$_a" = "$_b" ] && [ "$_a" = "$_c" ] ||
-			echo "note: \"$k\" is $_a in $_cc_m, $_b in $_gh_m and $_c in $_vibe_m"
+		[ "$_a" = "$_b" ] ||
+			echo "note: \"$k\" is $_a in $_cc_m and $_b in $_gh_m"
 	done
 }
 

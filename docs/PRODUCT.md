@@ -15,7 +15,8 @@
 
 Ag-PDLC Kit is the toolbox of the agentic developer: the skills a team invokes
 to work with a coding agent on a real repository, from one set of files that
-runs on Claude Code, GitHub Copilot, and Vibe.
+runs on Claude Code and GitHub Copilot, and on Vibe through the Claude Code
+manifest.
 
 It is internal tooling, not a deliverable: it is not sold, licensed or handed
 to anyone outside the organisation. The repositories it documents are another
@@ -280,12 +281,17 @@ line. No configuration file is created
 
 ### 3.8 Run on more than one host
 
-The same `skills/` tree serves Claude Code, GitHub Copilot, and Vibe. Nothing in it
+The same `skills/` tree serves Claude Code and GitHub Copilot. Nothing in it
 is host-specific: bundled files are reached by paths relative to the skill's
-own directory, and no host-provided variable is used. All three hosts have a plugin
+own directory, and no host-provided variable is used. Both hosts have a plugin
 marketplace and both install the repository whole; only the location of the
 manifest pair differs
 ([ADR-0003](adr/0003-provider-neutral-skills-layout.md)).
+
+Vibe has no manifest pair of its own. It installs the plugin from the Claude
+Code manifest in `.claude-plugin/`, and the plugin has been tested running
+there. That manifest therefore serves two hosts, and no host-specific file is
+added for the third.
 
 There is exactly one copy of every instruction. A per-provider copy, however
 it is generated, is the failure this rule exists to prevent.
