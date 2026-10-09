@@ -6,5 +6,5 @@
     "name": "RockDaFox"
   },
   "keywords": ["documentation", "specs", "adr", "product-docs", "agents-md"],
-  "skills": "skills/"
+  "skills": "./skills/"
 }
