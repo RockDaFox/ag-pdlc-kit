@@ -85,12 +85,16 @@ The routing between spec and ADR is not decided here. It is stated once in
     the shared reference, rather than kept as this skill's own implicit
     version of it. A session that stops at the go-ahead never pays for build
     instructions it will not use.
-15. **The spec is short and plainly worded, by instruction.** The template
-    asks for one sentence per decision and one line per rejected alternative.
-    `decision-records.md` sets a budget of 500 lines, counted with `wc -l`
-    and reported. `doc-discipline.md` holds the wording rules, such as
-    one idea per sentence. The kit's five specs have items of 46 words at the
-    median and 105 at the 90th percentile, and no instruction asked for less.
+15. **The spec is plainly worded, targets 500 lines and is never split for
+    its size.** The template asks for one sentence per decision and one line
+    per rejected alternative. `decision-records.md` gives one feature one
+    spec: 500 lines is a readability target for the spec's two readers —
+    the person who reviews it, and the agent that builds against it —
+    counted with `wc -l` and reported, and a spec past it is rewritten more
+    plainly, not divided. `doc-discipline.md` holds the wording rules, such
+    as one idea per sentence. The kit's five specs have items of 46 words
+    at the median and 105 at the 90th percentile, and no instruction asked
+    for less.
 16. **The spec has a Non-goals section and none for the files touched.** The
     build loop stops at the non-goals, so they need a fixed place. The files
     touched are in the code, and a list of them goes stale at the next rename.
@@ -138,10 +142,16 @@ The routing between spec and ADR is not decided here. It is stated once in
 - **A regulated-data section in every spec, empty when it does not apply** —
   rejected: an empty compliance section in ninety specs trains the reader to
   skim past the one that is filled. The section is present or absent.
-- **A length budget with no wording rules** — rejected: it cuts earlier but
-  does not make a sentence simpler.
-- **Wording rules with no budget** — rejected: a line count can be checked and
-  reported, a style rule cannot.
+- **A length target with no wording rules** — rejected: it cuts earlier but
+  does not make a sentence simpler, and a target met by a split divides one
+  feature's spec for its size.
+- **Splitting an oversized spec rather than rewriting it** — rejected: a
+  split follows a feature boundary, never a line count, and one feature
+  gets one spec.
+- **A machine-oriented digest of the spec for the build loop, written
+  alongside it** — rejected: two documents drift, and the loop already
+  reads the spec's own Behavior lines as its units of work. One document
+  serves both readers.
 - **Wording rules in `decision-records.md`, for specs only** — rejected: ADRs,
   `PRODUCT.md` and `AGENTS.md` show the same noise, and `doc-discipline.md` is
   already read before any write.
@@ -157,6 +167,6 @@ The routing between spec and ADR is not decided here. It is stated once in
 | No handling of a feature spanning several repositories | A monorepo or a split front/back project needs it |
 | Nothing verifies the regulated-data answer ever arrived, once a spec records the question as unanswered | A spec is found carrying an unanswered escalation long after the feature shipped |
 | The whole flow — question round, recap, go-ahead — runs at the same weight for a one-line change as for a new subsystem | A real session is observed paying the full ceremony on a trivial fix |
-| Nothing enforces the budget or the wording: the model counts and reports | A spec is found well past the budget |
+| Nothing enforces the 500-line target or the wording: the model counts and reports | A spec is found far past the target |
 | The effect of the wording rules on a real session is not measured | A spec written in a target repository is read and found still wordy |
-| A line budget is bypassed by long paragraphs, since prose is not hard-wrapped | A spec is found under the budget with paragraphs of several sentences |
+| A line target is bypassed by long paragraphs, since prose is not hard-wrapped | A spec is found under the target with paragraphs of several sentences |

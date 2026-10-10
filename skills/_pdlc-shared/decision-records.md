@@ -94,13 +94,18 @@ A spec written before the work and never reconciled documents the plan rather
 than the system, and does it with the authority of a record. The second moment
 is not optional.
 
-**A spec is read by a person before anything else, so it stays short.** 500
-lines at most, counted with `wc -l` on the file and the count reported, never
-estimated. A spec that cannot fit is usually two features, and gets two specs.
-Three things are
-left out, because the reader finds them elsewhere. They are the request
-restated, the mechanics the code shows, and a decision that only follows a
-repository convention. Wording follows the Plain wording rules in
+**A spec is read by two readers — the person who reviews it, and the agent
+that builds from it — so it is written to stay clear and readable for
+both.** The build loop takes each Behavior line as a unit of work, so a
+sentence a person has to reread is a sentence the agent builds against too.
+500 lines is the target, counted with `wc -l` on the file and the count
+reported, never estimated — a spec of 2000 lines is hard for a person to
+read and for an agent to build from, and so is a shorter one written
+densely. Length is never a reason to split it: one feature gets one spec,
+and a spec past the target is rewritten more plainly, not divided. Three
+things are left out, because the reader finds them elsewhere. They are the
+request restated, the mechanics the code shows, and a decision that only
+follows a repository convention. Wording follows the Plain wording rules in
 [`doc-discipline.md`](doc-discipline.md).
 
 **An ADR is not written before the work.** Immutability starts at the commit,
