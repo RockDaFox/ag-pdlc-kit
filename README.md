@@ -24,10 +24,10 @@ Start a new session afterwards: skills are discovered at session start.
 | Skill | When | You get |
 |---|---|---|
 | `/pdlc-init` | Once, on a repository that has none of this | `AGENTS.md`, `docs/PRODUCT.md`, and a list of what needs a human |
-| `/pdlc-feature <description>` | Building something from a loose description | Questions first, then a spec you approve, then the code and tests |
+| `/pdlc-feature <description>` | Building something from a loose description | Questions first, then a spec you approve (reviewed first if you ask), then the code and tests |
 | `/pdlc-decide` | A decision that produces no code: a stack, a boundary, reversing an ADR | An ADR, a spec entry, or a line in `AGENTS.md` |
 | `/pdlc-build` | A spec, ticket or bug is ready to build | Test-first implementation and an evidence block |
-| `/pdlc-review` | Before committing | Graded findings; you pick which to apply |
+| `/pdlc-review [target]` | Before committing; reviews the code by default, or a spec if you name one or when `/pdlc-feature` offers it after writing the spec, with the exact command | Graded findings; you pick which to apply |
 
 Typical path: `/pdlc-init` once, then `/pdlc-feature` for each feature, then
 `/pdlc-review` before the commit. `/pdlc-build` already runs inside

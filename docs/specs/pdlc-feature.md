@@ -1,9 +1,11 @@
 # Spec — pdlc-feature
 
-> **Status: Shipped**
+> **Status: Draft** — decision 18 is authorised and not yet built. Decisions 1
+> to 17 are shipped.
 >
 > Living document: any change to the `pdlc-feature` skill is reflected here in
-> the same change. Revised 2026-10-09.
+> the same change. Revised 2026-10-15.
+
 
 ## Summary
 
@@ -104,8 +106,30 @@ The routing between spec and ADR is not decided here. It is stated once in
     now covers what will be tested as well as what was decided, which is the
     one review of the tests' relevance that happens before they exist
     ([ADR-0017](../adr/0017-a-spec-states-its-behavior-as-testable-lines.md)).
+18. **After writing the spec, the skill asks whether to launch a review of it,
+    and the user can skip.** The review is [`pdlc-review`](pdlc-review.md) on
+    the spec, read by two fresh agents. It runs only on a yes, and nothing runs
+    before the answer. On a yes, the findings are relayed as returned, the open
+    questions go back to the user as step 3 questions, and the wording fixes
+    the user selects are applied to the draft. The go-ahead at step 5 is then
+    given on the revised spec. On a no, the skill goes straight to the
+    go-ahead. The question is one line and writes out the exact command, with the
+    spec's own path, such as `/pdlc-review docs/specs/<spec-name>.md`, so the
+    user sees which target the review will take and can run it by hand. The
+    question is one line because the moment after the draft is
+    written is when a finding costs least to act on, and a mandatory review
+    would add the full ceremony to a trivial feature. The review stays on
+    demand ([`pdlc-review`](pdlc-review.md) decision 1): asking is not
+    starting it.
 
 ## Rejected alternatives
+
+- **Running the spec review on every spec, without asking** — rejected: it
+  adds two agents' reading to a one-line change, which the known gap on
+  ceremony weight already names, and it makes the review a gate people skip
+  by writing thinner specs.
+- **Never mentioning the spec review** — rejected: a review nobody is
+  reminded of is rarely run.
 
 - **A hook suggesting a spec update when a spec'd area is touched** —
   rejected: it needs hook configuration, which means something executing on

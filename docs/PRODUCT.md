@@ -359,7 +359,7 @@ they displace the repository being documented.
 | Left out | Add it when |
 |---|---|
 | Backfilling decisions on an existing repository | Never, by design ([ADR-0004](adr/0004-decision-records-are-written-forward.md)). A human who remembers the alternatives can have `pdlc-decide` interview them and write the record; what it will not do is supply the alternatives itself |
-| Doc-versus-code drift detection | The skills have enough mileage to tell a real false positive from noise. An audit that cries wolf is ignored within a fortnight |
+| Doc-versus-code drift detection after the fact — an audit of existing documents against the code, outside a feature session. Reconciling a spec at the end of its own feature is delivered and is not this | The skills have enough mileage to tell a real false positive from noise. An audit that cries wolf is ignored within a fortnight |
 | Isolation for several agent tasks at once — a worktree per task | Agent sessions are actually run in parallel on one clone often enough to collide. The rule such a skill would carry is which seam the tasks are split along, not the git commands, which the hosts already run |
 | Bounded-context scope fences and a per-context glossary | A repository the kit is installed on is genuinely structured in contexts, and an agent is caught inventing domain vocabulary a glossary would have refused |
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |
