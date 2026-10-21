@@ -6,8 +6,6 @@
 >
 > Living document: any change to <feature> is reflected here in the same
 > change. Revised YYYY-MM-DD.
->
-> Drafted with an AI assistant — review before sharing outside the team.
 
 ## Summary
 
@@ -72,3 +70,8 @@
 | Left out | Add it when |
 |---|---|
 | <thing> | <the condition that makes it worth doing> |
+
+---
+
+<!-- Drafted with an AI assistant — review before treating as authoritative.
+     Remove this line as part of that review, before the commit. -->

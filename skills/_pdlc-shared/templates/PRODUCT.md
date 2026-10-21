@@ -9,8 +9,6 @@
 > [`specs/<feature>.md`](specs/<feature>.md). Structural technical decisions
 > live in [`adr/`](adr/). Repository conventions are in
 > [`AGENTS.md`](../AGENTS.md). This document repeats none of them.
->
-> Drafted with an AI assistant — review before sharing outside the team.
 
 ## 1. Executive summary
 
@@ -44,3 +42,8 @@
 <!-- What the product deliberately does not do, and what would have to be
      true to revisit it. A boundary nobody wrote down is re-proposed every
      quarter. -->
+
+---
+
+<!-- Drafted with an AI assistant — review before treating as authoritative.
+     Remove this line as part of that review, before the commit. -->

@@ -355,10 +355,11 @@ they displace the repository being documented.
 - **Ag-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.
-- **Every generated document carries the AI-assistance notice** and a reminder
-  to review before sharing with a third party. The notice stays until a human
-  has read the document, and removing it is that review — so a document still
-  carrying one has not been checked. On an ADR that review precedes the commit,
+- **Every generated document ends with the AI-assistance notice**, worded the
+  same in every document: review before treating the document as
+  authoritative, and remove the notice before the commit. It stays until a
+  human has read the document, and removing it is that review — so a document
+  still carrying one has not been checked. On an ADR that review precedes the commit,
   because a committed record is immutable
   ([ADR-0013](adr/0013-notice-removed-by-the-review-before-commit.md)).
 - **The product gives no legal, financial or regulatory reading.** It

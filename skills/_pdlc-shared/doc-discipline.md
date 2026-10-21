@@ -151,9 +151,16 @@ and its `Status` line says so.
 
 ## AI-assisted authoring
 
-A document written or revised with an AI assistant carries a line saying so,
-and a reminder that it needs review before it goes to a third party. Keep the
-line in the document header, not buried at the bottom.
+A document written or revised with an AI assistant ends with a notice saying
+so. The notice is worded the same in every document, and sits after a closing
+rule as an HTML comment, exactly as the templates carry it:
+
+```
+---
+
+<!-- Drafted with an AI assistant — review before treating as authoritative.
+     Remove this line as part of that review, before the commit. -->
+```
 
 **The line stays until a human has read the document, and removing it is that
 review.** So a document still carrying it is one nobody has checked, which is
