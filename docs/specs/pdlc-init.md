@@ -1,9 +1,10 @@
 # Spec — pdlc-init
 
-> **Status: Shipped**
+> **Status: Draft** — the pre-commit hook (decisions 13 to 21) is authorised
+> and not yet built. The rest is shipped.
 >
 > Living document: any change to the `pdlc-init` skill is reflected here in
-> the same change. Revised 2026-09-15.
+> the same change. Revised 2026-10-21.
 
 ## Summary
 
@@ -16,6 +17,12 @@ finishes by naming what it could not establish.
 
 It runs once per repository. Keeping the documents alive afterwards is
 [`pdlc-feature`](pdlc-feature.md)'s job.
+
+It also offers a pre-commit hook, installed only if the user agrees. The hook
+refuses a commit that adds an AI-assistance notice to a document, so a
+document an agent drafted cannot be committed before a human has read it and
+removed the notice. On a repository already initialised, the hook is the only
+thing it offers.
 
 ## Decisions
 
@@ -68,7 +75,113 @@ It runs once per repository. Keeping the documents alive afterwards is
     omission to be read as an oversight
     ([ADR-0010](../adr/0010-shared-reference-split-by-need.md)).
 
+13. **The hook is offered, never installed by default.** It changes how
+    every commit in the clone behaves, so the user says yes first. It is the
+    one file the product installs that runs on a repository it documents.
+14. **The hook looks for a fixed marker, `<!-- ai-draft -->`, not for the
+    notice's wording.** The notice is translated with the document, and the
+    marker is not. Every template carries the marker on the line above the
+    notice.
+15. **It checks only the lines a commit adds, in files under `{docs_root}`
+    and in `AGENTS.md`.** An ADR committed with its notice keeps it
+    ([ADR-0013](../adr/0013-notice-removed-by-the-review-before-commit.md)),
+    and editing its `Status` row must still be possible. Outside those files
+    the marker may appear for another reason.
+16. **The check is one POSIX sh script shipped in `skills/_pdlc-shared/`,
+    copied into the clone's git directory and called from
+    `.git/hooks/pre-commit`.** Nothing is versioned and no git setting is
+    changed. Each clone installs it for itself. It also runs by hand on a
+    project repository, and it checks the AI notice and nothing else. The
+    kit's own `scripts/check.sh` stays maintainer tooling for this repository
+    ([ADR-0008](../adr/0008-one-maintainer-side-check-script.md)).
+17. **An existing pre-commit hook gets the call added, right after its first
+    line.** An `exit` or `exec` further down cannot skip it there. When
+    `core.hooksPath` is set, as hook managers do, the hook edited is the one
+    in that path. A hook that is not a shell script is not edited: the skill
+    shows the line to add, and writes nothing.
+18. **The call does nothing when the check file is missing.** A hook in a
+    versioned directory reaches every clone, and a clone that never installed
+    the check must still commit.
+19. **Installing runs `chmod +x` on the files it writes.** Git ignores a hook
+    that is not executable. This is a command outside git and outside the
+    build loop, which [ADR-0014](../adr/0014-a-skill-may-run-discovered-repository-commands.md)
+    and `docs/PRODUCT.md` §4 do not cover yet.
+20. **No skill removes the notice or the marker itself.** When the hook
+    refuses a commit a skill was making, the skill reports it and waits for
+    the human. Removing them is the human's review.
+21. **`git commit --no-verify` still goes through, and the install says so.**
+    Git offers no way to forbid it. The hook makes forgetting the review
+    impossible, not deciding to skip it.
+
+ADR: warranted. This ships an executable that runs on a documented
+repository, which [ADR-0008](../adr/0008-one-maintainer-side-check-script.md)
+rules out, and adds `chmod` to the commands a skill runs. Written with the
+code.
+
+## Behavior
+
+The lines below cover the hook only.
+
+- **B1** — At the end of a first run, or on a repository already initialised:
+  the skill asks whether to install the hook, and writes nothing about it
+  before a yes.
+- **B2** — The user says no: no file under the git directory changes.
+- **B3** — Yes, and no pre-commit hook exists: the clone gets the check file
+  and a pre-commit hook that calls it, both executable.
+- **B4** — Yes, and a pre-commit shell hook exists: the call is added right
+  after its first line, and the rest of the hook is unchanged byte for byte.
+- **B5** — Yes, and `core.hooksPath` is set: the pre-commit hook in that path
+  is the one created or edited.
+- **B6** — Yes, and the existing hook is not a shell script: nothing is
+  edited, and the skill shows the line to add and where.
+- **B7** — Yes, and the hook already calls the check: nothing is added twice,
+  and the skill says the hook is already installed.
+- **B8** — A commit adds a line holding `<!-- ai-draft -->` to a file under
+  `{docs_root}` or to `AGENTS.md`: the commit is refused, and the message
+  names each file and says the notice has to be read and removed first.
+- **B9** — A commit edits a file that already held the marker, without
+  adding a line holding it: the commit goes through.
+- **B10** — A commit adds the marker to a file outside `{docs_root}` and
+  `AGENTS.md`: the commit goes through.
+- **B11** — The pre-commit hook runs in a clone where the check file is
+  missing: the commit goes through.
+- **B12** — After installing: the skill states the files written or edited,
+  and that `git commit --no-verify` bypasses the hook.
+- **B13** — A skill's commit is refused by the hook: the skill reports the
+  refusal and the files named, removes nothing, and waits.
+- **B14** — The check is run by hand at the root of a project repository: it
+  names each file under `{docs_root}` or `AGENTS.md` where a line not yet
+  committed holds the marker — staged, unstaged or in a new file — and exits
+  with an error. With none, it says so and exits cleanly.
+- **B15** — The check is run outside a git repository: it says so and exits
+  with an error, without reading any file.
+
 ## Rejected alternatives
+
+- **Installing the hook by hand from instructions** — rejected by the user:
+  `pdlc-init` installs it, with consent.
+- **A dedicated skill for the hook** — rejected by the user in favour of
+  `pdlc-init`.
+- **A versioned hooks directory with `core.hooksPath`** — rejected: it turns
+  off every hook in `.git/hooks`, and collides with hook managers that set
+  the same option.
+- **Leaving an existing hook alone and showing the line to add** — rejected
+  by the user in favour of adding the call. It is kept for a hook that is not
+  a shell script.
+- **Matching the notice's English wording, and never translating it** —
+  rejected by the user: the notice is translated with the document, and a
+  fixed marker carries the check.
+- **Appending the call at the end of an existing hook** — rejected: an
+  `exit` or `exec` earlier in the hook skips it silently.
+- **Running the kit's `scripts/check.sh` on a project repository** —
+  rejected: its other checks are about the kit itself, its manifests and its
+  skills, and a project repository needs the notice check alone.
+- **Checking links, headings and the ADR log on a project repository too** —
+  rejected by the user: the notice is the one check wanted there.
+- **The hook refusing a commit on every finding, a dead link included** —
+  rejected: an urgent code commit should not wait on a documentation detail.
+- **Checking every line of every staged file** — rejected: an ADR committed
+  with its notice keeps it, so any later edit to it would be refused.
 
 - **Retroactive ADRs and specs** — rejected in
   [ADR-0004](../adr/0004-decision-records-are-written-forward.md).
@@ -102,4 +215,7 @@ It runs once per repository. Keeping the documents alive afterwards is
 | No refresh mode for a repository where Ag-PDLC Kit already ran | The documents have drifted enough that re-deriving beats editing |
 | No migration for a repository initialised at 0.1.0, whose product document is named `PRD.md` | A repository on the old name asks for it. The skill treats the file as existing prose and proposes a merge, but never renames it |
 | No check that the merged `AGENTS.md` follows the section order it was written to | Section order is judgment, so a check would need a model reading the file, not a command. The line budget is no longer a gap: it is measured with `wc -l` ([ADR-0008](../adr/0008-one-maintainer-side-check-script.md) draws the line between a command an agent runs and a file the product ships) |
+| A clone without the hook commits a notice unchecked; the hook is per clone | A notice reaches a shared branch from a clone that never installed the hook |
+| A hook manager that rewrites its hook file drops the added call | A manager is met that regenerates the hook on install |
+| No removal or update path for the hook | The check changes, or a user asks to remove it |
 | Contract recognition is by section heading, so a contract naming those sections differently is merged as ordinary prose | A real repository is met whose contract headings do not match |
