@@ -1,7 +1,6 @@
 # Spec — pdlc-init
 
-> **Status: Draft** — the pre-commit hook (decisions 13 to 21) is authorised
-> and not yet built. The rest is shipped.
+> **Status: Shipped**
 >
 > Living document: any change to the `pdlc-init` skill is reflected here in
 > the same change. Revised 2026-10-21.
@@ -94,29 +93,28 @@ thing it offers.
     project repository, and it checks the AI notice and nothing else. The
     kit's own `scripts/check.sh` stays maintainer tooling for this repository
     ([ADR-0008](../adr/0008-one-maintainer-side-check-script.md)).
-17. **An existing pre-commit hook gets the call added, right after its first
-    line.** An `exit` or `exec` further down cannot skip it there. When
+17. **An existing pre-commit hook gets the call added, right after its
+    shebang, or as its first line when it has none.** An `exit` or `exec`
+    further down cannot skip it there. A hook with no shebang is run by git
+    with sh, and hook managers write such files. When
     `core.hooksPath` is set, as hook managers do, the hook edited is the one
     in that path. A hook that is not a shell script is not edited: the skill
-    shows the line to add, and writes nothing.
+    shows the command it has to run, and writes nothing.
 18. **The call does nothing when the check file is missing.** A hook in a
     versioned directory reaches every clone, and a clone that never installed
     the check must still commit.
-19. **Installing runs `chmod +x` on the files it writes.** Git ignores a hook
-    that is not executable. This is a command outside git and outside the
-    build loop, which [ADR-0014](../adr/0014-a-skill-may-run-discovered-repository-commands.md)
-    and `docs/PRODUCT.md` §4 do not cover yet.
+19. **The install is the bundled script run with `--install`, and it makes
+    the hook it creates executable.** Git ignores a hook that is not
+    executable. An existing hook keeps its mode: making a disabled hook
+    executable would turn on code its owner had switched off. Running this
+    script is the one command a skill runs outside git and the build loop
+    ([ADR-0019](../adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)).
 20. **No skill removes the notice or the marker itself.** When the hook
     refuses a commit a skill was making, the skill reports it and waits for
     the human. Removing them is the human's review.
 21. **`git commit --no-verify` still goes through, and the install says so.**
     Git offers no way to forbid it. The hook makes forgetting the review
     impossible, not deciding to skip it.
-
-ADR: warranted. This ships an executable that runs on a documented
-repository, which [ADR-0008](../adr/0008-one-maintainer-side-check-script.md)
-rules out, and adds `chmod` to the commands a skill runs. Written with the
-code.
 
 ## Behavior
 
@@ -129,11 +127,13 @@ The lines below cover the hook only.
 - **B3** — Yes, and no pre-commit hook exists: the clone gets the check file
   and a pre-commit hook that calls it, both executable.
 - **B4** — Yes, and a pre-commit shell hook exists: the call is added right
-  after its first line, and the rest of the hook is unchanged byte for byte.
+  after its shebang, or as its first line when it has none, and the rest of
+  the hook is unchanged byte for byte.
 - **B5** — Yes, and `core.hooksPath` is set: the pre-commit hook in that path
   is the one created or edited.
 - **B6** — Yes, and the existing hook is not a shell script: nothing is
-  edited, and the skill shows the line to add and where.
+  written, and the skill shows the file to copy and the command the hook
+  has to run.
 - **B7** — Yes, and the hook already calls the check: nothing is added twice,
   and the skill says the hook is already installed.
 - **B8** — A commit adds a line holding `<!-- ai-draft -->` to a file under
@@ -171,6 +171,17 @@ The lines below cover the hook only.
 - **Matching the notice's English wording, and never translating it** —
   rejected by the user: the notice is translated with the document, and a
   fixed marker carries the check.
+- **The agent writing the hook files itself, following the skill's
+  instructions** — the shape this spec was drafted around, and replaced
+  during the build by the bundled script run with `--install`. Each edge
+  case of an existing hook would otherwise be settled by the model's
+  judgement on every install.
+- **Inserting the call after the first line of every hook** — drafted, and
+  changed during the build: a hook with no shebang starts with a command, so
+  the call goes before it.
+- **`chmod +x` on every file the install touches** — drafted, and narrowed
+  during the build to the hook it creates: the check is run with `sh`, and an
+  existing hook that is not executable was switched off by its owner.
 - **Appending the call at the end of an existing hook** — rejected: an
   `exit` or `exec` earlier in the hook skips it silently.
 - **Running the kit's `scripts/check.sh` on a project repository** —
@@ -216,6 +227,8 @@ The lines below cover the hook only.
 | No migration for a repository initialised at 0.1.0, whose product document is named `PRD.md` | A repository on the old name asks for it. The skill treats the file as existing prose and proposes a merge, but never renames it |
 | No check that the merged `AGENTS.md` follows the section order it was written to | Section order is judgment, so a check would need a model reading the file, not a command. The line budget is no longer a gap: it is measured with `wc -l` ([ADR-0008](../adr/0008-one-maintainer-side-check-script.md) draws the line between a command an agent runs and a file the product ships) |
 | A clone without the hook commits a notice unchecked; the hook is per clone | A notice reaches a shared branch from a clone that never installed the hook |
+| No automated test covers the script, at the user's request; it was tried by hand once, in throwaway repositories | A change to the script breaks a case that trial covered |
+| A document that quotes the marker as text is refused like a notice | A spec or `AGENTS.md` needs to mention the marker literally |
 | A hook manager that rewrites its hook file drops the added call | A manager is met that regenerates the hook on install |
 | No removal or update path for the hook | The check changes, or a user asks to remove it |
 | Contract recognition is by section heading, so a contract naming those sections differently is merged as ordinary prose | A real repository is met whose contract headings do not match |

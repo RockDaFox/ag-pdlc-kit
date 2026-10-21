@@ -1,6 +1,6 @@
 ---
 name: pdlc-init
-description: Bootstrap the Ag-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Use when a repo has no product document, no specs and no AGENTS.md, or when the user asks to set up, install or initialise Ag-PDLC Kit on a project.
+description: Bootstrap the Ag-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Also offers a pre-commit hook that refuses a commit carrying an unreviewed AI-assistance notice — the only thing it offers on a repository already initialised. Use when a repo has no product document, no specs and no AGENTS.md, when the user asks to set up, install or initialise Ag-PDLC Kit on a project, or when they ask for the AI-notice hook.
 ---
 
 # Ag-PDLC Kit init
@@ -115,6 +115,29 @@ that exists, and does not absorb a backlog.
 **Nothing else.** `{docs_root}/adr/` and `{docs_root}/specs/` are not created
 empty: the first ADR and the first spec create them, on the day there is
 something true to put in them.
+
+## The pre-commit hook
+
+At the end of a first run, ask whether to install the AI-notice hook. On a
+repository where `AGENTS.md` and `{docs_root}/PRODUCT.md` already exist, this
+question is the only thing the skill offers. Say what the hook does in one
+sentence: a commit that adds the `ai-draft` marker under `{docs_root}` or in
+`AGENTS.md` is refused, so a document an agent drafted cannot be committed
+before someone has read it and removed its notice. Write nothing about the
+hook before a yes; after a no, leave the git directory as it is.
+
+On a yes, run the script bundled beside the templates, from the repository
+root, with `{docs_root}` resolved:
+
+```
+sh <this skill's directory>/../_pdlc-shared/notice-check.sh --install <docs_root>
+```
+
+It installs in this clone only, writes nothing that is versioned, and handles
+an existing hook itself. Relay what it prints, including that
+`git commit --no-verify` bypasses it. When it reports a hook it left
+untouched, relay the line it shows and stop there. This is the one command
+the skill runs that is neither git's nor the repository's own.
 
 ## Finishing
 

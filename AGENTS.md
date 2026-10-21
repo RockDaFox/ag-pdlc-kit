@@ -18,7 +18,9 @@ supersession recorded on one side only, a skill no host can discover, a dead
 link, a heading written twice, an ADR about to be committed with its review
 marker still on. It reports, never fixes, and writes nothing. No
 skill invokes it and none ever will
-([ADR-0008](docs/adr/0008-one-maintainer-side-check-script.md)).
+([ADR-0019](docs/adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)).
+The one script a skill does run is `skills/_pdlc-shared/notice-check.sh`, the
+AI-notice hook `pdlc-init` installs on a project repository.
 
 ```
 sh scripts/bump-version.sh major|minor|patch|X.Y.Z
@@ -54,7 +56,8 @@ gets a manifest pair pointing at the same tree
 ├── marketplace.json
 └── plugin.json
 skills/
-├── _pdlc-shared/            four reference files + templates; not a skill
+├── _pdlc-shared/            four reference files, templates, notice-check.sh;
+│                            not a skill
 ├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
 ├── pdlc-feature/SKILL.md
 ├── pdlc-decide/SKILL.md

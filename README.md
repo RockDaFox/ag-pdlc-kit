@@ -10,8 +10,8 @@ The skills shipped today serve the software part, for developers and their
 coding agent. A coding agent has the code, never the reasons: git history
 records what changed, not what was decided or rejected. So settled questions
 get re-opened and rejected options get retried. These skills write the reasons
-down when they exist and hand them back to the next piece of work. Markdown
-only, nothing executable.
+down when they exist and hand them back to the next piece of work. Markdown,
+plus one shell script that `/pdlc-init` offers to install as a pre-commit hook.
 
 ## Install
 
@@ -29,7 +29,7 @@ the roles that write no code ships yet.
 
 | Skill | When | You get |
 |---|---|---|
-| `/pdlc-init` | Once, on a repository that has none of this | `AGENTS.md`, `docs/PRODUCT.md`, and a list of what needs a human |
+| `/pdlc-init` | Once, on a repository that has none of this | `AGENTS.md`, `docs/PRODUCT.md`, a list of what needs a human, and on request a hook that refuses a commit carrying an unreviewed AI notice |
 | `/pdlc-feature <description>` | Building something from a loose description | Questions first, then a spec you approve (reviewed first if you ask), then the code and tests |
 | `/pdlc-decide` | A decision that produces no code: a stack, a boundary, reversing an ADR | An ADR, a spec entry, or a line in `AGENTS.md` |
 | `/pdlc-build` | A spec, ticket or bug is ready to build | Test-first implementation and an evidence block |
@@ -39,8 +39,8 @@ Typical path: `/pdlc-init` once, then `/pdlc-feature` for each feature, then
 `/pdlc-review` before the commit. `/pdlc-build` already runs inside
 `/pdlc-feature`; call it yourself only when the scope was settled elsewhere.
 
-Generated documents start with an AI-assistance notice. Read the document, then
-delete the notice: that is the review.
+Generated documents end with an AI-assistance notice under an `ai-draft`
+marker. Read the document, then delete both: that is the review.
 
 ## What it writes
 

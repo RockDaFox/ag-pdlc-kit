@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Accepted |
+| **Status** | Superseded by [ADR-0019](0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md) |
 | **Date** | 2026-09-15 |
 | **Supersedes** | — |
 

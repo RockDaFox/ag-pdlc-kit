@@ -152,14 +152,18 @@ and its `Status` line says so.
 ## AI-assisted authoring
 
 A document written or revised with an AI assistant ends with a notice saying
-so. The notice is worded the same in every document, and sits after a closing
-rule as an HTML comment, exactly as the templates carry it:
+so. It sits after a closing rule as an HTML comment, under an `ai-draft`
+marker line, exactly as the templates carry it. The notice is translated with
+the document; the marker never is, because the pre-commit hook `pdlc-init`
+offers looks for it:
 
 ```
 ---
 
+<!-- ai-draft -->
 <!-- Drafted with an AI assistant — review before treating as authoritative.
-     Remove this line as part of that review, before the commit. -->
+     Remove this notice and the ai-draft line above it as part of that
+     review, before the commit. -->
 ```
 
 **The line stays until a human has read the document, and removing it is that
@@ -172,3 +176,8 @@ part of it.** A record is immutable once committed, so the line has to go while
 the file is still a draft — a human validates the record, strips the notice,
 then commits. A notice found on a committed ADR stays, in the same position as
 a typo found on one.
+
+**No skill removes the notice or its marker.** Removing them is the human's
+review, and an agent doing it on its own reports a review that never took
+place. When the hook refuses a commit a skill was making, the skill reports
+the refusal and the files it names, and waits for the human.

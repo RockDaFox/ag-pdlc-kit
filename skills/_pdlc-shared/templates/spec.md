@@ -73,5 +73,7 @@
 
 ---
 
+<!-- ai-draft -->
 <!-- Drafted with an AI assistant — review before treating as authoritative.
-     Remove this line as part of that review, before the commit. -->
+     Remove this notice and the ai-draft line above it as part of that
+     review, before the commit. -->

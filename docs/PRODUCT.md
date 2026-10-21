@@ -63,10 +63,10 @@ files: three for the documentation discipline, each skill loading only the
 ones it uses ([ADR-0010](adr/0010-shared-reference-split-by-need.md)), and one
 for the build loop, read by `pdlc-build`, by `pdlc-feature` at its own step 6,
 and by `pdlc-review` once corrections are selected. The product itself is
-Markdown plus two JSON manifests and installs
-nothing executable; the repository carries one maintainer-side check script,
-which is not product surface and which no skill invokes
-([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
+Markdown, two JSON manifests and one shell script: the AI-notice check that
+`pdlc-init` offers to install as a pre-commit hook
+([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)). The repository also carries one maintainer-side check
+script, which is not product surface and which no skill invokes.
 
 ## 2. Users
 
@@ -114,6 +114,14 @@ Three guardrails are part of the behavior, not of the implementation:
   it could not establish and what needs a human — including anything written
   from inference rather than evidence. That list is an expected output, not a
   failure.
+
+It also offers a pre-commit hook, and installs it only on a yes. The hook
+refuses a commit that adds the `ai-draft` marker under the documentation root
+or in `AGENTS.md`, so a document an agent drafted cannot be committed before a
+human has read it and removed its notice. It is installed per clone, and
+nothing about it is versioned. On a repository already initialised, the hook
+is the only thing the skill offers
+([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)).
 
 ### 3.2 Record a feature's decisions
 
@@ -222,9 +230,9 @@ selected into the build loop, which is what changes the code and what proves
 the change.
 
 It is invoked on demand and nothing calls it automatically. A review before
-a commit is the user's step to take, not a gate the product imposes —
-section 5's refusal of a blocking pre-commit check is unchanged by this
-skill existing.
+a commit is the user's step to take, not a gate the product imposes. The
+one pre-commit hook the product offers checks the AI notice and nothing else,
+and section 5 keeps every other blocking check out.
 
 Five behaviors are the point rather than the implementation:
 
@@ -328,13 +336,15 @@ they displace the repository being documented.
 
 ## 4. Constraints
 
-- **The product installs nothing executable.** No build, no dependency, no
-  runtime, and nothing it writes into a repository it documents can be run.
-  This keeps the kit cheap to audit before it is installed on a repository
-  someone else owns, and it rules out the obvious solution to multi-provider
-  support, which is a sync script. This repository carries one maintainer-side
-  script that checks its own documents; it ships inert, no skill invokes it,
-  and it never runs on a documented repository
+- **The product installs one executable, and only on consent.** No build, no
+  dependency, no runtime. The one script that runs on a documented repository
+  is the AI-notice check, which `pdlc-init` installs as a pre-commit hook in
+  the clone when the user says yes
+  ([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)). This keeps the kit cheap to audit before it is
+  installed on a repository someone else owns, and it rules out the obvious
+  solution to multi-provider support, which is a sync script. This repository
+  carries one maintainer-side script that checks its own documents; it ships
+  inert, no skill invokes it, and it never runs on a documented repository
   ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)).
 - **The commands a skill has an agent run are git's, plus — inside the build
   loop — the repository's own.** Reading a repository was never in question:
@@ -349,8 +359,10 @@ they displace the repository being documented.
   [ADR-0015](adr/0015-review-corrections-enter-the-build-loop.md) supersedes
   it to place that surface in the build loop rather than in a list of skills
   — `pdlc-build`, `pdlc-feature` at its own step 6 and `pdlc-review` all
-  reach the same loop, and none of them executes anything outside it. The
-  set is exhaustive; nothing else is executed, and nothing is executed
+  reach the same loop, and none of them executes anything outside it.
+  [ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)
+  adds one script: `pdlc-init` runs the bundled AI-notice check to install
+  its hook, after the user agrees. The set is exhaustive; nothing else is executed, and nothing is executed
   without the user having approved the work it verifies.
 - **Ag-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
@@ -380,7 +392,7 @@ they displace the repository being documented.
 | Isolation for several agent tasks at once — a worktree per task | Agent sessions are actually run in parallel on one clone often enough to collide. The rule such a skill would carry is which seam the tasks are split along, not the git commands, which the hosts already run |
 | Bounded-context scope fences and a per-context glossary | A repository the kit is installed on is genuinely structured in contexts, and an agent is caught inventing domain vocabulary a glossary would have refused |
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |
-| A blocking pre-commit check | Never, barring an explicit request from a team that wants it |
+| A blocking pre-commit check beyond the AI notice | Never, barring an explicit request from a team that wants it. The AI-notice hook exists because one was asked for ([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)) |
 | API or code-reference documentation generation | Never: that level is produced by language tooling, not by a decision discipline |
 | Hosts beyond Claude Code, Copilot and Vibe | One is actually used. Others reading the same `SKILL.md` format will likely work already; none is claimed until tested. Claude Cowork, Vibe Work and Microsoft 365 Copilot are targets for the skills meant for roles that write no code ([ADR-0018](adr/0018-the-kit-serves-the-whole-product-team.md)), and are claimed once tested with one |
-| A consistency check running on a documented repository | Never as product surface: it would execute on a machine the product does not own. This repository checks its own documents with maintainer tooling that ships inert and that no skill invokes ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)) |
+| Any other check running on a documented repository | Never as product surface: it would execute on a machine the product does not own. The AI-notice hook is the one exception, installed on consent ([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)). This repository checks its own documents with maintainer tooling that ships inert and that no skill invokes ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)) |

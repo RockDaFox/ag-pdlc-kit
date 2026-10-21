@@ -164,7 +164,7 @@ check_decision_log() {
 		# Uncommitted files only: afterwards the record is immutable, the line
 		# is permanent, and reporting it on every run would be crying wolf over
 		# something nobody is allowed to fix.
-		if grep -q 'Drafted with an AI assistant' "$f"; then
+		if grep -qF '<!-- ai-draft -->' "$f"; then
 			if [ "$have_git" != yes ]; then
 				echo "note: git unavailable, so whether $f is still a draft cannot be established"
 			elif [ -z "$(git log --oneline -1 -- "$f" 2>/dev/null)" ]; then
