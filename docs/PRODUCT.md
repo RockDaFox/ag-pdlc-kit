@@ -13,10 +13,13 @@
 
 ## 1. Executive summary
 
-Ag-PDLC Kit is the toolbox of the agentic developer: the skills a team invokes
-to work with a coding agent on a real repository, from one set of files that
-runs on Claude Code and GitHub Copilot, and on Vibe through the Claude Code
-manifest.
+Ag-PDLC Kit is the toolbox of a product team working with AI agents. Its
+users are developers, and also the roles that write no code — a product
+owner, a delivery lead, a designer. It covers the product development life
+cycle, of which building the software is one part
+([ADR-0018](adr/0018-the-kit-serves-the-whole-product-team.md)). One set of
+files runs on Claude Code and GitHub Copilot, and on Vibe through the Claude
+Code manifest.
 
 It is internal tooling, not a deliverable: it is not sold, licensed or handed
 to anyone outside the organisation. The repositories it documents are another
@@ -69,7 +72,13 @@ which is not product surface and which no skill invokes
 
 - **The developer installing Ag-PDLC Kit** on an existing repository. They run
   `pdlc-init` once, read what came out, correct it, commit it.
-- **The coding agent** that works on the repository afterwards. It is both the
+- **The rest of the product team** — a product owner, a delivery lead, a
+  designer. The kit is for them as much as for the developer. A skill meant
+  for them needs no coding agent and no repository, and targets the AI tools
+  these roles use (section 3.8). The five skills shipped today serve the
+  software part of the cycle, for developers and their coding agent; none is
+  built for these roles yet.
+- **The agent** that works on the repository afterwards. It is both the
   first reader of the four documents — the reason they are structured rather
   than narrative — and what executes the skills: every tool in the kit is
   instruction addressed to it, not a program run beside it.
@@ -296,6 +305,13 @@ Code manifest in `.claude-plugin/`, and the plugin has been tested running
 there. That manifest therefore serves two hosts, and no host-specific file is
 added for the third.
 
+The target host follows the skill's user
+([ADR-0018](adr/0018-the-kit-serves-the-whole-product-team.md)). The
+software-cycle skills are for developers and their coding agent, and target
+these three hosts only. A skill for the roles that write no code targets the
+AI tools those roles use as well: Claude Cowork, Vibe Work, Microsoft 365
+Copilot. No such skill ships yet, and none of those tools is tested.
+
 There is exactly one copy of every instruction. A per-provider copy, however
 it is generated, is the failure this rule exists to prevent.
 
@@ -365,5 +381,5 @@ they displace the repository being documented.
 | Hooks reminding to update a spec | Forgetting happens often enough to justify the noise |
 | A blocking pre-commit check | Never, barring an explicit request from a team that wants it |
 | API or code-reference documentation generation | Never: that level is produced by language tooling, not by a decision discipline |
-| Hosts beyond Claude Code, Copilot and Vibe | One is actually used. Others reading the same `SKILL.md` format will likely work already; none is claimed until tested |
+| Hosts beyond Claude Code, Copilot and Vibe | One is actually used. Others reading the same `SKILL.md` format will likely work already; none is claimed until tested. Claude Cowork, Vibe Work and Microsoft 365 Copilot are targets for the skills meant for roles that write no code ([ADR-0018](adr/0018-the-kit-serves-the-whole-product-team.md)), and are claimed once tested with one |
 | A consistency check running on a documented repository | Never as product surface: it would execute on a machine the product does not own. This repository checks its own documents with maintainer tooling that ships inert and that no skill invokes ([ADR-0008](adr/0008-one-maintainer-side-check-script.md)) |

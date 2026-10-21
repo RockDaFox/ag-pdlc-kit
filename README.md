@@ -1,14 +1,17 @@
 # Ag-PDLC Kit
 
-The toolbox of the agentic developer: skills you invoke to work with a coding
-agent on a real repository. Runs on Claude Code and GitHub Copilot from one set
-of files, and on Vibe through the Claude Code manifest.
+The toolbox of a product team working with AI agents: developers, and the
+roles that write no code — product owners, delivery leads, designers. It
+covers the product development life cycle, of which building the software is
+one part. Runs on Claude Code and GitHub Copilot from one set of files, and on
+Vibe through the Claude Code manifest.
 
-A coding agent has the code, never the reasons: git history records what
-changed, not what was decided or rejected. So settled questions get re-opened
-and rejected options get retried. This kit writes the reasons down when they
-exist and hands them back to the next piece of work. Markdown only, nothing
-executable.
+The skills shipped today serve the software part, for developers and their
+coding agent. A coding agent has the code, never the reasons: git history
+records what changed, not what was decided or rejected. So settled questions
+get re-opened and rejected options get retried. These skills write the reasons
+down when they exist and hand them back to the next piece of work. Markdown
+only, nothing executable.
 
 ## Install
 
@@ -20,6 +23,9 @@ executable.
 Start a new session afterwards: skills are discovered at session start.
 
 ## Use
+
+These five skills are for developers and run in a coding agent. No skill for
+the roles that write no code ships yet.
 
 | Skill | When | You get |
 |---|---|---|
