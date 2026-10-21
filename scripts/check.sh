@@ -19,6 +19,14 @@ set -u
 
 cd "$(dirname "$0")/.." || exit 1
 
+# A copy run from outside the repository would land elsewhere, and the find
+# fallback below would then walk whatever directory that is — up to the whole
+# disk.
+if [ ! -f AGENTS.md ] || [ ! -d skills ]; then
+	echo "not in the Ag-PDLC Kit repository: $(pwd) — this script checks the kit only"
+	exit 1
+fi
+
 # Whether git can answer questions about this tree. The check that needs to
 # know whether a record is still a draft says so rather than guessing when it
 # cannot: a check that goes quiet is worse than one that admits it is blind.
@@ -36,21 +44,29 @@ md_files() {
 	fi
 }
 
-# Reads a JSON string field. These four manifests are small and hand-written,
-# so they are read textually — sh has no JSON parser, and a dependency would
-# defeat the point of a script that needs nothing. Every call site treats an
-# empty result as a finding rather than a pass: a check that goes quiet when
-# the file shape changes is worse than one that fails.
+# Reads a JSON string field: field FILE KEY [plugins]. These four manifests are
+# small and hand-written, so they are read textually — sh has no JSON parser,
+# and a dependency would defeat the point of a script that needs nothing.
+# With "plugins", it reads inside the plugins array: a marketplace holds its
+# own name and description, then the owner's name, then the entry's, so the
+# first occurrence from the top of the file is the wrong one.
 field() {
-	sed -n "s/.*\"$2\"[ ]*:[ ]*\"\([^\"]*\)\".*/\1/p" "$1" | sed -n 1p
+	if [ "${3:-}" = plugins ]; then sed -n '/"plugins"/,$p' "$1"; else cat "$1"; fi |
+		sed -n "s/.*\"$2\"[ ]*:[ ]*\"\([^\"]*\)\".*/\1/p" | sed -n 1p
 }
 
-# The same, inside the plugins array. A marketplace holds its own name and
-# description, then the owner's name, then the entry's, so counting occurrences
-# from the top of the file reads the wrong one.
-entry_field() {
-	sed -n '/"plugins"/,$p' "$1" |
-		sed -n "s/.*\"$2\"[ ]*:[ ]*\"\([^\"]*\)\".*/\1/p" | sed -n 1p
+# Compares one field across two manifests: agree FILE1 FILE2 KEY [plugins].
+# An empty read is a finding, not a pass: a check that goes quiet when the
+# file shape changes is worse than one that fails.
+agree() {
+	_a=$(field "$1" "$3" "${4:-}")
+	_b=$(field "$2" "$3" "${4:-}")
+	_k="\"$3\"${4:+ in the plugin entry}"
+	if [ -z "$_a" ] || [ -z "$_b" ]; then
+		echo "cannot read $_k from $1 and $2 — shape changed, this check is blind"
+	elif [ "$_a" != "$_b" ]; then
+		echo "$_k disagrees between $1 and $2"
+	fi
 }
 
 # --- the checks -------------------------------------------------------------
@@ -94,14 +110,12 @@ check_manifests() {
 		[ -f "$m" ] || echo "$m  missing"
 	done
 
-	_v1=$(field "$_cc_p" version)
-	_v2=$(field "$_gh_p" version)
-	if [ -z "$_v1" ] || [ -z "$_v2" ]; then
-		echo "cannot read \"version\" from both plugin.json — shape changed, this check is blind"
-	elif [ "$_v1" != "$_v2" ]; then
-		echo "version disagrees: $_cc_p says $_v1, $_gh_p says $_v2"
-	fi
+	agree "$_cc_p" "$_gh_p" version
+	agree "$_cc_p" "$_gh_p" description
+	agree "$_cc_m" "$_gh_m" description
+	agree "$_cc_m" "$_gh_m" description plugins
 
+	# One name everywhere, the Claude Code plugin.json as the reference.
 	_want=$(field "$_cc_p" name)
 	if [ -z "$_want" ]; then
 		echo "$_cc_p  cannot read \"name\" — shape changed, this check is blind"
@@ -112,34 +126,10 @@ check_manifests() {
 				echo "$m  name is \"$_got\", $_cc_p says \"$_want\""
 		done
 		for m in "$_cc_m" "$_gh_m"; do
-			_got=$(entry_field "$m" name)
+			_got=$(field "$m" name plugins)
 			[ "$_got" = "$_want" ] ||
 				echo "$m  plugin entry is named \"$_got\", not \"$_want\""
 		done
-	fi
-
-	_d1=$(field "$_cc_p" description)
-	_d2=$(field "$_gh_p" description)
-	if [ -z "$_d1" ] || [ -z "$_d2" ]; then
-		echo "cannot read \"description\" from both plugin.json — shape changed, this check is blind"
-	elif [ "$_d1" != "$_d2" ]; then
-		echo "the two plugin.json describe the product differently"
-	fi
-
-	_a=$(field "$_cc_m" description)
-	_b=$(field "$_gh_m" description)
-	if [ -z "$_a" ] || [ -z "$_b" ]; then
-		echo "cannot read \"description\" from both marketplace.json — shape changed, this check is blind"
-	elif [ "$_a" != "$_b" ]; then
-		echo "the two marketplace.json describe the marketplace differently"
-	fi
-
-	_a=$(entry_field "$_cc_m" description)
-	_b=$(entry_field "$_gh_m" description)
-	if [ -z "$_a" ] || [ -z "$_b" ]; then
-		echo "cannot read the plugin entry description from both marketplace.json — shape changed, this check is blind"
-	elif [ "$_a" != "$_b" ]; then
-		echo "the two marketplace plugin entries describe the plugin differently"
 	fi
 
 	# A key in one marketplace plugin entry and not the other is a note, not a
@@ -185,15 +175,14 @@ check_decision_log() {
 		_sup=$(sed -n \
 			's/^| \*\*Supersedes\*\* | \[ADR-\([0-9][0-9]*\)\].*/\1/p' "$f")
 		[ -n "$_sup" ] || continue
-		_hit=no
-		for p in docs/adr/"$_sup"-*.md; do
-			[ -e "$p" ] || continue
-			_hit=yes
-			grep -q 'Superseded' "$p" ||
-				echo "$p  is superseded by $(basename "$f") and does not say so — a supersession is two edits"
-		done
-		[ "$_hit" = yes ] ||
+		# The old side is read in its Status row only: a record may mention the
+		# word anywhere else in its text.
+		_old=$(echo docs/adr/"$_sup"-*.md)
+		if [ ! -e "$_old" ]; then
 			echo "$f  supersedes ADR-$_sup, which does not exist"
+		elif ! grep -q '^| \*\*Status\*\* | Superseded' "$_old"; then
+			echo "$_old  is superseded by $(basename "$f") and does not say so — a supersession is two edits"
+		fi
 	done
 }
 
@@ -228,9 +217,8 @@ out=$(
 
 [ -n "$out" ] && printf '%s\n' "$out"
 
-n=$(printf '%s\n' "$out" | grep -c '^[^ ]' | tr -d ' ')
-notes=$(printf '%s\n' "$out" | grep -c '^note: ' | tr -d ' ')
-n=$((n - notes))
+notes=$(printf '%s\n' "$out" | grep -c '^note: ')
+n=$(printf '%s\n' "$out" | grep -c -v -e '^note: ' -e '^$')
 
 if [ "$n" -eq 0 ]; then
 	[ "$notes" -eq 0 ] && echo "clean." || echo "clean, $notes note(s)."
