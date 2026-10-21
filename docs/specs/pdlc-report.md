@@ -1,6 +1,6 @@
 # Spec — pdlc-report
 
-> **Status: Draft** — the work is authorised and not yet shipped.
+> **Status: Shipped**
 >
 > Living document: any change to the `pdlc-report` skill is reflected here in the same change. Revised 2026-10-21.
 
@@ -41,7 +41,7 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 15. **The report is written to the path the user gives, never under `{docs_root}`, and never committed.** It is a dated snapshot for outside readers. In `{docs_root}` it would be a fifth document restating the specs.
 16. **The report carries the kit's AI notice at its end, and a visible line at its head.** The end notice is the one every document carries, marker included. The head line exists because an HTML comment does not show in a browser, and a reader of an outward document has to see it. In the HTML formats the end notice is shown as visible text too, set apart from the content, so it cannot be missed in a browser. The skill removes the head line, the notice and its marker only when the user explicitly asks it to, and that request is the review. A user of an AI assistant edits a file by asking the agent, so the removal has to go through it. The kit's rule that no skill removes the notice governs the documents in the repository, and the report is not one.
 17. **Each HTML format is one self-contained file.** CSS and script are inline, and nothing is loaded from the network. The file opens offline, travels as an attachment, and makes no request from a client's machine.
-18. **The slides carry JavaScript for navigation.** Keyboard navigation and full screen are what make them ready to present. The script navigates and nothing else: no network call, no storage. A generated file that contains script is new to the kit, so it takes an ADR, written with the code.
+18. **The slides carry JavaScript for navigation.** Keyboard navigation and full screen are what make them ready to present. The script navigates and nothing else: no network call, no storage. A generated file that contains script is new to the kit ([ADR-0020](../adr/0020-generated-slides-may-carry-navigation-script.md)).
 19. **The skill is self-contained: it reads no file under `skills/_pdlc-shared/`.** The AI tools it targets are untested, and a host that loads the `SKILL.md` without its directory would leave it with dead links and no error. The few rules it needs — the AI notice, how `{docs_root}` is found — are stated in its own file. That is a deliberate exception to the kit's rule that skills link to the reference rather than restate it.
 20. **A project with no spec and no ADR stops the skill.** Without decisions the report would be a reworded change log, and the skill offers `pdlc-init` instead.
 21. **Questions waiting for an answer open the sponsor report.** They are what the meeting has to act on.
@@ -102,6 +102,7 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 - **The AI notice only at the head, visible** — rejected: the report would lose the end notice and its marker, which every other document carries.
 - **In HTML, a visible line at the head and the end notice kept as an HTML comment** — the previous draft, rejected by the user: in a browser the notice has to be seen at both ends, not left in the source.
 - **Never removing the notice, as for the documents in the repository** — rejected: a user of an AI assistant edits a file by asking the agent, so the notice would stay for good. The removal waits for an explicit request instead.
+- **The HTML skeletons bundled as files beside the skill** — rejected during the build: a host that loads the `SKILL.md` alone would lose them, for the reason decision 19 gives. The slides skeleton is written in the `SKILL.md`.
 - **Slides in CSS only, with no script** — rejected by the user. Keyboard navigation and full screen are worth the ADR.
 - **A slide library loaded from a CDN** — rejected because the file would fail offline and send a request from a client's machine.
 - **Reading `doc-discipline.md` like the other skills** — rejected: on a host that does not resolve the link, the skill would lose those rules without saying so.
@@ -117,7 +118,8 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 
 | Left out | Add it when |
 |---|---|
-| Claude Cowork, Vibe Work and Microsoft 365 Copilot are untested with this skill | It is run on one of them |
+| The skill has not been run yet, on any host; no test covers it | Its first report shows a fault, or a second skill for these roles needs the same shape |
+| Claude Cowork, Vibe Work and Microsoft 365 Copilot are untested with this skill, installation included | It is run on one of them |
 | The setup the skill proposes depends on what the host documents, and may be out of date | A user follows the proposed setup and it does not match the host |
 | No host connector to any forge has been tried with this skill | A link is used on a host other than a developer one |
 | A forge on a client's internal network is out of reach of a cloud AI tool, whatever its connector | A report is needed from such a host for such a repository; the files supplied are the way round today |

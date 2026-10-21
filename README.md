@@ -24,8 +24,9 @@ Start a new session afterwards: skills are discovered at session start.
 
 ## Use
 
-These five skills are for developers and run in a coding agent. No skill for
-the roles that write no code ships yet.
+The first five skills are for developers and run in a coding agent.
+`/pdlc-report` is for anyone on the team, including in an AI assistant such
+as Claude Cowork.
 
 | Skill | When | You get |
 |---|---|---|
@@ -34,6 +35,7 @@ the roles that write no code ships yet.
 | `/pdlc-decide` | A decision that produces no code: a stack, a boundary, reversing an ADR | An ADR, a spec entry, or a line in `AGENTS.md` |
 | `/pdlc-build` | A spec, ticket or bug is ready to build | Test-first implementation and an evidence block |
 | `/pdlc-review [target]` | Before committing; reviews the code by default, or a spec if you name one or when `/pdlc-feature` offers it after writing the spec, with the exact command | Graded findings; you pick which to apply |
+| `/pdlc-report` | Slides, a summary or a status report for a sponsor, the end users or the team | A sourced list to validate, then the report as Markdown, an HTML page or HTML slides |
 
 Typical path: `/pdlc-init` once, then `/pdlc-feature` for each feature, then
 `/pdlc-review` before the commit. `/pdlc-build` already runs inside

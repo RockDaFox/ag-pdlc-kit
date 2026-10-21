@@ -54,11 +54,12 @@ the kit is for is wider than what it currently ships. What ships is below and
 in section 3; what is deliberately absent, with the condition that would bring
 it in, is in section 5.
 
-Implementation status: five skills — `pdlc-init` (bootstrap),
+Implementation status: six skills — `pdlc-init` (bootstrap),
 `pdlc-feature` (record a decision that arrives with code), `pdlc-decide`
 (record one that does not), `pdlc-build` (carry out the work a spec
-authorises, test-first) and `pdlc-review` (hold the result to a standard
-before it is committed) — four templates, and a shared reference of four
+authorises, test-first), `pdlc-review` (hold the result to a standard
+before it is committed) and `pdlc-report` (report on the project to readers
+outside the repository) — four templates, and a shared reference of four
 files: three for the documentation discipline, each skill loading only the
 ones it uses ([ADR-0010](adr/0010-shared-reference-split-by-need.md)), and one
 for the build loop, read by `pdlc-build`, by `pdlc-feature` at its own step 6,
@@ -75,9 +76,9 @@ script, which is not product surface and which no skill invokes.
 - **The rest of the product team** — a product owner, a delivery lead, a
   designer. The kit is for them as much as for the developer. A skill meant
   for them needs no coding agent and no repository, and targets the AI tools
-  these roles use (section 3.8). The five skills shipped today serve the
-  software part of the cycle, for developers and their coding agent; none is
-  built for these roles yet.
+  these roles use (section 3.9). Five of the six skills serve the software
+  part of the cycle, for developers and their coding agent. `pdlc-report` is
+  the first built for these roles.
 - **The agent** that works on the repository afterwards. It is both the
   first reader of the four documents — the reason they are structured rather
   than narrative — and what executes the skills: every tool in the kit is
@@ -267,7 +268,41 @@ Five behaviors are the point rather than the implementation:
 The skill commits nothing. The review ends on a working tree, and the
 commit stays with whoever owns it.
 
-### 3.6 Ship the skeletons
+### 3.6 Report to readers outside the repository
+
+The `pdlc-report` skill writes a dated report on a project for one audience
+— a sponsor, the end users, or the team — as Markdown, a one-page HTML
+document, or HTML slides ready to present. Its user is often not a developer,
+and it asks and reports in plain words.
+
+It asks for the audience, the format, the language, the period and the
+destination before reading anything. It reads the specs and ADRs in full,
+from the first source that works: a repository at hand, a link to the
+repository, or files the user supplies. A link is read with the access the
+host already has, and when that fails, the skill proposes how to set access
+up rather than asking for a credential. Git history, when at hand, narrows
+what is new in the period; without it, documents are placed by the dates they
+carry, and the report says so.
+
+Four behaviors are the point rather than the implementation:
+
+- **No source, no line.** Every item traces to a spec, an ADR, a commit, or
+  the user. No percentage, estimate or date the records do not hold.
+- **The user validates a sourced list before anything is written**, and a
+  fixed table, not the model's judgement, decides what each audience sees.
+  Leaving client content out of an outward document is a human call.
+- **The AI notice is visible.** The report carries it at its head and its
+  end, as visible text in HTML, and the skill removes it only when the user
+  explicitly asks.
+- **It is self-contained.** It reads nothing from the shared reference,
+  because the AI tools it targets may load its `SKILL.md` alone.
+
+The slides carry a short inline script for keyboard navigation and full
+screen, and nothing else
+([ADR-0020](adr/0020-generated-slides-may-carry-navigation-script.md)). The report is written outside the documentation
+root and never committed.
+
+### 3.7 Ship the skeletons
 
 Four templates (`AGENTS.md`, `PRODUCT.md`, `adr.md`, `spec.md`) bundled with
 the skills and read at runtime. They are commented skeletons, not tutorials:
@@ -292,14 +327,14 @@ one feature gets one spec, and a spec past the target is rewritten, not
 divided. Every document is worded plainly: one idea per sentence, the
 common word, the rule before its reason.
 
-### 3.7 Adapt to a repository that already uses `docs/`
+### 3.8 Adapt to a repository that already uses `docs/`
 
 The documentation root defaults to `docs/`. A repository where that directory
 is taken puts Ag-PDLC Kit elsewhere and records it in `AGENTS.md`, in one
 line. No configuration file is created
 ([ADR-0002](adr/0002-docs-root-without-config-file.md)).
 
-### 3.8 Run on more than one host
+### 3.9 Run on more than one host
 
 The same `skills/` tree serves Claude Code and GitHub Copilot. Nothing in it
 is host-specific: bundled files are reached by paths relative to the skill's
@@ -318,7 +353,8 @@ The target host follows the skill's user
 software-cycle skills are for developers and their coding agent, and target
 these three hosts only. A skill for the roles that write no code targets the
 AI tools those roles use as well: Claude Cowork, Vibe Work, Microsoft 365
-Copilot. No such skill ships yet, and none of those tools is tested.
+Copilot. `pdlc-report` is the first such skill, and none of those tools is
+tested with it.
 
 There is exactly one copy of every instruction. A per-provider copy, however
 it is generated, is the failure this rule exists to prevent.
@@ -340,8 +376,11 @@ they displace the repository being documented.
   dependency, no runtime. The one script that runs on a documented repository
   is the AI-notice check, which `pdlc-init` installs as a pre-commit hook in
   the clone when the user says yes
-  ([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)). This keeps the kit cheap to audit before it is
-  installed on a repository someone else owns, and it rules out the obvious
+  ([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)).
+  The one other output that carries script is a report in slides, whose
+  inline script navigates and does nothing else
+  ([ADR-0020](adr/0020-generated-slides-may-carry-navigation-script.md)). This keeps the kit cheap to audit before it
+  is installed on a repository someone else owns, and it rules out the obvious
   solution to multi-provider support, which is a sync script. This repository
   carries one maintainer-side script that checks its own documents; it ships
   inert, no skill invokes it, and it never runs on a documented repository
@@ -362,8 +401,10 @@ they displace the repository being documented.
   reach the same loop, and none of them executes anything outside it.
   [ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)
   adds one script: `pdlc-init` runs the bundled AI-notice check to install
-  its hook, after the user agrees. The set is exhaustive; nothing else is executed, and nothing is executed
-  without the user having approved the work it verifies.
+  its hook, after the user agrees. `pdlc-report` runs git commands that read
+  only, plus a temporary clone of a repository the user links to, deleted
+  before it finishes. The set is exhaustive; nothing else is executed, and
+  nothing is executed without the user having approved the work it verifies.
 - **Ag-PDLC Kit does not act, it instructs.** Everything it produces goes
   through the model, and therefore through the user's validation at the
   checkpoints the skills define.

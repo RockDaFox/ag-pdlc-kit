@@ -62,7 +62,8 @@ skills/
 ├── pdlc-feature/SKILL.md
 ├── pdlc-decide/SKILL.md
 ├── pdlc-build/SKILL.md
-└── pdlc-review/SKILL.md
+├── pdlc-review/SKILL.md
+└── pdlc-report/SKILL.md     self-contained: reads nothing in _pdlc-shared/
 scripts/check.sh             maintainer tooling; no skill invokes it
 scripts/bump-version.sh      maintainer tooling; no skill invokes it
 AGENTS.md, docs/             this repository's own documentation
@@ -133,6 +134,10 @@ a product change, and shows up in `docs/PRODUCT.md` or an ADR.
   about why the discipline exists. That is stated once, in the reference.
 - **Skills link to the reference rather than restating it.** A rule that
   appears in two skills has to move into the reference; two copies drift.
+  The exception is `pdlc-report`, which targets AI tools that may load its
+  `SKILL.md` alone, and restates the few rules it needs
+  ([spec](docs/specs/pdlc-report.md), decision 19). Do not "fix" it by
+  linking it to the reference.
 - **Prose is not hard-wrapped**; a paragraph is one line
   ([ADR-0009](docs/adr/0009-prose-is-not-hard-wrapped.md)). Files written
   before that decision stay wrapped at 79 columns, and an edit inside one
