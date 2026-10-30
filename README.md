@@ -63,3 +63,4 @@ one line of `AGENTS.md`.
 - [`docs/adr/`](docs/adr/) — why it is built this way.
 - Contributing: read [`AGENTS.md`](AGENTS.md), run `sh scripts/check.sh` before
   committing.
+- License: [MIT](LICENSE).
