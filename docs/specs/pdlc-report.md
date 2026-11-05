@@ -1,8 +1,8 @@
 # Spec — pdlc-report
 
-> **Status: Shipped**
+> **Status: Draft** — reading an OpenSpec repository (decision 23) is authorised and not yet built. Decisions 1 to 22 are shipped.
 >
-> Living document: any change to the `pdlc-report` skill is reflected here in the same change. Revised 2026-10-21.
+> Living document: any change to the `pdlc-report` skill is reflected here in the same change. Revised 2026-11-05.
 
 ## Summary
 
@@ -46,6 +46,7 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 20. **A project with no spec and no ADR stops the skill.** Without decisions the report would be a reworded change log, and the skill offers `pdlc-init` instead.
 21. **Questions waiting for an answer open the sponsor report.** They are what the meeting has to act on.
 22. **The skill asks and reports without developer vocabulary.** No commit, branch, diff or tag in what it asks a user who did not mention them first.
+23. **In a project that uses OpenSpec, the specs are OpenSpec's, and the skill reads them where OpenSpec keeps them.** The project uses OpenSpec when an `openspec/` folder sits at its root, unless its `AGENTS.md` says it keeps the kit's own specs. The ADRs stay in the documentation folder. A change archived in the period is the delivered work, dated by its archive folder. Its `design.md` holds the decisions, the rejected alternatives, the known gaps and the regulated-data record. An open change is work in progress. The skill states these rules in its own file, as decision 19 requires.
 
 ## Behavior
 
@@ -85,6 +86,11 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 - **B34** — Throughout: with git, the skill runs git commands that read only, plus the clone of B8; without, it runs none. It writes only the destination file and that temporary clone, and commits nothing.
 - **B35** — The user explicitly asks to remove the AI notice: the skill removes the head line, the end notice and its marker, and changes nothing else. Without that request it never removes them, including while making other changes the user asks for.
 - **B36** — Closing: the skill states the path written, how many items it included and how many the filter left out, which sources the period lacked, and that the report has to be reviewed before sending, after which the user asks for the AI notice to be removed.
+- **B37** — A project with an `openspec/` folder at its root, and no line in `AGENTS.md` opting out: the skill reads `openspec/specs/`, every change under `openspec/changes/` and its archive, and the ADRs in the documentation folder.
+- **B38** — A change archived in the period, by the date its archive folder starts with: its added and modified scenarios go under Delivered, the decisions in its `design.md` under Decided, its out-of-scope items and known gaps under Deliberately not done.
+- **B39** — An open change: under In progress, with the intent its proposal states. The count of ticked tasks is never reported.
+- **B40** — A Regulated data section in a change's `design.md` whose decision is unanswered: under Waiting for an answer, with the function consulted and the date raised.
+- **B41** — An OpenSpec project with no spec, no change and no ADR: the skill stops as in decision 20.
 
 ## Rejected alternatives
 
@@ -136,3 +142,5 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 | Nothing checks that the filter caught everything; the validation list is the only safeguard | Internal content is found in a report at review, or after it was sent |
 | No rule for a section too long for one slide | A deck has a slide that overflows |
 | No PDF output beyond printing from the browser | A sponsor needs a PDF and the printed slides break |
+| The OpenSpec layout is restated in this skill and can drift from the kit's reference and from OpenSpec itself | OpenSpec changes its folder layout, or the kit's reference changes |
+| An OpenSpec change whose `design.md` was written without the kit's rules has no rejected alternatives or known gaps to report | A report on such a project misses a decision its reader needed |

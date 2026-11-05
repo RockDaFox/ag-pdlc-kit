@@ -1,10 +1,10 @@
 # Spec — pdlc-feature
 
-> **Status: Draft** — decision 18 is authorised and not yet built. Decisions 1
-> to 17 are shipped.
+> **Status: Draft** — decisions 18 and 19 are authorised and not yet built.
+> Decisions 1 to 17 are shipped.
 >
 > Living document: any change to the `pdlc-feature` skill is reflected here in
-> the same change. Revised 2026-10-15.
+> the same change. Revised 2026-11-05.
 
 
 ## Summary
@@ -121,6 +121,31 @@ The routing between spec and ADR is not decided here. It is stated once in
     would add the full ceremony to a trivial feature. The review stays on
     demand ([`pdlc-review`](pdlc-review.md) decision 1): asking is not
     starting it.
+19. **In a repository that uses OpenSpec, the skill writes no spec and hands
+    the request to OpenSpec.** The repository uses OpenSpec when an
+    `openspec/` directory sits at its root, unless its `AGENTS.md` says it
+    keeps the kit's own specs. The skill then asks nothing and writes
+    nothing. It names OpenSpec's explore and propose commands, then
+    [`pdlc-build`](pdlc-build.md) on the change once the user approves it. A
+    team that adopted OpenSpec chose its proposal flow, and a second flow
+    writing the same change would give it two authors. What the kit adds to a
+    change — rejected alternatives, known gaps, the regulated-data question
+    — reaches OpenSpec through the rules `pdlc-init` offers to add to its
+    configuration. An ADR the work turns out to warrant goes through
+    [`pdlc-decide`](pdlc-decide.md).
+
+## Behavior
+
+The lines below cover a repository that uses OpenSpec only.
+
+- **B1** — `openspec/` sits at the root and `AGENTS.md` does not opt out:
+  the skill asks no question, writes no file, and names OpenSpec's explore
+  and propose commands, then `pdlc-build` on the approved change.
+- **B2** — `openspec/config.yaml` carries none of the kit's rules: the skill
+  says that the change's `design.md` will not record rejected alternatives
+  or known gaps, and names `pdlc-init` to add them.
+- **B3** — `AGENTS.md` says the repository keeps the kit's own specs: the
+  skill runs as in a repository without OpenSpec.
 
 ## Rejected alternatives
 
@@ -179,6 +204,17 @@ The routing between spec and ADR is not decided here. It is stated once in
 - **Wording rules in `decision-records.md`, for specs only** — rejected: ADRs,
   `PRODUCT.md` and `AGENTS.md` show the same noise, and `doc-discipline.md` is
   already read before any write.
+- **Writing the OpenSpec change itself, in OpenSpec's format** — rejected:
+  the kit would keep a second implementation of OpenSpec's proposal flow,
+  and would have to follow its format from one release to the next.
+- **Running the question round, then handing the answers to OpenSpec's
+  propose command** — rejected: two skills would interrogate the user for
+  one change. The questions the kit cares about reach OpenSpec through its
+  configuration rules instead.
+- **Detecting OpenSpec only from a line in `AGENTS.md`** — rejected: the
+  `openspec/` directory already says it, and a second declaration can
+  disagree with it. `AGENTS.md` keeps the opt-out, as it keeps
+  `{docs_root}` ([ADR-0002](../adr/0002-docs-root-without-config-file.md)).
 
 ## Known gaps
 
@@ -194,3 +230,5 @@ The routing between spec and ADR is not decided here. It is stated once in
 | Nothing enforces the 500-line target or the wording: the model counts and reports | A spec is found far past the target |
 | The effect of the wording rules on a real session is not measured | A spec written in a target repository is read and found still wordy |
 | A line target is bypassed by long paragraphs, since prose is not hard-wrapped | A spec is found under the target with paragraphs of several sentences |
+| In an OpenSpec repository, nothing checks that OpenSpec's propose flow asked the regulated-data question; the configuration rules ask for it, and OpenSpec decides whether to follow them | A change is found touching personal, health or payment data with no Regulated data section |
+| OpenSpec's command names are spelled differently on each host, so the skill names the commands and not their exact spelling | A user cannot find the command from the name given |

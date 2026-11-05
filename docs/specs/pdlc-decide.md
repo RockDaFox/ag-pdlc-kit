@@ -1,9 +1,10 @@
 # Spec — pdlc-decide
 
-> **Status: Shipped**
+> **Status: Draft** — decision 11, on a repository that uses OpenSpec, is
+> authorised and not yet built. Decisions 1 to 10 are shipped.
 >
 > Living document: any change to the `pdlc-decide` skill is reflected here in
-> the same change. Revised 2026-09-15.
+> the same change. Revised 2026-11-05.
 
 ## Summary
 
@@ -68,6 +69,28 @@ implementation, and [`pdlc-init`](pdlc-init.md), which writes none by design.
     reversal: the skill routes that finding to state and writes no ADR, so the
     log does not grow a record that decides nothing
     ([ADR-0011](../adr/0011-append-only-binds-the-decision.md)).
+11. **On a repository that uses OpenSpec, a spec entry goes to an open
+    change, and never to `openspec/specs/`.** The repository uses OpenSpec
+    when an `openspec/` directory sits at its root, unless its `AGENTS.md`
+    says it keeps the kit's own specs. A feature-level decision goes to the
+    `design.md` of the open change for that feature, under its decisions,
+    and the option that lost under Rejected alternatives. The specs in
+    `openspec/specs/` change only through an archived change, so an edit
+    there would bypass OpenSpec's own record. With no open change, the
+    decision is either an ADR or a change of behavior, which goes through
+    OpenSpec's propose command. ADRs are unchanged.
+
+## Behavior
+
+The lines below cover a repository that uses OpenSpec only.
+
+- **B1** — A decision routed to a spec, with an open change for that
+  feature: the decision and its rejected options are added to that change's
+  `design.md`.
+- **B2** — A decision routed to a spec, with no open change for that
+  feature: the skill writes nothing, says the decision needs an ADR or an
+  OpenSpec change, and names OpenSpec's propose command.
+- **B3** — No file under `openspec/specs/` is written.
 
 ## Rejected alternatives
 

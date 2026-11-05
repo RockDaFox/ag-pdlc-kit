@@ -1,9 +1,10 @@
 # Spec — pdlc-init
 
-> **Status: Shipped**
+> **Status: Draft** — decision 22, on a repository that uses OpenSpec, is
+> authorised and not yet built. Decisions 1 to 21 are shipped.
 >
 > Living document: any change to the `pdlc-init` skill is reflected here in
-> the same change. Revised 2026-10-21.
+> the same change. Revised 2026-11-05.
 
 ## Summary
 
@@ -115,10 +116,23 @@ thing it offers.
 21. **`git commit --no-verify` still goes through, and the install says so.**
     Git offers no way to forbid it. The hook makes forgetting the review
     impossible, not deciding to skip it.
+22. **On a repository that uses OpenSpec, the skill records it and offers
+    the kit's rules to OpenSpec's configuration.** The repository uses
+    OpenSpec when an `openspec/` directory sits at its root. The Documentation
+    section of `AGENTS.md` then says that feature specs live in `openspec/`
+    and that ADRs, `PRODUCT.md` and `AGENTS.md` stay with the kit. The skill
+    asks whether to add the kit's rules to `openspec/config.yaml`, after the
+    hook question. Those rules have OpenSpec ask the regulated-data question,
+    write each scenario as a result a test can assert, and give `design.md`
+    a Rejected alternatives, a Known gaps and a Regulated data section.
+    Without them, a change records none of what the kit captures, and the
+    rules are how OpenSpec itself lets a team shape what it generates. The
+    skill neither installs OpenSpec nor suggests it.
 
 ## Behavior
 
-The lines below cover the hook only.
+Lines B1 to B15 cover the hook. Lines B16 to B20 cover a repository that
+uses OpenSpec.
 
 - **B1** — At the end of a first run, or on a repository already initialised:
   the skill asks whether to install the hook, and writes nothing about it
@@ -155,6 +169,17 @@ The lines below cover the hook only.
   with an error. With none, it says so and exits cleanly.
 - **B15** — The check is run outside a git repository: it says so and exits
   with an error, without reading any file.
+- **B16** — `openspec/` sits at the root: the Documentation section of
+  `AGENTS.md` names `openspec/` as where feature specs live, and
+  `{docs_root}/specs/` is not mentioned.
+- **B17** — `openspec/` sits at the root: the skill shows the kit's rules and
+  asks whether to add them to `openspec/config.yaml`, and writes nothing
+  there before a yes.
+- **B18** — Yes, and `config.yaml` already holds rules: the kit's rules are
+  added beside them, and no existing rule changes.
+- **B19** — Yes, and the kit's rules are already present: nothing is added
+  twice, and the skill says so.
+- **B20** — No `openspec/` at the root: the skill does not mention OpenSpec.
 
 ## Rejected alternatives
 
@@ -212,6 +237,10 @@ The lines below cover the hook only.
   [ADR-0007](../adr/0007-agents-md-follows-the-cross-vendor-convention.md):
   whichever the user picks, the zones the other one covered are lost, and the
   question is unanswerable as asked because both are incomplete.
+- **A custom OpenSpec schema shipped by the kit, with an artifact of its
+  own for decisions** — rejected: the repository would have to install the
+  schema, and the kit would have to follow OpenSpec's schema format from one
+  release to the next. The configuration rules reach the same `design.md`.
 - **Converting path-scoped instruction files into nested `AGENTS.md` files
   automatically** — rejected: it is a host migration disguised as a
   documentation bootstrap, and it breaks the tooling that reads them without
@@ -232,3 +261,5 @@ The lines below cover the hook only.
 | A hook manager that rewrites its hook file drops the added call | A manager is met that regenerates the hook on install |
 | No removal or update path for the hook | The check changes, or a user asks to remove it |
 | Contract recognition is by section heading, so a contract naming those sections differently is merged as ordinary prose | A real repository is met whose contract headings do not match |
+| The AI-notice hook checks `{docs_root}` and `AGENTS.md`, not `openspec/`; OpenSpec writes no notice | A team using OpenSpec asks for its changes to carry the notice |
+| OpenSpec may not follow a configuration rule; nothing checks that a change carries the sections the rules ask for | A change is found without them although the rules are in place |

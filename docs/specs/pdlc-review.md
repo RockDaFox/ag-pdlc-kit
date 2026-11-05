@@ -1,8 +1,8 @@
 # Spec — pdlc-review
 
-> **Status: Draft** — the review of a spec (decisions 12 to 16) is authorised and not yet built. The review of code, decisions 1 to 11, is shipped.
+> **Status: Draft** — the review of a spec (decisions 12 to 16) and the review against an OpenSpec change (decision 18) are authorised and not yet built. The review of code, decisions 1 to 11, is shipped.
 >
-> Living document: any change to the `pdlc-review` skill is reflected here in the same change. Revised 2026-10-15.
+> Living document: any change to the `pdlc-review` skill is reflected here in the same change. Revised 2026-11-05.
 
 ## Summary
 
@@ -59,10 +59,11 @@ The skill runs no command of its own: decision 8 sends every correction into the
 15. **The two reports are shown together without merging, and nothing is dropped.** Each finding keeps the line and the grade its lens gave it, tagged with the lens, and the numbering runs on across the two lists. Each agent cites the Behavior line, the decision or the section its finding concerns. A finding that cites the same place as another carries "same place as N", so the match is made on the citation and not on a reading of two sentences. Decision 11 forbids the relay to drop, regrade or soften a finding, and deciding that two findings are one point is a judgement that rewrites them. A place both lenses cite is also the best sign of a real gap.
 16. **A correction to a spec does not enter the build loop.** The loop changes code and proves it with a test, and a spec has neither. Each finding carries a kind, given by the agent that reports it: a wording fix, an open question, or another kind such as an ADR to write or a contradiction with another spec. A wording fix is applied to the spec once the user selects it. An open question goes to the user, and the skill does not settle it. Once answered, the answer is written into the spec as a decision, with the rejected options if the user gave them. A finding of another kind is referred and nothing is written: an ADR to [`pdlc-decide`](pdlc-decide.md), a contradiction with another spec to the user. The review edits no file other than the reviewed spec. Decisions 7 and 10 hold: nothing is edited before the answer and nothing is committed. In the [`pdlc-feature`](pdlc-feature.md) flow the draft is not yet committed, so the revised draft is committed at step 5, after the go-ahead on it. A declined finding graded blocking or to fix goes into the reviewed spec's Known gaps, as in decision 9, and so does an open question the user does not answer. The skill proposes the condition and the user can correct it. On a spec, blocking means the lens recommends against approving it in this state, and the decision stays with the user. Decision 8 and [ADR-0015](../adr/0015-review-corrections-enter-the-build-loop.md) are unchanged, because they govern corrections to code. The review closes by stating what was applied, what went to Known gaps and which open questions remain.
 17. **The agents recommend and never decide, and the user validates.** A finding is a recommendation, and its grade is the weight the agent recommends, not a gate. No agent approves or rejects a spec or a change, and none declares a finding settled. Where the business analyst and the tech lead diverge, the report shows both at equal weight. Neither is preferred, neither forces its view, and the skill does not break the tie. A functional doubt from the tech lead and a buildability doubt from the business analyst are recommendations of the same standing. The user decides what is applied, declined or ignored, and a spec is approved only by the user's go-ahead. This holds for code as for a spec, and it is what decision 7 means by a skill that reviews and does not arbitrate.
+18. **In a repository that uses OpenSpec, the spec that authorised a change of code is its OpenSpec change.** The repository uses OpenSpec when an `openspec/` directory sits at its root, unless its `AGENTS.md` says it keeps the kit's own specs. The change is the one under `openspec/changes/` that the diff builds, open or archived in the diff itself. Its proposal's scope is what was authorised, and its scenarios are the lines the tests are held to. A declined finding goes to the Known gaps of that change's `design.md`. A change archived in an earlier commit is history, so nothing is written there, and the review says so. The review of a spec, decisions 12 to 16, does not take an OpenSpec change as target yet.
 
 ## Behavior
 
-The first ten lines describe the review of code. Lines 11 to 30 describe the review of a spec.
+The first ten lines describe the review of code. Lines 11 to 30 describe the review of a spec. Lines 31 to 33 describe the review of code in a repository that uses OpenSpec.
 
 1. Resolve the target: the uncommitted working tree, or the branch, range or path given. If this session wrote, discussed or planned the change, hand steps 2 to 5 to a fresh agent given the target, the spec path and the review's instructions only, and relay what it returns as it is.
 2. Read the sources of truth — the code style zone of `AGENTS.md`, the spec governing the change if one exists and the tests the change adds or touches, the dependency manifest and lockfile for the versions in play, and the code around the diff. Name which of them were missing.
@@ -94,6 +95,9 @@ The first ten lines describe the review of code. Lines 11 to 30 describe the rev
 28. The review closes by stating what was applied, what went to Known gaps, and which open questions remain.
 29. Where the two lenses diverge, the report shows both findings at equal weight. It prefers neither lens, marks neither as right and offers no tie-break.
 30. The report states no verdict on the spec. A blocking finding does not stop the go-ahead, and the user can apply, decline or ignore any finding.
+31. In a repository that uses OpenSpec, the axis of the spec reads the change the diff builds: what its proposal puts in and out of scope, and whether each scenario has a test that asserts the result it states.
+32. Several open changes and nothing in the diff to tell which one it builds: the skill asks which one.
+33. A declined finding graded blocking or to fix is added to the Known gaps of that change's `design.md`, while the change is open or archived in the diff. A change archived in an earlier commit gets nothing, and the review says so.
 
 A review is not reportable as done while the target is unstated, the author's own reading presented as independent, the missing sources of truth unnamed, a library finding left ungrounded without being marked, or a correction applied outside the loop. A spec review is also not done while a lens is missing, a finding is dropped, reworded or merged, or an edit is made before the user selects it.
 
@@ -143,3 +147,4 @@ A review is not reportable as done while the target is unstated, the author's ow
 | The lenses never answer each other, so a point the tech lead finds unbuildable stays unreconciled with what the analyst finds essential, and the user carries that exchange | A review shows a disagreement of substance between the lenses that an exchange would have settled |
 | Two lenses were tried on two large specs only, so the yield on a short spec is unknown | A short spec is reviewed and one lens finds nothing the other did not |
 | Nothing checks a citation: a finding may cite a place it does not concern, and the "same place" mark depends on it | A review is found with marks that link unrelated findings or miss related ones |
+| The review of a spec does not take an OpenSpec change as target | A team asks for the two lenses on a change before approving it |

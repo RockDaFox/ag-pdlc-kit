@@ -1,8 +1,8 @@
 # Spec — pdlc-build
 
-> **Status: Shipped**
+> **Status: Draft** — the build of an OpenSpec change (decisions 16 and 17) is authorised and not yet built. Decisions 1 to 15 are shipped.
 >
-> Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-10-09.
+> Living document: any change to the `pdlc-build` skill is reflected here in the same change. Revised 2026-11-05.
 
 ## Summary
 
@@ -34,6 +34,8 @@ The loop itself lives in `skills/_pdlc-shared/build-loop.md` so that both entry 
 13. **The loop is performed, not narrated.** The red step is a check the agent runs, not a message it sends: a test failing before its implementation exists is the expected outcome, so a line reporting it — or reporting which file comes next — pays output tokens for what the reader already knows. The failure expected at step 1 lives in the test's name and assertion, which are re-readable; the red reaches the user once, in the evidence block. Mid-loop output is reserved for what is not expected: a red for the wrong reason, a contradiction, a missing command. This is ADR-0010's economy applied to output rather than input — the loop is long, and a per-step account of it is paid again for every behavior the spec names.
 14. **Each test cites a line of the spec's Behavior section, and asserts the result that line states.** A test passes the loop's other checks — in scope, red for the stated reason — and can still check nothing the spec asked for: an internal call, a mock answering itself. Naming the line before writing makes the link between spec and test explicit, and asserting what a caller would see keeps the test on the behavior rather than on the implementation. The evidence block reports one row per line with its test, so an uncovered line and a test with no line are both visible. This narrows the gap without closing it: the agent that writes the test still judges whether it fits the line, and [`pdlc-review`](pdlc-review.md) makes the independent reading of the tests against the lines, on demand.
 15. **The agent adds the tests it finds relevant, and decides nothing the spec leaves open.** A spec cannot list every boundary, empty input or failing dependency, and an agent that stops at the listed lines tests only what the author thought of. A found test cites the line it extends and is marked as found in the evidence block. When its expected result follows from that line, it is written and implemented. When the result is a choice the spec does not make, the loop writes no test and no code for it and reports it as a proposed Behavior line, because a quiet decision there is the scope decision decision 5 forbids. A found test green on its first run is kept only if it asserts something the line's own test does not, and is reported as such.
+16. **In a repository that uses OpenSpec, the input is an open change, and the loop runs on it unchanged.** The repository uses OpenSpec when an `openspec/` directory sits at its root, unless its `AGENTS.md` says it keeps the kit's own specs. The change, `openspec/changes/<change>/`, is read from disk like a spec. Its scenarios are the Behavior lines, and a test cites a requirement and a scenario by name. The out-of-scope part of `proposal.md` is the non-goals, and `tasks.md` gives the order of work. The test-first loop is the reason a team runs this skill rather than OpenSpec's apply command, so nothing in it is relaxed.
+17. **The skill runs the OpenSpec CLI when it is installed, and never does its work by hand.** `openspec validate <change> --strict` runs before the first test, and a failure stops the build, because a malformed change is a spec problem. After the loop, each divergence goes to the change's `design.md` as a rejected alternative, and finished tasks are ticked in `tasks.md`. Once the user approves the commit, `openspec archive <change> --yes` merges the deltas into `openspec/specs/`, in the same commit as the code. That is the reconciliation `Shipped` stands for in the kit's own specs. Without the CLI, the change stays open and the skill says so. Merging deltas by hand would reimplement OpenSpec's archive, and a wrong merge corrupts the specs it owns. A change not yet committed gets the go-ahead and the commit [ADR-0012](../adr/0012-a-spec-precedes-the-implementation-it-governs.md) asks for, before the loop.
 
 ## Behavior
 
@@ -47,6 +49,21 @@ The loop, once a spec is in hand:
 
 Done is not reportable while any of these is missing: each test confirmed red before its implementation existed, every Behavior line covered by a test or named as left, the targeted tests green, the repository's own checks run, the diff inspected, and the remaining limitations named. "Tests pass" without the command and its output is a claim, not evidence.
 
+The lines below cover a repository that uses OpenSpec only.
+
+- **B1** — No change is named and one change is open: the skill builds that change. Several are open: it lists them and asks which one.
+- **B2** — No change is open and the request is a feature: the skill names OpenSpec's propose command and writes nothing.
+- **B3** — The change is not committed: the skill asks for a go-ahead on it, and commits it before the first test.
+- **B4** — The CLI is installed: `openspec validate <change> --strict` runs before the first test. A failure stops the build, and its output is shown.
+- **B5** — The CLI is missing: the skill says that validation and archive will not run, then runs the loop.
+- **B6** — The evidence block has one row per scenario of the change, named by requirement and scenario.
+- **B7** — A result the change leaves open is reported as a proposed scenario, and no test or code decides it.
+- **B8** — After the loop: each divergence is a line under Rejected alternatives in the change's `design.md`, and each finished task is ticked in `tasks.md`.
+- **B9** — The user approves the commit and the CLI is installed: `openspec archive <change> --yes` runs first, and the commit holds the code, the merged specs and the archived change.
+- **B10** — The user approves the commit and the CLI is missing: the commit holds the code and the open change, and the skill says to archive it with OpenSpec's archive command.
+- **B11** — The archive command fails: the skill shows its output, commits nothing, and waits.
+- **B12** — Nothing is written under `{docs_root}/specs/`.
+
 ## Rejected alternatives
 
 - **A mode or flag of `pdlc-feature`** — rejected: the standalone entry point never passes through the question round, so the mode would be the skill's most common use and its least natural one. A skill reached by a flag is a skill the user has to know exists.
@@ -57,6 +74,9 @@ Done is not reportable while any of these is missing: each test confirmed red be
 - **Having `pdlc-build` write the spec in every case, including under `pdlc-feature`** — rejected: two writers for one record. The record belongs to whichever skill holds the decision, and inside a feature that is `pdlc-feature`.
 - **Writing no record at all in standalone use** — rejected, and it was the live alternative: cheaper, and it keeps the skill single-purpose, but it makes whether a decision is recorded depend on which entry point the user happened to choose. That is the accident the routing tests exist to remove.
 - **Shipping a per-stack command table** — rejected: it duplicates what `AGENTS.md` states for the repository it runs on, it goes stale silently, and every row would be an example borrowed from somewhere.
+- **Leaving the build of an OpenSpec change to OpenSpec's apply command** — rejected: the change would be built with no test read red first and no evidence block, which is what this skill exists to provide.
+- **Merging an OpenSpec change's deltas by hand when the CLI is missing** — rejected: it reimplements OpenSpec's archive, and a wrong merge corrupts the specs OpenSpec owns.
+- **Never running the OpenSpec CLI, and leaving the archive to the user** — rejected: the archive is the reconciliation, and the kit holds that it happens in the same change as the code.
 
 ## Known gaps
 
@@ -69,3 +89,6 @@ Done is not reportable while any of these is missing: each test confirmed red be
 | Concurrency is not addressed: two builds in flight on one clone collide | The isolation skill exists and can own that rule rather than this one restating it |
 | Nothing routes a finished build into [`pdlc-review`](pdlc-review.md); reaching it is a step the user takes, by that skill's own decision 1 | Forgetting that step costs more than the automatic gate the kit deliberately did not impose |
 | A spec written before the template required a Behavior section has none to cite; the loop derives the lines from its Decisions and states them first | Such a build produces a test that misses what the spec meant |
+| The OpenSpec CLI flags are those of its documentation on 2026-11-05; no OpenSpec version is pinned or checked | A CLI release renames or drops `validate --strict` or `archive --yes` |
+| A change whose `.openspec.yaml` names another schema than `spec-driven` may have no scenarios or no `tasks.md` | A team using a custom schema runs the skill on a change |
+| Nothing has run the skill on a real OpenSpec repository | It is run on one |
