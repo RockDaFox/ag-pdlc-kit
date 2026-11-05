@@ -1,6 +1,6 @@
 ---
 name: pdlc-init
-description: Bootstrap the Ag-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Also offers a pre-commit hook that refuses a commit carrying an unreviewed AI-assistance notice — the only thing it offers on a repository already initialised. Use when a repo has no product document, no specs and no AGENTS.md, when the user asks to set up, install or initialise Ag-PDLC Kit on a project, or when they ask for the AI-notice hook.
+description: Bootstrap the Ag-PDLC Kit documentation discipline on an existing repository — writes AGENTS.md and PRODUCT.md by reading the code and the git history, so they describe what is actually delivered rather than what was once intended, and opens an empty decision log that grows from today. Also offers a pre-commit hook that refuses a commit carrying an unreviewed AI-assistance notice and, on a repository that uses OpenSpec, the kit's rules for OpenSpec's configuration — the only things it offers on a repository already initialised. Use when a repo has no product document, no specs and no AGENTS.md, when the user asks to set up, install or initialise Ag-PDLC Kit on a project, or when they ask for the AI-notice hook.
 ---
 
 # Ag-PDLC Kit init
@@ -16,7 +16,10 @@ resolve `{docs_root}`. Then
 [`state-documents.md`](../_pdlc-shared/state-documents.md), which holds the
 convention `AGENTS.md` follows, its 150-line budget, and why `PRODUCT.md` is
 descriptive. This skill writes no ADR and no spec, so it needs neither the
-routing tests nor the regulated-data record.
+routing tests nor the regulated-data record. On a repository with an
+`openspec/` directory at its root, read
+[`openspec.md`](../_pdlc-shared/openspec.md) too: it holds the rules this
+skill offers to OpenSpec's configuration.
 
 ## What this skill does not do
 
@@ -97,7 +100,9 @@ guessed), the architecture in a paragraph, the code style the code actually
 exhibits, and every trap the history shows someone already hit. A rule you
 cannot point at evidence for does not go in. Its Documentation section names
 `{docs_root}`, says what each level holds, and states that the decision log
-starts from the Ag-PDLC Kit installation.
+starts from the Ag-PDLC Kit installation. On a repository that uses
+OpenSpec, it says that feature specs live in `openspec/`, and that the ADRs,
+`PRODUCT.md` and `AGENTS.md` stay with the kit.
 
 Keep to the template's section order and to the 150-line budget — both come
 from the cross-vendor convention, stated once in `state-documents.md`.
@@ -120,7 +125,8 @@ something true to put in them.
 
 At the end of a first run, ask whether to install the AI-notice hook. On a
 repository where `AGENTS.md` and `{docs_root}/PRODUCT.md` already exist, this
-question is the only thing the skill offers. Say what the hook does in one
+question and the one on OpenSpec's configuration below are all the skill
+offers. Say what the hook does in one
 sentence: a commit that adds the `ai-draft` marker under `{docs_root}` or in
 `AGENTS.md` is refused, so a document an agent drafted cannot be committed
 before someone has read it and removed its notice. Write nothing about the
@@ -138,6 +144,18 @@ an existing hook itself. Relay what it prints, including that
 `git commit --no-verify` bypasses it. When it reports a hook it left
 untouched, relay the line it shows and stop there. This is the one command
 the skill runs that is neither git's nor the repository's own.
+
+## OpenSpec's configuration
+
+On a repository with an `openspec/` directory at its root, after the hook
+question, show the rules `openspec.md` lists and ask whether to add them to
+`openspec/config.yaml`. Say what they do in one sentence: OpenSpec then asks
+the regulated-data question, writes each scenario as a result a test can
+assert, and gives each change's `design.md` the rejected alternatives and
+known gaps the kit records. Write nothing there before a yes. On a yes, add
+them beside the rules already present and change none of those; rules
+already there are not added twice, and say so. Without an `openspec/`
+directory, do not mention OpenSpec.
 
 ## Finishing
 

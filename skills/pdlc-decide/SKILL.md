@@ -72,7 +72,12 @@ question it answered.
 **A spec entry** — the decision belongs to a feature that already has a spec:
 add it to that spec's Decisions, and the option that lost to its Rejected
 alternatives. Do not create a spec for a feature that does not exist yet; a
-decision taken before the feature is either an ADR or premature.
+decision taken before the feature is either an ADR or premature. In a
+repository that uses OpenSpec — `doc-discipline.md` says how to tell — the
+entry goes to the `design.md` of the open change for that feature, and never
+to `openspec/specs/` ([`openspec.md`](../_pdlc-shared/openspec.md)). With no
+open change, write nothing: say the decision needs an ADR or an OpenSpec
+change, and name OpenSpec's propose command.
 
 **`AGENTS.md`** — the decision turned out to be a repo-wide rule or a trap.
 One line or one paragraph, in the matching section, and nothing in

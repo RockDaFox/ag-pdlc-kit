@@ -34,7 +34,7 @@ When there is no repository at hand, ask in the same round for a link to the rep
 
 Use the first source that works.
 
-**A repository at hand.** The documentation folder is `docs/` unless the repository's `AGENTS.md` names another, or an existing folder holds `adr/` and `specs/` under another name.
+**A repository at hand.** The documentation folder is `docs/` unless the repository's `AGENTS.md` names another, or an existing folder holds `adr/` and `specs/` under another name. A project with an `openspec/` folder at its root keeps its specs in OpenSpec, unless its `AGENTS.md` says otherwise: read them as section 3 says, and the ADRs from the documentation folder.
 
 **A link to the repository.** Never name or assume a forge. On a host that runs git with the person's own credentials — a developer tool — clone the repository into a temporary directory, read from it, and delete it before you finish, including when you stop early. On any other host, read the files through the access the host already has to that forge, usually a connector.
 
@@ -67,6 +67,16 @@ Place each document in the period by the date it carries: an ADR by its Date row
 | Waiting for an answer | Each point a document states as unanswered, and each Regulated data section whose Decision is unanswered, naming the function consulted and the date raised | Same |
 | Deliberately not done | The Non-goals of each delivered spec, and each Known gaps row added in the period | The Non-goals and Known gaps of each delivered spec |
 | Other changes | Commits in the period that no spec covers — team report only | Not reported |
+
+**A project that uses OpenSpec.** Its specs are in `openspec/specs/`, its work in progress in `openspec/changes/<change>/`, and its delivered work in `openspec/changes/archive/`, one folder per change, named after the date it was archived. Place a change in the period by that date, with or without history. Read the table above with these sources:
+
+- **Delivered**: the added and modified scenarios of each change archived in the period.
+- **Decided**: the decisions in the `design.md` of each change archived in the period, with its rejected alternatives, and each ADR as above.
+- **In progress**: each open change, with the intent its `proposal.md` states. Never report how many of its tasks are ticked: that is a measure of progress.
+- **Waiting for an answer**: each Regulated data section in a change's `design.md` whose decision is unanswered.
+- **Deliberately not done**: the out-of-scope items of each delivered change's `proposal.md`, and the known gaps in its `design.md`.
+
+A project with no spec, no change and no ADR stops the skill, as above.
 
 ## 4. What each audience gets
 

@@ -1,6 +1,6 @@
 # Spec — pdlc-report
 
-> **Status: Draft** — reading an OpenSpec repository (decision 23) is authorised and not yet built. Decisions 1 to 22 are shipped.
+> **Status: Shipped**
 >
 > Living document: any change to the `pdlc-report` skill is reflected here in the same change. Revised 2026-11-05.
 
@@ -46,7 +46,7 @@ It reads what [`pdlc-feature`](pdlc-feature.md), [`pdlc-decide`](pdlc-decide.md)
 20. **A project with no spec and no ADR stops the skill.** Without decisions the report would be a reworded change log, and the skill offers `pdlc-init` instead.
 21. **Questions waiting for an answer open the sponsor report.** They are what the meeting has to act on.
 22. **The skill asks and reports without developer vocabulary.** No commit, branch, diff or tag in what it asks a user who did not mention them first.
-23. **In a project that uses OpenSpec, the specs are OpenSpec's, and the skill reads them where OpenSpec keeps them.** The project uses OpenSpec when an `openspec/` folder sits at its root, unless its `AGENTS.md` says it keeps the kit's own specs. The ADRs stay in the documentation folder. A change archived in the period is the delivered work, dated by its archive folder. Its `design.md` holds the decisions, the rejected alternatives, the known gaps and the regulated-data record. An open change is work in progress. The skill states these rules in its own file, as decision 19 requires.
+23. **In a project that uses OpenSpec, the specs are OpenSpec's, and the skill reads them where OpenSpec keeps them.** The project uses OpenSpec when an `openspec/` folder sits at its root, unless its `AGENTS.md` says it keeps the kit's own specs ([ADR-0021](../adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)). The ADRs stay in the documentation folder. A change archived in the period is the delivered work, dated by its archive folder. Its `design.md` holds the decisions, the rejected alternatives, the known gaps and the regulated-data record. An open change is work in progress. The skill states these rules in its own file, as decision 19 requires.
 
 ## Behavior
 

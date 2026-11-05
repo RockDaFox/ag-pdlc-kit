@@ -59,11 +59,12 @@ Implementation status: six skills — `pdlc-init` (bootstrap),
 (record one that does not), `pdlc-build` (carry out the work a spec
 authorises, test-first), `pdlc-review` (hold the result to a standard
 before it is committed) and `pdlc-report` (report on the project to readers
-outside the repository) — four templates, and a shared reference of four
+outside the repository) — four templates, and a shared reference of five
 files: three for the documentation discipline, each skill loading only the
-ones it uses ([ADR-0010](adr/0010-shared-reference-split-by-need.md)), and one
+ones it uses ([ADR-0010](adr/0010-shared-reference-split-by-need.md)), one
 for the build loop, read by `pdlc-build`, by `pdlc-feature` at its own step 6,
-and by `pdlc-review` once corrections are selected. The product itself is
+and by `pdlc-review` once corrections are selected, and one read only in a
+repository that keeps its feature specs in OpenSpec (section 3.10). The product itself is
 Markdown, two JSON manifests and one shell script: the AI-notice check that
 `pdlc-init` offers to install as a pre-commit hook
 ([ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)). The repository also carries one maintainer-side check
@@ -366,9 +367,33 @@ decision record needs — and a skill names the ones it uses
 ([ADR-0010](adr/0010-shared-reference-split-by-need.md)). The build loop is a
 fourth, separate file for a separate concern, read by `pdlc-build`, by
 `pdlc-feature` at its own step 6, and by `pdlc-review` only once the user has
-selected corrections to apply. An agent's context is the scarce resource:
+selected corrections to apply. A fifth file, `openspec.md`, is read only in a
+repository that uses OpenSpec. An agent's context is the scarce resource:
 instructions loaded and never applied are paid for on every invocation, and
 they displace the repository being documented.
+
+### 3.10 Give way to OpenSpec
+
+A repository with an `openspec/` directory at its root keeps its feature
+specs in OpenSpec, unless its `AGENTS.md` says it keeps the kit's own
+([ADR-0021](adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)).
+The kit then writes nothing under `specs/`. `PRODUCT.md`, the ADRs and
+`AGENTS.md` stay with the kit.
+
+OpenSpec writes each change: `pdlc-feature` asks nothing and names
+OpenSpec's propose command. `pdlc-build` runs its test-first loop on an open
+change, with the change's scenarios as Behavior lines and its out-of-scope
+list as non-goals. With the OpenSpec CLI installed, it validates the change
+before the loop and archives it in the same commit as the code, once the user
+approves. Without it, the change stays open and the skill says so; no skill
+merges deltas by hand. `pdlc-review` holds the diff to the change it builds,
+`pdlc-decide` writes a feature-level decision into the open change's
+`design.md`, and `pdlc-report` reads open and archived changes.
+
+What the kit records and OpenSpec does not — rejected alternatives, known
+gaps, the regulated-data question — reaches a change through rules
+`pdlc-init` offers to add to `openspec/config.yaml`. OpenSpec decides
+whether to follow them, and nothing checks that it did.
 
 ## 4. Constraints
 
@@ -401,7 +426,10 @@ they displace the repository being documented.
   reach the same loop, and none of them executes anything outside it.
   [ADR-0019](adr/0019-the-kit-ships-one-check-that-runs-on-a-documented-repository.md)
   adds one script: `pdlc-init` runs the bundled AI-notice check to install
-  its hook, after the user agrees. `pdlc-report` runs git commands that read
+  its hook, after the user agrees. In a repository that uses OpenSpec, the
+  OpenSpec CLI, when installed, validates a change before the build loop and
+  archives it once the user approves the commit
+  ([ADR-0021](adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)). `pdlc-report` runs git commands that read
   only, plus a temporary clone of a repository the user links to, deleted
   before it finishes. The set is exhaustive; nothing else is executed, and
   nothing is executed without the user having approved the work it verifies.

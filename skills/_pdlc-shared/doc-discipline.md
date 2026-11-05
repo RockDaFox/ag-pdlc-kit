@@ -33,6 +33,15 @@ read; **no second configuration file exists, and none should be invented.**
 `{docs_root}` is notation for these instructions. A document written into a
 target repository carries the resolved path, never the placeholder.
 
+## A repository that uses OpenSpec
+
+A repository with an `openspec/` directory at its root keeps its feature
+specs in OpenSpec, unless the Documentation section of `AGENTS.md` says it
+keeps the kit's own. Nothing is then written under `{docs_root}/specs/`, and
+[`openspec.md`](openspec.md) says where each part of a spec lives instead.
+Read it before reading or writing a spec in such a repository. `PRODUCT.md`,
+the ADRs and `AGENTS.md` are unchanged.
+
 ## Which file
 
 | File | Answers | Lifetime |

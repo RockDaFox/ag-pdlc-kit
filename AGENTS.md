@@ -56,7 +56,7 @@ gets a manifest pair pointing at the same tree
 ├── marketplace.json
 └── plugin.json
 skills/
-├── _pdlc-shared/            four reference files, templates, notice-check.sh;
+├── _pdlc-shared/            five reference files, templates, notice-check.sh;
 │                            not a skill
 ├── pdlc-init/SKILL.md       one directory per skill, named exactly SKILL.md
 ├── pdlc-feature/SKILL.md
@@ -98,7 +98,10 @@ only some do, so no session loads instructions it will not use
 ([ADR-0010](docs/adr/0010-shared-reference-split-by-need.md)). `build-loop.md`
 holds the test-first loop, read by `pdlc-build`, by `pdlc-feature` at its own
 step 6 and by `pdlc-review` once corrections are selected — never at the
-start. This repository follows the discipline it
+start. `openspec.md` is read only in a repository that keeps its feature
+specs in OpenSpec
+([ADR-0021](docs/adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)).
+This repository follows the discipline it
 distributes, so those files are both the product and the rule this repo is
 held to.
 

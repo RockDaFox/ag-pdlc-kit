@@ -1,7 +1,7 @@
 # Spec — pdlc-feature
 
-> **Status: Draft** — decisions 18 and 19 are authorised and not yet built.
-> Decisions 1 to 17 are shipped.
+> **Status: Draft** — decision 18 is authorised and not yet built. Decisions
+> 1 to 17 and 19 are shipped.
 >
 > Living document: any change to the `pdlc-feature` skill is reflected here in
 > the same change. Revised 2026-11-05.
@@ -124,7 +124,7 @@ The routing between spec and ADR is not decided here. It is stated once in
 19. **In a repository that uses OpenSpec, the skill writes no spec and hands
     the request to OpenSpec.** The repository uses OpenSpec when an
     `openspec/` directory sits at its root, unless its `AGENTS.md` says it
-    keeps the kit's own specs. The skill then asks nothing and writes
+    keeps the kit's own specs ([ADR-0021](../adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)). The skill then asks nothing and writes
     nothing. It names OpenSpec's explore and propose commands, then
     [`pdlc-build`](pdlc-build.md) on the change once the user approves it. A
     team that adopted OpenSpec chose its proposal flow, and a second flow

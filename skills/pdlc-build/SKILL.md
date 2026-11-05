@@ -61,6 +61,34 @@ questions of your own — asking is that skill's job, and a second skill that
 also asks leaves the kit with a weaker `pdlc-feature`, the one that is nearer
 to hand.
 
+## An OpenSpec change
+
+In a repository that uses OpenSpec — `doc-discipline.md` says how to tell —
+read [`openspec.md`](../_pdlc-shared/openspec.md). The input is an open
+change, read from disk like a spec, and the loop runs on it unchanged. Write
+nothing under `{docs_root}/specs/`.
+
+- **Which change.** The one named. With none named: the only open change, or
+  ask which one when several are open. With none open and a feature asked
+  for, name OpenSpec's propose command and write nothing.
+- **Before the loop.** A change not yet committed gets the go-ahead and the
+  commit a `Draft` spec gets. Then, with the CLI installed, run
+  `openspec validate <change> --strict --no-interactive`. A failure stops the
+  build: show its output, because a malformed change is a spec problem.
+  Without the CLI, say that validation and archive will not run.
+- **During the loop.** Each test cites a requirement and a scenario by name,
+  and the evidence block has one row per scenario.
+- **After the loop.** Each divergence becomes a line under Rejected
+  alternatives in the change's `design.md`, and each finished task is ticked
+  in `tasks.md`. A decision the build produced goes to that `design.md`, or
+  to an ADR when the routing tests say so.
+- **The commit.** Once the user approves it, with the CLI installed, run
+  `openspec archive <change> --yes` first, so the commit holds the code, the
+  merged specs and the archived change. That archive is the reconciliation.
+  If it fails, show its output, commit nothing, and wait. Without the CLI,
+  commit the code with the change still open, and say it is to be archived
+  with OpenSpec's archive command.
+
 ## Running the loop
 
 [`build-loop.md`](../_pdlc-shared/build-loop.md) states it once, because it is

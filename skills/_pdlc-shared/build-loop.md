@@ -9,6 +9,10 @@ mid-task. Or a review finding the user has selected, which is a correction
 they were shown in writing before they chose it. A message is neither of
 those.
 
+In a repository that uses OpenSpec, the spec is the open change, and
+[`openspec.md`](openspec.md) maps each term this loop uses — Behavior line,
+proposed line, non-goals — to its place in the change.
+
 Three callers reach this same loop: [`pdlc-build`](../pdlc-build/SKILL.md),
 standalone; [`pdlc-feature`](../pdlc-feature/SKILL.md), at its own step 6, on
 the spec the go-ahead was just given on; and

@@ -24,6 +24,18 @@ resolve `{docs_root}`. Read
 the spec or an ADR — it holds the routing tests, append-only, and the
 regulated-data record.
 
+## A repository that uses OpenSpec
+
+`doc-discipline.md` says how to tell. In such a repository, OpenSpec writes
+the spec, and this skill stops here: it asks nothing and writes nothing.
+Name OpenSpec's explore and propose commands, then
+[`pdlc-build`](../pdlc-build/SKILL.md) on the change once the user has
+approved it. If `openspec/config.yaml` carries none of the rules
+[`openspec.md`](../_pdlc-shared/openspec.md) lists, say that the change's
+`design.md` will not record rejected alternatives or known gaps, and name
+`pdlc-init` to add them. An ADR the work turns out to warrant goes through
+[`pdlc-decide`](../pdlc-decide/SKILL.md).
+
 ## Before forming an opinion
 
 Read the request in the full context of the repo:

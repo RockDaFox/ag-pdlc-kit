@@ -1,7 +1,6 @@
 # Spec — pdlc-decide
 
-> **Status: Draft** — decision 11, on a repository that uses OpenSpec, is
-> authorised and not yet built. Decisions 1 to 10 are shipped.
+> **Status: Shipped**
 >
 > Living document: any change to the `pdlc-decide` skill is reflected here in
 > the same change. Revised 2026-11-05.
@@ -72,7 +71,7 @@ implementation, and [`pdlc-init`](pdlc-init.md), which writes none by design.
 11. **On a repository that uses OpenSpec, a spec entry goes to an open
     change, and never to `openspec/specs/`.** The repository uses OpenSpec
     when an `openspec/` directory sits at its root, unless its `AGENTS.md`
-    says it keeps the kit's own specs. A feature-level decision goes to the
+    says it keeps the kit's own specs ([ADR-0021](../adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)). A feature-level decision goes to the
     `design.md` of the open change for that feature, under its decisions,
     and the option that lost under Rejected alternatives. The specs in
     `openspec/specs/` change only through an archived change, so an edit

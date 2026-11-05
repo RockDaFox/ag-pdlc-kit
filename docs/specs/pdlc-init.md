@@ -1,7 +1,6 @@
 # Spec — pdlc-init
 
-> **Status: Draft** — decision 22, on a repository that uses OpenSpec, is
-> authorised and not yet built. Decisions 1 to 21 are shipped.
+> **Status: Shipped**
 >
 > Living document: any change to the `pdlc-init` skill is reflected here in
 > the same change. Revised 2026-11-05.
@@ -118,11 +117,12 @@ thing it offers.
     impossible, not deciding to skip it.
 22. **On a repository that uses OpenSpec, the skill records it and offers
     the kit's rules to OpenSpec's configuration.** The repository uses
-    OpenSpec when an `openspec/` directory sits at its root. The Documentation
+    OpenSpec when an `openspec/` directory sits at its root
+    ([ADR-0021](../adr/0021-a-repository-that-uses-openspec-keeps-its-specs-there.md)). The Documentation
     section of `AGENTS.md` then says that feature specs live in `openspec/`
     and that ADRs, `PRODUCT.md` and `AGENTS.md` stay with the kit. The skill
     asks whether to add the kit's rules to `openspec/config.yaml`, after the
-    hook question. Those rules have OpenSpec ask the regulated-data question,
+    hook question, on a repository already initialised as on a first run. Those rules have OpenSpec ask the regulated-data question,
     write each scenario as a result a test can assert, and give `design.md`
     a Rejected alternatives, a Known gaps and a Regulated data section.
     Without them, a change records none of what the kit captures, and the
