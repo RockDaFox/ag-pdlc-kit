@@ -56,6 +56,19 @@ marker. Read the document, then delete both: that is the review.
 The docs root defaults to `docs/`; a repository that uses another says so in
 one line of `AGENTS.md`.
 
+## With OpenSpec
+
+A repository with an `openspec/` directory at its root keeps its feature specs
+in [OpenSpec](https://github.com/Fission-AI/OpenSpec), and the kit writes
+none under `docs/specs/`. `/pdlc-feature` points to OpenSpec's propose
+command. `/pdlc-build` builds an open change test-first, validates it before
+and archives it at the commit with the OpenSpec CLI when it is installed.
+`/pdlc-review`, `/pdlc-decide` and `/pdlc-report` read the change.
+`/pdlc-init` offers rules for `openspec/config.yaml` so that each change's
+`design.md` records rejected alternatives and known gaps. `AGENTS.md`,
+`PRODUCT.md` and the ADRs stay with the kit. A repository can keep the kit's
+own specs by saying so in `AGENTS.md`.
+
 ## More
 
 - [`docs/PRODUCT.md`](docs/PRODUCT.md) — what the kit does and leaves out.
